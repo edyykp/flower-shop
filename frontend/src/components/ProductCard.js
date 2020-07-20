@@ -1,14 +1,27 @@
 import React, {Component} from 'react';
-import {ListGroup, Card, Button} from 'react-bootstrap';
+import {ListGroup, Card, Button, Modal} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import {ShoppingCart} from './ShoppingCart';
 
 export class ProductCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            hover: false
+            hover: false,
+            show: false
         };
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
+
+    handleClose() {
+        this.setState({show: false});
+    }
+
+    handleShow() {
+        this.setState({show: true});
+    }
+
     render() {
         return (
             <ListGroup.Item style={{borderStyle:"none"}}>  
@@ -29,9 +42,28 @@ export class ProductCard extends Component {
                                 <Card.Text style={{color: "grey"}}>
                                 {this.props.price} lei
                                 </Card.Text>
-                                <Button variant="primary">Adaugă în coș</Button>
+                                <Button variant="primary" onClick={this.handleShow}>Adaugă în coș</Button>
                             </Card.Body>
-                        </Card>         
+                        </Card>
+                        <Modal
+                                show={this.state.show}
+                                onHide={this.handleClose}
+                                backdrop="static"
+                                keyboard={false}
+                        >
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Coș de cumpărături</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <ShoppingCart />
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={this.handleClose}>
+                                        CONTINUĂ CUMPĂRĂTURILE
+                                    </Button>
+                                    <Button variant="primary">FINALIZEAZĂ COMANDA</Button>
+                                </Modal.Footer>
+                        </Modal>         
             </ListGroup.Item>
         )
     }

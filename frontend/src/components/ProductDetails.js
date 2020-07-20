@@ -1,9 +1,10 @@
 import React from 'react';
-import {Row, Col, Button, Container, Form, Card, Image, ListGroup, OverlayTrigger, Popover} from 'react-bootstrap';
+import {Row, Col, Button, Container, Form, Card, Image, ListGroup, OverlayTrigger, Popover, Modal} from 'react-bootstrap';
 import { Layout } from './Layout';
 import data from '../data';
 import styled from 'styled-components';
 import {Truck, ShieldCheck, CashStack, Check2Circle, Gift} from 'react-bootstrap-icons';
+import {ShoppingCart} from './ShoppingCart';
 
 const Styles = styled.div`
     .list-group-item {
@@ -101,12 +102,23 @@ export class ProductDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            transform: 2
+            transform: 2,
+            show: false
         };
         this.product = data.products.find( x => x._id === this.props.match.params.id);
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
+    handleClose() {
+        this.setState({show: false});
+    }
+
+    handleShow() {
+        this.setState({show: true});
+    }
     render() {
+
         return (
             <Layout style={{width: "100%", maxWidth: "100%", backgroundColor: "white", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
                 <Row style={{marginTop: "50px", marginLeft: "40px", width: "100%", maxWidth:"100%"}}>
@@ -124,7 +136,7 @@ export class ProductDetails extends React.Component {
                                 </Col>
                                 <Col style={{justifyContent:"flex-end"}} md={3}>
                                     <input type="number" min={1} max={9} style={{textAlign: "center", width: "48px", height: "40px"}} defaultValue={1}/>
-                                    <Button variant="primary">Adaugă în coș</Button>
+                                    <Button variant="primary" onClick={this.handleShow}>Adaugă în coș</Button>
                                 </Col>
                             </Row>
                             <Row>
@@ -272,6 +284,25 @@ export class ProductDetails extends React.Component {
                         </Card>
                     </Col>
                 </Row>
+                <Modal
+                                show={this.state.show}
+                                onHide={this.handleClose}
+                                backdrop="static"
+                                keyboard={false}
+                        >
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Coș de cumpărături</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <ShoppingCart />
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={this.handleClose}>
+                                        CONTINUĂ CUMPĂRĂTURILE
+                                    </Button>
+                                    <Button variant="primary">FINALIZEAZĂ COMANDA</Button>
+                                </Modal.Footer>
+                        </Modal>
             </Layout>
         )
     }

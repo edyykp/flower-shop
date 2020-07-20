@@ -126,7 +126,7 @@ export function NavigationBar(total) {
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button variant="secondary" onClick={handleClose}>
-                                        ÎNCHIDE
+                                        CONTINUĂ CUMPĂRĂTURILE
                                     </Button>
                                     <Button variant="primary">FINALIZEAZĂ COMANDA</Button>
                                 </Modal.Footer>
