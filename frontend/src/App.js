@@ -31,7 +31,7 @@ const App = ({ match }) => {
             <NavigationBar match={match}/>
              <div style={{paddingTop: "126px"}}>
             <Switch>
-              <Route exact path="/" component={Home} />
+              <Route exact path="/flower-shop" component={Home} />
               <Route path="/bucheteflori" component={BucheteFlori} />
               <Route path="/aranjamenteflori" component={AranjamenteFlori} />
               <Route path="/trandafiricriogenati" component={TrandafiriCriogenati} />
