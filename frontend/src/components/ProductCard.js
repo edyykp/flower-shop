@@ -29,7 +29,7 @@ export class ProductCard extends Component {
                             <Link to={"/productdetails/" + this.props.id} style={{overflow:"hidden"}}>
                                 <Card.Img 
                                 variant="top" 
-                                src={require(`./../assets/${this.props.image}.png`)} 
+                                src={`/assets/${this.props.image}.png`} 
                                 style={{objectFit:"cover", width:"100%", height:"15vw", transform: `${this.state.hover ? "scale(1.5)" : "scale(1)"}`, transition: "1s"}}
                                 onMouseOver={() => this.setState({hover: true})}
                                 onMouseOut={() => this.setState({hover: false})}

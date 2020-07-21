@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Row, Col, Button, Container, Form, Card, Image, ListGroup, OverlayTrigger, Popover, Modal} from 'react-bootstrap';
 import { Layout } from './Layout';
-import data from '../data';
 import styled from 'styled-components';
 import {Truck, ShieldCheck, CashStack, Check2Circle, Gift} from 'react-bootstrap-icons';
 import {ShoppingCart} from './ShoppingCart';
+import {useSelector, useDispatch} from 'react-redux';
+import { detailsProduct } from '../actions/productActions';
 
 const Styles = styled.div`
     .list-group-item {
@@ -98,45 +99,53 @@ const popoverCadouri = (
     </Popover>
   );
 
-export class ProductDetails extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            transform: 2,
-            show: false
-        };
-        this.product = data.products.find( x => x._id === this.props.match.params.id);
-        this.handleShow = this.handleShow.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-    }
 
-    handleClose() {
-        this.setState({show: false});
-    }
 
-    handleShow() {
-        this.setState({show: true});
-    }
-    render() {
+export function ProductDetails(props) {
+        const [qty, setQty] = useState(1);
 
+        const [show, setShow] = useState(false);
+        const handleClose = () => setShow(false);
+        const handleShow = () => setShow(true);
+
+        const [transform, setTransform] = useState(1);
+        const handleTransform15 = () => setTransform(1.5);
+        const handleTransform2 = () => setTransform(2);
+        const handleTransform1 = () => setTransform(1);
+
+        const productDetails = useSelector((state) => state.productDetails);
+        const {product, loading, error} = productDetails;
+        const dispatch = useDispatch();
+        useEffect(() => {
+            dispatch(detailsProduct(props.match.params.id));
+            return() => {
+
+            }
+        }, [])
+
+        const handleAddToCart = () => {
+            props.history.push("/c");
+        }
         return (
+            loading? <div>Loading...</div> :
+            error? <div>{error}</div> :
             <Layout style={{width: "100%", maxWidth: "100%", backgroundColor: "white", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
                 <Row style={{marginTop: "50px", marginLeft: "40px", width: "100%", maxWidth:"100%"}}>
                     <Col>
-                        <h2>{this.product.name}</h2>
+                        <h2>{product.name}</h2>
                         <hr/>
                         <Container>
                             <Row style={{justifyContent:"space-between"}}>
                                 <Col md={6} style={{justifyContent:"flex-start"}}>
                                     <strong>
-                                        <p style={{color: "purple", fontSize:"30px"}}>{this.product.price} LEI
+                                        <p style={{color: "purple", fontSize:"30px"}}>{product.price} LEI
                                         
                                         </p>
                                     </strong>
                                 </Col>
                                 <Col style={{justifyContent:"flex-end"}} md={3}>
-                                    <input type="number" min={1} max={9} style={{textAlign: "center", width: "48px", height: "40px"}} defaultValue={1}/>
-                                    <Button variant="primary" onClick={this.handleShow}>Adaugă în coș</Button>
+                                    <input type="number" min={1} max={9} style={{textAlign: "center", width: "48px", height: "40px"}} value={qty} onChange={(e) => {setQty(e.target.value)}}/>
+                                    <Button variant="primary" onClick={handleShow}>Adaugă în coș</Button>
                                 </Col>
                             </Row>
                             <Row>
@@ -151,12 +160,12 @@ export class ProductDetails extends React.Component {
                         <hr/>
                         <Container>
                             <Row>
-                                <h4>Descriere {this.product.name}</h4>
+                                <h4>Descriere {product.name}</h4>
                                 <br />
-                                <p style={{color: "grey"}}>{this.product.description}</p>
+                                <p style={{color: "grey"}}>{product.description}</p>
                                 <br />
                                 <h6>Alcătuit din:</h6>
-                                <p style={{color:"grey"}}>{this.product.composition}</p>
+                                <p style={{color:"grey"}}>{product.composition}</p>
                             </Row>
                             
                         </Container>
@@ -167,9 +176,9 @@ export class ProductDetails extends React.Component {
                             <Row style={{marginBottom: "20px", justifyContent:"space-between"}}>
                                 <Col style={{justifyContent:"flex-start"}}>
                                     <Style style={{overflow:"hidden"}}>
-                                        <Image 
-                                        src={require(`./../assets/${this.product.image}.png`)} 
-                                        style={{width: "30vw", height:"25vw", objectFit:"cover", transform: `scale(${this.state.transform})`}}
+                                        <img
+                                        src={`/assets/${product.image}.png`} 
+                                        style={{width: "30vw", height:"25vw", objectFit:"cover", transform: `scale(${transform})`}}
                                         className="img"
                                         />
                                     </Style>
@@ -178,27 +187,27 @@ export class ProductDetails extends React.Component {
                                     <Col style={{justifyContent:"space-between", flexDirection: "column", display: "flex"}}>
                                         
                                             <Row style={{justifyContent:"flex-end", overflow:"hidden"}}>
-                                                <Image 
-                                                src={require(`./../assets/${this.product.image}.png`)} 
+                                                <img 
+                                                src={`/assets/${product.image}.png`} 
                                                 style={{width: "12vw", height:"8vw", objectFit:"cover"}} 
                                                 className="img"
-                                                onClick={() => this.setState({transform: 1})}
+                                                onClick={handleTransform1}
                                                 />
                                             </Row>
                                             <Row style={{justifyContent:"flex-end", overflow:"hidden"}}>
                                                 <Image 
-                                                src={require(`./../assets/${this.product.image}.png`)} 
+                                                src={`/assets/${product.image}.png`} 
                                                 style={{width: "12vw", height:"8vw", transform: "scale(1.5)", objectFit:"cover"}} 
                                                 className="img"
-                                                onClick={() => this.setState({transform: 1.5})}
+                                                onClick={handleTransform15}
                                                 />
                                             </Row>
                                             <Row style={{justifyContent: "flex-end", overflow:"hidden"}}>
                                                 <Image 
-                                                src={require(`./../assets/${this.product.image}.png`)} 
+                                                src={`/assets/${product.image}.png`} 
                                                 style={{width: "12vw", height:"8vw", transform: "scale(2)", objectFit:"cover"}} 
                                                 className="img"
-                                                onClick={() => this.setState({transform: 2})}
+                                                onClick={handleTransform2}
                                                 />
                                             </Row>   
                                         
@@ -285,8 +294,8 @@ export class ProductDetails extends React.Component {
                     </Col>
                 </Row>
                 <Modal
-                                show={this.state.show}
-                                onHide={this.handleClose}
+                                show={show}
+                                onHide={handleClose}
                                 backdrop="static"
                                 keyboard={false}
                         >
@@ -297,7 +306,7 @@ export class ProductDetails extends React.Component {
                                     <ShoppingCart />
                                 </Modal.Body>
                                 <Modal.Footer>
-                                    <Button variant="secondary" onClick={this.handleClose}>
+                                    <Button variant="secondary" onClick={handleClose}>
                                         CONTINUĂ CUMPĂRĂTURILE
                                     </Button>
                                     <Button variant="primary">FINALIZEAZĂ COMANDA</Button>
@@ -305,5 +314,4 @@ export class ProductDetails extends React.Component {
                         </Modal>
             </Layout>
         )
-    }
 }

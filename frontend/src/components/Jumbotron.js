@@ -1,13 +1,10 @@
 import React from 'react';
 import {Carousel} from 'react-bootstrap';
 import styled from 'styled-components';
-import bkg from '../assets/florarie.png';
-import mino from '../assets/mino-copy.png';
-import bkg2 from '../assets/florarie2-copy-2.png';
 
 const Styles = styled.div`
     #jumbotron1 {
-        background: url(${bkg}) no-repeat;
+        background: url(/assets/florarie.png) no-repeat;
         background-size: cover;
         color: #ccc;
         height: 700px;
@@ -16,7 +13,7 @@ const Styles = styled.div`
     }
 
     #jumbotron2 {
-        background: url(${mino}) no-repeat;
+        background: url(/assets/mino-copy.png) no-repeat;
         background-size: cover;
         color: #ccc;
         height: 700px;
@@ -25,7 +22,7 @@ const Styles = styled.div`
     }
 
     #jumbotron3 {
-        background: url(${bkg2}) no-repeat;
+        background: url(/assets/florarie2-copy-2.png) no-repeat;
         background-size: cover;
         color: #ccc;
         height: 700px;
