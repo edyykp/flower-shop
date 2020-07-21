@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.css';
 import {Home} from './Home';
@@ -22,17 +22,14 @@ import {TrandafiriCriogenati} from './TrandafiriCriogenati';
 import {CumCumpar} from './CumCumpar';
 import { ProductDetails } from './components/ProductDetails';
 
-class App extends Component {
-  componentDidMount() {
+const App = ({ match }) => {
     loadReCaptcha();
-  }
-
-  render() {
     return (
       <React.Fragment >
-        <NavigationBar total={100}/>
-        <div style={{paddingTop: "126px"}}>
+        
           <Router className="router">
+            <NavigationBar match={match}/>
+             <div style={{paddingTop: "126px"}}>
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/bucheteflori" component={BucheteFlori} />
@@ -51,14 +48,14 @@ class App extends Component {
               <Route path="/cumcumpar" component={CumCumpar}/>
               <Route path="/productdetails/:id" component={ProductDetails} />
               <Route component={NoMatch} />
-
             </Switch>
+            
+            </div>
           </Router>
-        </div>
+       
         <Footer />
       </React.Fragment>
     );
-  }
 }
 
 export default App;

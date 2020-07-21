@@ -1,13 +1,18 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Row, Col} from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
-export default class Subtotal extends Component {
-    render() {
+const Subtotal = () => {
+    const cart = useSelector(state => state.cart);
+
+    const {cartItems} = cart;
         return (
             <Row className="show-grid">
                 <Col md={6}>Subtotal</Col>
-        <Col md={6}>{`${this.props.price} lei`}</Col>
+        <Col md={6}>{cartItems.reduce((a,c) => (parseFloat(a) + parseFloat(c.price * c.qty)).toFixed(2), 0)} lei</Col>
             </Row>
         )
-    }
+    
 }
+
+export default Subtotal;

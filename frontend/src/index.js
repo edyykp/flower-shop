@@ -8,7 +8,7 @@ import store from './store';
 
 ReactDOM.render(
     <Provider store={store}>
-      <App />
+      <App match={(ix) => URLSearchParams(ix)}/>
     </Provider>,
   document.getElementById('root')
 );

@@ -14,7 +14,7 @@ var styles = {
 export default class PickupSavings extends Component {
     render() {
         const tooltip = (
-            <Tooltip id="tooltip">
+            <Tooltip id="tooltip-bottom">
             <p>Prin ridicarea personală a produselor din magazin puteți evita plata livrării acestora.</p>
         </Tooltip>
         )
@@ -22,7 +22,7 @@ export default class PickupSavings extends Component {
         return(
             <Row className="show-grid">
                 <Col md={6}>
-                    <OverlayTrigger placement="bottom" overlay={tooltip}>
+                    <OverlayTrigger key="bottom" overlay={tooltip} placement="bottom">
                         <div style={styles.pickupSavings}>Ridicare personală</div>
                     </OverlayTrigger>
                 </Col>

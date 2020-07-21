@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
-import {Button, Collapse, Media, Row, Col, Image, Container} from 'react-bootstrap';
+import React, { useState} from 'react';
+import {Button, Collapse, Container} from 'react-bootstrap';
 import styled from 'styled-components';
-import QuantityInput from "./QuantityInput";
+import { useSelector } from 'react-redux';
+import Item from './Item';
 
 const Styles = styled.div`
     .container {
@@ -13,61 +14,44 @@ const Styles = styled.div`
     }
 `;
 
-export default class ItemDetails extends Component {
-    constructor(props) {
-        super(props);
-        this.state= {
-            open: false,
-            quantity: 1
-        };
-    }
-    
-    changePrice(param) {
-        this.setState({quantity: param});
-    }
-    
-    removeProduct() {
+const ItemDetails = () => {
 
-    }
+    const cart = useSelector(state => state.cart);
 
-    render() {
+    const {cartItems} = cart;
+
+    const [open, setOpen] = useState(false);
+    const handleOpenFalse = () => setOpen(false);
+    const handleOpenTrue = () => setOpen(true);
+    
+
         return(
             <Styles>
                 <div>
                     <Button
                         variant="link"
-                        onClick={() => this.setState({open: !this.state.open})}
+                        onClick={() => open === true ? handleOpenFalse() : handleOpenTrue() }
                     >
-                    { this.state.open === false ? `Arată` : `Ascunde`} detalii
-                    { this.state.open === false ? ` +` : ` -`}
+                    { open === false ? `Arată` : `Ascunde`} detalii
+                    { open === false ? ` +` : ` -`}
                     </Button>
-                    <Collapse in={this.state.open}>
+                    <Collapse in={open}>
                         <Container className="container">
-                                <Media >
-                                    <Image width={100}
-                                        height={100}
-                                        className="mr-3"
-                                        alt="thumbnail"
-                                        src={require("../assets/mino.png")}/>
-                                    <Media.Body>
-                                        <p>Denumire produs</p>
-                                        <Row>
-                                            <Col md={6}>
-                                                <strong> {`${this.props.price} lei`}</strong>
-                                                <br />
-                                                <Button variant="link"
-                                                        onClick={this.removeProduct}
-                                                >Șterge</Button>
-                                            </Col>
-                                            <Col md={6}> Cantitate:
-                                            <QuantityInput quantity={this.state.quantity} changeHandler={this.changePrice.bind(this)}/></Col>
-                                        </Row>
-                                    </Media.Body>
-                                </Media>
+                            {
+                                cartItems.length === 0 ? 
+                                <div>
+                                    Cart is empty
+                                </div>
+                                :
+                                cartItems.map(item => 
+                                    <Item item={item} />)
+                            }
+                                
                                 </Container>
                     </Collapse>
                 </div>
             </Styles>
         )
-    }
-}
+    };
+
+    export default ItemDetails;

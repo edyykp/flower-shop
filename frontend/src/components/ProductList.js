@@ -26,7 +26,7 @@ export function ProductList(props) {
         <ListGroup horizontal style={{flexWrap:"wrap", justifyContent: "space-evenly"}}>
             {
                 products.map(product => 
-                    <ProductCard name={product.name} image={product.image} price={product.price} id={product._id} key={product._id}/>
+                    <ProductCard product={product} />
                     )
             }
         </ListGroup>

@@ -1,53 +1,47 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import {ListGroup, Card, Button, Modal} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {ShoppingCart} from './ShoppingCart';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../actions/cartActions';
 
-export class ProductCard extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            hover: false,
-            show: false
-        };
-        this.handleShow = this.handleShow.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-    }
+export const ProductCard = ({product}) => {
 
-    handleClose() {
-        this.setState({show: false});
-    }
+    const [hover, setHover] = useState(false);
+    const handleFalseHover = () => setHover(false);
+    const handleTrueHover = () => setHover(true);
+    
+    const [show, setShow] = useState(false);
+    const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false);
 
-    handleShow() {
-        this.setState({show: true});
-    }
+    const dispatch = useDispatch();
 
-    render() {
+
         return (
             <ListGroup.Item style={{borderStyle:"none"}}>  
                         <Card style={{ width: '18rem' }}>
-                            <Link to={"/productdetails/" + this.props.id} style={{overflow:"hidden"}}>
+                            <Link to={"/productdetails/" + product._id} style={{overflow:"hidden"}}>
                                 <Card.Img 
                                 variant="top" 
-                                src={`/assets/${this.props.image}.png`} 
-                                style={{objectFit:"cover", width:"100%", height:"15vw", transform: `${this.state.hover ? "scale(1.5)" : "scale(1)"}`, transition: "1s"}}
-                                onMouseOver={() => this.setState({hover: true})}
-                                onMouseOut={() => this.setState({hover: false})}
+                                src={`/assets/${product.image}.png`} 
+                                style={{objectFit:"cover", width:"100%", height:"15vw", transform: `${hover ? "scale(1.5)" : "scale(1)"}`, transition: "1s"}}
+                                onMouseOver={handleTrueHover}
+                                onMouseOut={handleFalseHover}
                                 />
                             </Link>
                             <Card.Body>
-                                <Link to={"/productdetails/" + this.props.id} style={{overflow:"hidden"}}>        
-                                <Card.Title style={{color: "black"}}>{this.props.name}</Card.Title>
+                                <Link to={"/productdetails/" + product._id} style={{overflow:"hidden"}}>        
+                                <Card.Title style={{color: "black"}}>{product.name}</Card.Title>
                                 </Link>
                                 <Card.Text style={{color: "grey"}}>
-                                {this.props.price} lei
+                                {product.price} lei
                                 </Card.Text>
-                                <Button variant="primary" onClick={this.handleShow}>Adaugă în coș</Button>
+                                <Button variant="primary" onClick={() => { dispatch(addToCart(product._id, 1));setTimeout(() => {  handleShow(); }, 200);}}>Adaugă în coș</Button>
                             </Card.Body>
                         </Card>
                         <Modal
-                                show={this.state.show}
-                                onHide={this.handleClose}
+                                show={show}
                                 backdrop="static"
                                 keyboard={false}
                         >
@@ -58,7 +52,7 @@ export class ProductCard extends Component {
                                     <ShoppingCart />
                                 </Modal.Body>
                                 <Modal.Footer>
-                                    <Button variant="secondary" onClick={this.handleClose}>
+                                    <Button variant="secondary" onClick={handleClose}>
                                         CONTINUĂ CUMPĂRĂTURILE
                                     </Button>
                                     <Button variant="primary">FINALIZEAZĂ COMANDA</Button>
@@ -66,5 +60,5 @@ export class ProductCard extends Component {
                         </Modal>         
             </ListGroup.Item>
         )
-    }
+    
 }

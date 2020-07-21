@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import {Nav, Navbar, Image, Form, FormControl, Button, NavDropdown, Modal, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import styled from 'styled-components';
-import Logo from '../assets/logo.png';
 import { Cart4, TelephoneForward} from 'react-bootstrap-icons';
 import {SocialIcon} from 'react-social-icons';
 import { ShoppingCart } from './ShoppingCart';
+import { useSelector } from 'react-redux';
 
 const Styles = styled.div`
     .navbar {
@@ -54,12 +54,21 @@ const Styles = styled.div`
     }
 `;
 
-export function NavigationBar(total) {
+export const NavigationBar = props => {
+
+        const cart = useSelector(state => state.cart);
+
+        const {cartItems} = cart;
 
         const [show, setShow] = useState(false);
-
-        const handleClose = () => setShow(false);
         const handleShow = () => setShow(true);
+        const handleClose = () => setShow(false);
+
+        const checkoutHandler = () => {
+            console.log("cf");
+            props.history.push("/bucheteflori");
+        }
+
         const tooltip = (
             <Tooltip id="tooltip">
             <p>Coșul de cumpărături</p>
@@ -69,7 +78,7 @@ export function NavigationBar(total) {
             <Styles>
                 <Navbar expand="lg" fixed="top">
                     <Navbar.Brand href="/">
-                        <Image src={Logo} fluid width="200"/>
+                        <Image src={"/assets/logo.png"} fluid width="200"/>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -107,33 +116,28 @@ export function NavigationBar(total) {
                             <Button variant="secondary" id="search-button">Caută</Button>
                         </Form>
                         <OverlayTrigger placement="left" overlay={tooltip}>
-                            <div>
                                 <Cart4 color="purple" size={50} style={{paddingLeft:"15px"}} onClick={handleShow}/>
-                            </div>
                         </OverlayTrigger>   
-                        
-                        <Modal
-                                show={show}
-                                onHide={handleClose}
-                                backdrop="static"
-                                keyboard={false}
-                        >
-                                <Modal.Header closeButton>
-                                    <Modal.Title>Coș de cumpărături</Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body>
-                                    <ShoppingCart />
-                                </Modal.Body>
-                                <Modal.Footer>
-                                    <Button variant="secondary" onClick={handleClose}>
-                                        CONTINUĂ CUMPĂRĂTURILE
-                                    </Button>
-                                    <Button variant="primary">FINALIZEAZĂ COMANDA</Button>
-                                </Modal.Footer>
-                        </Modal>
                     </Navbar.Collapse>
                 </Navbar>
+                <Modal
+            show={show}
+        backdrop="static"
+        keyboard={false}
+        >
+        <Modal.Header>
+            <Modal.Title>Coș de cumpărături</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <ShoppingCart />
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+                CONTINUĂ CUMPĂRĂTURILE
+            </Button>
+            <Button variant="primary" disabled={cartItems.length === 0} onClick={() => console.log("Cf")}>FINALIZEAZĂ COMANDA</Button>
+        </Modal.Footer>
+        </Modal>
             </Styles>
         )
-    
 }

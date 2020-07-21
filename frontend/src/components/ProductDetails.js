@@ -6,6 +6,7 @@ import {Truck, ShieldCheck, CashStack, Check2Circle, Gift} from 'react-bootstrap
 import {ShoppingCart} from './ShoppingCart';
 import {useSelector, useDispatch} from 'react-redux';
 import { detailsProduct } from '../actions/productActions';
+import { addToCart } from '../actions/cartActions';
 
 const Styles = styled.div`
     .list-group-item {
@@ -99,14 +100,12 @@ const popoverCadouri = (
     </Popover>
   );
 
-
-
 export function ProductDetails(props) {
         const [qty, setQty] = useState(1);
-
+        const productId = props.match.params.id;
         const [show, setShow] = useState(false);
-        const handleClose = () => setShow(false);
         const handleShow = () => setShow(true);
+        const handleClose = () => setShow(false);
 
         const [transform, setTransform] = useState(1);
         const handleTransform15 = () => setTransform(1.5);
@@ -122,10 +121,7 @@ export function ProductDetails(props) {
 
             }
         }, [])
-
-        const handleAddToCart = () => {
-            props.history.push("/c");
-        }
+        
         return (
             loading? <div>Loading...</div> :
             error? <div>{error}</div> :
@@ -144,8 +140,9 @@ export function ProductDetails(props) {
                                     </strong>
                                 </Col>
                                 <Col style={{justifyContent:"flex-end"}} md={3}>
-                                    <input type="number" min={1} max={9} style={{textAlign: "center", width: "48px", height: "40px"}} value={qty} onChange={(e) => {setQty(e.target.value)}}/>
-                                    <Button variant="primary" onClick={handleShow}>Adaugă în coș</Button>
+                                    <input type="number" min={1} max={9} style={{textAlign: "center", width: "48px", height: "40px"}} defaultValue={qty} onChange={(e) => {setQty(e.target.value)}}/>
+                                    <Button variant="primary" onClick={() => {dispatch(addToCart(productId, qty));setTimeout(() => {  handleShow(); }, 200);}}
+                                    >Adaugă în coș</Button>
                                 </Col>
                             </Row>
                             <Row>
@@ -176,7 +173,7 @@ export function ProductDetails(props) {
                             <Row style={{marginBottom: "20px", justifyContent:"space-between"}}>
                                 <Col style={{justifyContent:"flex-start"}}>
                                     <Style style={{overflow:"hidden"}}>
-                                        <img
+                                        <Image
                                         src={`/assets/${product.image}.png`} 
                                         style={{width: "30vw", height:"25vw", objectFit:"cover", transform: `scale(${transform})`}}
                                         className="img"
@@ -187,7 +184,7 @@ export function ProductDetails(props) {
                                     <Col style={{justifyContent:"space-between", flexDirection: "column", display: "flex"}}>
                                         
                                             <Row style={{justifyContent:"flex-end", overflow:"hidden"}}>
-                                                <img 
+                                                <Image
                                                 src={`/assets/${product.image}.png`} 
                                                 style={{width: "12vw", height:"8vw", objectFit:"cover"}} 
                                                 className="img"
@@ -294,24 +291,23 @@ export function ProductDetails(props) {
                     </Col>
                 </Row>
                 <Modal
-                                show={show}
-                                onHide={handleClose}
-                                backdrop="static"
-                                keyboard={false}
-                        >
-                                <Modal.Header closeButton>
-                                    <Modal.Title>Coș de cumpărături</Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body>
-                                    <ShoppingCart />
-                                </Modal.Body>
-                                <Modal.Footer>
-                                    <Button variant="secondary" onClick={handleClose}>
-                                        CONTINUĂ CUMPĂRĂTURILE
-                                    </Button>
-                                    <Button variant="primary">FINALIZEAZĂ COMANDA</Button>
-                                </Modal.Footer>
-                        </Modal>
+            show={show}
+        backdrop="static"
+        keyboard={false}
+        >
+        <Modal.Header>
+            <Modal.Title>Coș de cumpărături</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <ShoppingCart />
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+                CONTINUĂ CUMPĂRĂTURILE
+            </Button>
+            <Button variant="primary">FINALIZEAZĂ COMANDA</Button>
+        </Modal.Footer>
+        </Modal>
             </Layout>
         )
 }
