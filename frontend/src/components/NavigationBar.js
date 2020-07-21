@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 const Styles = styled.div`
     .navbar {
         background-color: #222;
+        margin-top: 45px;
     }
 
     .navbar-brand, .navbar-nav .nav-link {

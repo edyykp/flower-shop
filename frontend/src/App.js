@@ -21,6 +21,7 @@ import {Plante} from './Plante';
 import {TrandafiriCriogenati} from './TrandafiriCriogenati';
 import {CumCumpar} from './CumCumpar';
 import { ProductDetails } from './components/ProductDetails';
+import { AccountBar } from './components/AccountBar';
 
 const App = ({ match }) => {
     loadReCaptcha();
@@ -28,10 +29,11 @@ const App = ({ match }) => {
       <React.Fragment >
         
           <Router className="router">
+            <AccountBar />
             <NavigationBar match={match}/>
              <div style={{paddingTop: "126px"}}>
             <Switch>
-              <Route exact path="/flower-shop" component={Home} />
+              <Route exact path="/" component={Home} />
               <Route path="/bucheteflori" component={BucheteFlori} />
               <Route path="/aranjamenteflori" component={AranjamenteFlori} />
               <Route path="/trandafiricriogenati" component={TrandafiriCriogenati} />
