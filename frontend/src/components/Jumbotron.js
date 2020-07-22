@@ -44,7 +44,7 @@ const Styles = styled.div`
 
 export const Jumbotron = () => (
     <Styles>
-        <Carousel interval={2500} pause="hover" wrap={true}>
+        <Carousel interval={2500} pause="hover" wrap={true} style={{paddingTop:"40px"}}>
             <Carousel.Item id="jumbotron1">
                 <div className="overlay"></div>
                 <Carousel.Caption>

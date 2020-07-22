@@ -3,7 +3,7 @@ import {Row, Col, Card} from 'react-bootstrap';
 import {Layout} from './components/Layout';
 
 export const CumCumpar= () => (
-    <Layout style={{width: "100%", maxWidth: "100%", backgroundColor: "white", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
+    <Layout style={{width: "100%", maxWidth: "100%",paddingTop:"40px", backgroundColor: "white", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
         <Row style={{marginBottom: "40px"}}>
             <Col style={{marginTop: "30px"}}>
             <h1 style={{paddingBottom: "10px"}}>Cum cumpăr?</h1>

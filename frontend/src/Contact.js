@@ -87,7 +87,7 @@ export class Contact extends Component {
     render() {
         return (
             <Styles>
-                <Layout style={{width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
+                <Layout style={{width: "100%",paddingTop:"40px", maxWidth: "100%", backgroundColor: "#A071A9", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
                     <div style={{paddingTop: "40px"}}>
                         <Row>
                             <Col>

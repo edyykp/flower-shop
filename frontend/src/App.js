@@ -22,16 +22,19 @@ import {TrandafiriCriogenati} from './TrandafiriCriogenati';
 import {CumCumpar} from './CumCumpar';
 import { ProductDetails } from './components/ProductDetails';
 import { AccountBar } from './components/AccountBar';
+import {SigninScreen} from './SigninScreen';
+import {SignupScreen} from './SignupScreen';
 
 const App = ({ match }) => {
     loadReCaptcha();
+    
     return (
-      <React.Fragment >
+      <React.Fragment>
         
-          <Router className="router">
+          <Router className="router" >
             <AccountBar />
             <NavigationBar match={match}/>
-             <div style={{paddingTop: "126px"}}>
+             <div style={{paddingTop: "126px", flex:"1"}}>
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/bucheteflori" component={BucheteFlori} />
@@ -49,13 +52,18 @@ const App = ({ match }) => {
               <Route path="/contact" component={Contact} />
               <Route path="/cumcumpar" component={CumCumpar}/>
               <Route path="/productdetails/:id" component={ProductDetails} />
+              <Route path="/signin" component={SigninScreen} />
+              <Route path="/signup" component={SignupScreen} />
               <Route component={NoMatch} />
             </Switch>
             
             </div>
+            
+            <Footer />
           </Router>
        
-        <Footer />
+          
+       
       </React.Fragment>
     );
 }

@@ -120,12 +120,12 @@ export function ProductDetails(props) {
             return() => {
 
             }
-        }, [])
+        }, [dispatch, props.match.params.id])
         
         return (
             loading? <div>Loading...</div> :
             error? <div>{error}</div> :
-            <Layout style={{width: "100%", maxWidth: "100%", backgroundColor: "white", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
+            <Layout style={{width: "100%", maxWidth: "100%", backgroundColor: "white", paddingTop:"40px", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
                 <Row style={{marginTop: "50px", marginLeft: "40px", width: "100%", maxWidth:"100%"}}>
                     <Col>
                         <h2>{product.name}</h2>

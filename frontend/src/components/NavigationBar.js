@@ -75,6 +75,7 @@ export const NavigationBar = props => {
             <p>Coșul de cumpărături</p>
         </Tooltip>
         )
+        
         return (
             <Styles>
                 <Navbar expand="lg" fixed="top">
@@ -136,7 +137,7 @@ export const NavigationBar = props => {
             <Button variant="secondary" onClick={handleClose}>
                 CONTINUĂ CUMPĂRĂTURILE
             </Button>
-            <Button variant="primary" disabled={cartItems.length === 0} onClick={() => console.log("Cf")}>FINALIZEAZĂ COMANDA</Button>
+            <Button variant="primary" disabled={cartItems.length === 0} onClick={checkoutHandler}>FINALIZEAZĂ COMANDA</Button>
         </Modal.Footer>
         </Modal>
             </Styles>

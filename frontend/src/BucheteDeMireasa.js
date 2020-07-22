@@ -6,7 +6,7 @@ import {Subtitle} from './components/Subtitle';
 import {ProductList} from './components/ProductList';
 
 export const BucheteDeMireasa = () => (
-      <Layout style={{width: "100%", maxWidth: "100%", backgroundColor: "white", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
+      <Layout style={{width: "100%", maxWidth: "100%",paddingTop:"40px", backgroundColor: "white", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
           <Row >
               <Col lg={3} style={{backgroundColor:"#A071A9", paddingTop: "40px", paddingBottom: "20px"}}>
                 <Sidebar />
