@@ -12,7 +12,9 @@ router.post('/signin', async (req, res) => {
     if (signinUser) {
       res.send({
         _id: signinUser.id,
-        name: signinUser.name,
+        firstName: signinUser.firstName,
+        lastName: signinUser.lastName,
+        phone: signinUser.phone,
         email: signinUser.email,
         isAdmin: signinUser.isAdmin,
         token: getToken(signinUser),
@@ -22,10 +24,34 @@ router.post('/signin', async (req, res) => {
     }
   });
 
+  router.post('/register', async (req, res) => {
+    const user = new User({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      phone: req.body.phone,
+      email: req.body.email,
+      password: req.body.password,
+    });
+    const newUser = await user.save();
+    if (newUser) {
+      res.send({
+        _id: newUser.id,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        email: newUser.email,
+        isAdmin: newUser.isAdmin,
+        token: getToken(newUser),
+      });
+    } else {
+      res.status(401).send({ message: 'Invalid User Data.' });
+    }
+  });
+
 router.get("/createadmin", async (req, res) => {
     try {
         const user = new User({
-            name: "Eduard",
+            firstName: "Eduard",
+            lastName: "Stoica",
             email: "eduard.c.stoica10@gmail.com",
             password: "1234",
             isAdmin: true

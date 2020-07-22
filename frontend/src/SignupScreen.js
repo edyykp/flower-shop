@@ -4,6 +4,7 @@ import { Form, Button, Card, Nav, Tooltip, OverlayTrigger } from 'react-bootstra
 import {  PersonPlus,  InfoCircleFill } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import {register} from './actions/userActions';
 
 const Styles = styled.div`
     .nav-item {
@@ -62,7 +63,7 @@ export const SignupScreen = props => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-       // dispatch(register(firstName, lastName, email, phone, password));
+        dispatch(register(firstName, lastName, email, phone, password));
     }
     return (
         <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"40px"}}>

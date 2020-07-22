@@ -26,7 +26,7 @@ export const AccountBar = () => {
         
             userInfo ? <Styles>
                             <Navbar fixed="top" className="navbar justify-content-end">
-                                <NavDropdown title={`Bine ai venit,${userInfo.name}`} >
+                                <NavDropdown title={`Bine ai venit,${userInfo.firstName}`} >
                                     <NavDropdown.Item href="accountprofile">
                                         <Person size={30} color="grey" style={{paddingRight: "5px"}}/>
                                         Profilul meu
