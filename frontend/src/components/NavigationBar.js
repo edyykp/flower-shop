@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 const Styles = styled.div`
     .navbar {
         background-color: #222;
-        margin-top: 45px;
     }
 
     .navbar-brand, .navbar-nav .nav-link {
@@ -53,6 +52,7 @@ const Styles = styled.div`
         box-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
         padding: 1em;
     }
+
 `;
 
 export const NavigationBar = props => {
@@ -78,7 +78,7 @@ export const NavigationBar = props => {
         
         return (
             <Styles>
-                <Navbar expand="lg" fixed="top">
+                <Navbar >
                     <Navbar.Brand href="/">
                         <Image src={"/assets/logo.png"} fluid width="200"/>
                     </Navbar.Brand>
@@ -123,23 +123,24 @@ export const NavigationBar = props => {
                     </Navbar.Collapse>
                 </Navbar>
                 <Modal
-            show={show}
-        backdrop="static"
-        keyboard={false}
-        >
-        <Modal.Header>
-            <Modal.Title>Coș de cumpărături</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <ShoppingCart />
-        </Modal.Body>
-        <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-                CONTINUĂ CUMPĂRĂTURILE
-            </Button>
-            <Button variant="primary" disabled={cartItems.length === 0} onClick={checkoutHandler}>FINALIZEAZĂ COMANDA</Button>
-        </Modal.Footer>
-        </Modal>
+                        show={show}
+                    backdrop="static"
+                    keyboard={false}
+                    
+                    >
+                    <Modal.Header>
+                        <Modal.Title>Coș de cumpărături</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <ShoppingCart />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            CONTINUĂ CUMPĂRĂTURILE
+                        </Button>
+                        <Button variant="primary" disabled={cartItems.length === 0} onClick={checkoutHandler}>FINALIZEAZĂ COMANDA</Button>
+                    </Modal.Footer>
+                </Modal>
             </Styles>
         )
 }

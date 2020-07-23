@@ -42,6 +42,8 @@ const Styles = styled.div`
 `;
 export const SigninScreen = props => {
 
+    const [validated, setValidated] = useState(false);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [remember, setRemember] = useState(false);
@@ -62,10 +64,11 @@ export const SigninScreen = props => {
 
     const submitHandler = (e) => {
         e.preventDefault();
+        setValidated(true);
         dispatch(signin(email, password, remember));
     }
     return (
-        <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"82px"}}>
+        <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"90px"}}>
             <Styles>
                 <Card>
                     <Card.Header>
@@ -85,10 +88,10 @@ export const SigninScreen = props => {
                         <Card.Text>
                             {loading && <div>Loading..</div>}
                             {error && <div>{error}</div>}
-                        <Form onSubmit={submitHandler}>
+                        <Form onSubmit={submitHandler} noValidate validated={validated}>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Adresă de email</Form.Label>
-                                <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)}/>
+                                <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} required/>
                                 <Form.Text className="text-muted">
                                 We'll never share your email with anyone else.
                                 </Form.Text>
@@ -96,11 +99,11 @@ export const SigninScreen = props => {
 
                             <Form.Group controlId="formBasicPassword">
                                 <Form.Label>Parolă</Form.Label>
-                                <Form.Control type="password" placeholder="Parolă" onChange={(e) => setPassword(e.target.value)}/>
+                                <Form.Control type="password" placeholder="Parolă" onChange={(e) => setPassword(e.target.value)} required/>
                             </Form.Group>
-                            <Form.Group controlId="formBasicCheckbox">
-                                <Form.Check type="checkbox" label="Remember me" onChange={(e) => setRemember(e.target.checked)}/>
-                            </Form.Group>
+                                
+                                <input type="checkbox" name="remember" onChange={(e) => setRemember(e.target.checked)}/>
+                                <label for="remember" style={{paddingLeft:"5px"}}>Remember me</label>
                             <Button type="submit" style={{width: "100%", height:"50px", backgroundColor:"purple", color:"lightgrey", borderColor:"purple", fontSize:"20px"}}>
                                 <strong>Autentifică-te</strong>
                             </Button>

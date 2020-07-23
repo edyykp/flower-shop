@@ -9,7 +9,7 @@ const Styles = styled.div`
         color: #ccc;
         height: 700px;
         position: relative;
-        z-index: 0;
+        z-index: -1;
     }
 
     #jumbotron2 {
@@ -18,7 +18,7 @@ const Styles = styled.div`
         color: #ccc;
         height: 700px;
         position: relative;
-        z-index: 0;
+        z-index: -1;
     }
 
     #jumbotron3 {
@@ -27,7 +27,7 @@ const Styles = styled.div`
         color: #ccc;
         height: 700px;
         position: relative;
-        z-index: 0;
+        z-index: -1;
     }
 
     .overlay {
@@ -38,13 +38,14 @@ const Styles = styled.div`
         left: 0;
         bottom: 0;
         right: 0;
-        z-index: 1;
+        z-index: 0;
     }
+
 `;
 
 export const Jumbotron = () => (
     <Styles>
-        <Carousel interval={2500} pause="hover" wrap={true} style={{paddingTop:"40px"}}>
+        <Carousel interval={2500} pause="hover" wrap={true} style={{marginTop:"52px"}}>
             <Carousel.Item id="jumbotron1">
                 <div className="overlay"></div>
                 <Carousel.Caption>

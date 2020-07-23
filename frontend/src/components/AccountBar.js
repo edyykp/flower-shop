@@ -1,13 +1,13 @@
 import React from 'react';
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import styled from 'styled-components';
-import {PersonPlus, PersonCircle, BoxArrowLeft, Person } from 'react-bootstrap-icons';
+import {PersonPlus, PersonCircle, BoxArrowLeft, Person, BagPlus, Eye } from 'react-bootstrap-icons';
 import { useSelector } from 'react-redux';
 
 const Styles = styled.div`
     .navbar {
         background-color: #1E1E1E;
-        z-index:2000;
+        
     }
 
     .navbar .nav-link {
@@ -17,6 +17,8 @@ const Styles = styled.div`
             color: purple;
         }
     }
+
+
 `;
 export const AccountBar = () => {
     const userSignin = useSelector(state=>state.userSignin);
@@ -25,12 +27,27 @@ export const AccountBar = () => {
     return (
         
             userInfo ? <Styles>
-                            <Navbar fixed="top" className="navbar justify-content-end">
-                                <NavDropdown title={`Bine ai venit,${userInfo.firstName}`} >
-                                    <NavDropdown.Item href="accountprofile">
-                                        <Person size={30} color="grey" style={{paddingRight: "5px"}}/>
-                                        Profilul meu
-                                    </NavDropdown.Item>
+                            <Navbar className="navbar justify-content-end">
+                                <NavDropdown title={`Bine ai venit, ${userInfo.firstName}`}  style={{paddingRight: "50px"}} >
+                                    {
+                                        userInfo.isAdmin ? 
+                                        <div>
+                                            <NavDropdown.Item href="/products" >
+                                                <BagPlus size={30} color="grey" style={{paddingRight: "5px"}}/>
+                                                    Adaugă produs nou
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item href="/productstable">
+                                                <Eye size={30} color="grey" style={{paddingRight: "5px"}}/>
+                                                Vezi produse curente
+                                            </NavDropdown.Item>
+                                        </div>
+                                    :
+                                        <NavDropdown.Item href="/accountprofile">
+                                            <Person size={30} color="grey" style={{paddingRight: "5px"}}/>
+                                                Profilul meu
+                                        </NavDropdown.Item>
+                                    }
+                                    
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item >
                                         <BoxArrowLeft size={30} color="grey" style={{paddingRight: "5px"}}/>
@@ -41,7 +58,7 @@ export const AccountBar = () => {
                         </Styles> 
                         :
                         <Styles>
-                            <Navbar fixed="top" className="navbar justify-content-end">
+                            <Navbar className="navbar justify-content-end">
                                 <Nav>
                                     <Nav.Item style={{ justifyContent:"space-between", paddingRight:"10px"}}>
                                         <Nav.Link href="/signin"  className="nav-link"><strong style={{paddingRight:"5px"}}>Autentifică-te</strong>

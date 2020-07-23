@@ -63,8 +63,10 @@ export const SignupScreen = props => {
 
     const submitHandler = (e) => {
         e.preventDefault();
+        setValidated(true);
         dispatch(register(firstName, lastName, email, phone, password));
     }
+    const [validated, setValidated] = useState(false);
     return (
         <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"40px"}}>
             <Styles>
@@ -86,27 +88,27 @@ export const SignupScreen = props => {
                         <Card.Text>
                             
                             
-                        <Form onSubmit={submitHandler}>
+                        <Form onSubmit={submitHandler} noValidate validated={validated}>
                             <Form.Group controlId="formBasicName">
                                 <Form.Label>Nume*</Form.Label>
-                                <Form.Control type="text" onChange={(e) => setLastName(e.target.value)}/>
+                                <Form.Control type="text" onChange={(e) => setLastName(e.target.value)} required/>
                             </Form.Group>
                             <Form.Group controlId="formBasicName">
                                 <Form.Label>Prenume*</Form.Label>
-                                <Form.Control type="text" onChange={(e) => setFirstName(e.target.value)}/>
+                                <Form.Control type="text" onChange={(e) => setFirstName(e.target.value)} required/>
                             </Form.Group>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Adresă de email*</Form.Label>
-                                <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)}/>
+                                <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} required/>
                                 <Form.Text className="text-muted">
                                 We'll never share your email with anyone else.
                                 </Form.Text>
                             </Form.Group>
                             <Form.Group controlId="formBasicName">
                                 <Form.Label>Număr de telefon</Form.Label>
-                                <Form.Control type="text" onChange={(e) => setPhone(e.target.value)}/>
+                                <Form.Control type="text" onChange={(e) => setPhone(e.target.value)} required/>
                             </Form.Group>
-                            <Form.Group controlId="formBasicPassword" onChange={(e) => setPassword(e.target.value)}>
+                            <Form.Group controlId="formBasicPassword"  >
                                 <Form.Label>Parolă*</Form.Label>
                                 
                                 <OverlayTrigger
@@ -121,11 +123,11 @@ export const SignupScreen = props => {
                                     <InfoCircleFill size={25}  color="grey" style={{paddingLeft:"10px"}}/>
                                 </OverlayTrigger>
 
-                                <Form.Control type="password" placeholder="Parolă" />
+                                <Form.Control type="password" placeholder="Parolă" required onChange={(e) => setPassword(e.target.value)}/>
                             </Form.Group>
-                            <Form.Group controlId="formBasicPassword" onChange={(e) => setRePassword(e.target.value)}>
+                            <Form.Group controlId="formBasicPassword" >
                                 <Form.Label>Confirmare parolă*</Form.Label>
-                                <Form.Control type="password" />
+                                <Form.Control type="password" required onChange={(e) => setRePassword(e.target.value)}/>
                             </Form.Group>
                             <p style={{color:"grey"}}>* - câmp obligatoriu</p>
                             <Button type="submit" style={{width: "100%", height:"50px", backgroundColor:"purple", color:"lightgrey", borderColor:"purple", fontSize:"20px"}}>

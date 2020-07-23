@@ -24,6 +24,8 @@ import { ProductDetails } from './components/ProductDetails';
 import { AccountBar } from './components/AccountBar';
 import {SigninScreen} from './SigninScreen';
 import {SignupScreen} from './SignupScreen';
+import {ProductsScreen} from './ProductsScreen';
+import { ProductsTable } from './ProductsTable';
 
 const App = ({ match }) => {
     loadReCaptcha();
@@ -32,8 +34,10 @@ const App = ({ match }) => {
       <React.Fragment>
         
           <Router className="router" >
+            <div style={{zIndex:"3", position:"fixed",width:"100%"}}>
             <AccountBar />
-            <NavigationBar match={match}/>
+            <NavigationBar/>
+            </div>
              <div style={{paddingTop: "126px", flex:"1"}}>
             <Switch>
               <Route exact path="/" component={Home} />
@@ -54,6 +58,8 @@ const App = ({ match }) => {
               <Route path="/productdetails/:id" component={ProductDetails} />
               <Route path="/signin" component={SigninScreen} />
               <Route path="/signup" component={SignupScreen} />
+              <Route path="/products" component={ProductsScreen} />
+              <Route path="/productstable" component={ProductsTable} />
               <Route component={NoMatch} />
             </Switch>
             
