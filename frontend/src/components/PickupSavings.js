@@ -14,7 +14,7 @@ var styles = {
 export default class PickupSavings extends Component {
     render() {
         const tooltip = (
-            <Tooltip id="tooltip-bottom">
+            <Tooltip id="tooltip-bottom" style={{zIndex:"2000"}}>
             <p>Prin ridicarea personală a produselor din magazin puteți evita plata livrării acestora.</p>
         </Tooltip>
         )

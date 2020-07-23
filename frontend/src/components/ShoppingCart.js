@@ -15,38 +15,17 @@ const Styles = styled.div`
 `;
 
 export class ShoppingCart extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            total:100,
-            PickupSavings: -0.0,
-            taxes: 0,
-            estimatedTotal: 0
-        };
-    }
-
-    componentDidMount = () => {
-        this.setState({
-            taxes: (this.state.total + this.state.PickupSavings)* 0.0875
-        },
-        function() {
-            this.setState({
-                estimatedTotal: this.state.total + this.state.PickupSavings
-            })
-        })
-    }
 
     render() {
 
         return (
             <Styles>
                 <Container className="purchase-card">
-                    <Subtotal price={this.state.total.toFixed(2)} />
-                    <PickupSavings price={this.state.PickupSavings} />
+                    <Subtotal  />
+                    <PickupSavings price="0"/>
                     <hr />
-                    <EstimatedTotal price={this.state.estimatedTotal.toFixed(2)} />
-                    <ItemDetails price={this.state.estimatedTotal.toFixed(2)}/>
+                    <EstimatedTotal  />
+                    <ItemDetails />
                     
                 </Container>
             </Styles>
