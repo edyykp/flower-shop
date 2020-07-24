@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import {Nav, Navbar, Image, Form, FormControl, Button, NavDropdown, Modal, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import styled from 'styled-components';
 import { Cart4, TelephoneForward} from 'react-bootstrap-icons';
@@ -55,7 +55,7 @@ const Styles = styled.div`
 
 `;
 
-export const NavigationBar = props => {
+export const NavigationBar = () => {
 
         const cart = useSelector(state => state.cart);
 
@@ -64,11 +64,6 @@ export const NavigationBar = props => {
         const [show, setShow] = useState(false);
         const handleShow = () => setShow(true);
         const handleClose = () => setShow(false);
-
-        const checkoutHandler = () => {
-            console.log("cf");
-            props.history.push("/bucheteflori");
-        }
 
         const tooltip = (
             <Tooltip id="tooltip">
@@ -138,7 +133,7 @@ export const NavigationBar = props => {
                         <Button variant="secondary" onClick={handleClose}>
                             CONTINUĂ CUMPĂRĂTURILE
                         </Button>
-                        <Button variant="primary" disabled={cartItems.length === 0} onClick={checkoutHandler}>FINALIZEAZĂ COMANDA</Button>
+                        <Button variant="primary" disabled={cartItems.length === 0} href="/shipping">FINALIZEAZĂ COMANDA</Button>
                     </Modal.Footer>
                 </Modal>
             </Styles>

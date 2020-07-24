@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {ListGroup, Card, Button, Modal} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {ShoppingCart} from './ShoppingCart';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../actions/cartActions';
 
 export const ProductCard = ({product}) => {
@@ -17,6 +17,9 @@ export const ProductCard = ({product}) => {
 
     const dispatch = useDispatch();
 
+    const cart = useSelector(state => state.cart);
+
+        const {cartItems} = cart;
 
         return (
             <ListGroup.Item style={{borderStyle:"none"}}>  
@@ -37,7 +40,7 @@ export const ProductCard = ({product}) => {
                                 <Card.Text style={{color: "grey"}}>
                                 {product.price} lei
                                 </Card.Text>
-                                <Button variant="primary" onClick={() => { dispatch(addToCart(product._id, 1));setTimeout(() => {  handleShow(); }, 200);}}>Adaugă în coș</Button>
+                                <Button variant="primary" onClick={() => { dispatch(addToCart(product._id, 1, ""));setTimeout(() => {  handleShow(); }, 200);}}>Adaugă în coș</Button>
                             </Card.Body>
                         </Card>
                         <Modal
@@ -55,7 +58,7 @@ export const ProductCard = ({product}) => {
                                     <Button variant="secondary" onClick={handleClose}>
                                         CONTINUĂ CUMPĂRĂTURILE
                                     </Button>
-                                    <Button variant="primary">FINALIZEAZĂ COMANDA</Button>
+                                    <Button variant="primary" href="/shipping" disabled={cartItems.length === 0}>FINALIZEAZĂ COMANDA</Button>
                                 </Modal.Footer>
                         </Modal>         
             </ListGroup.Item>

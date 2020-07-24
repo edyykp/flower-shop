@@ -36,7 +36,7 @@ const Item = ({item}) => {
                                                     style={{padding: "5px", textAlign: "center", width:" 48px", height: "40px"}}
                                                     ref={(c) => currentQty = c}
                                                 />
-                                                <Button variant="danger" size="sm" onClick={ (e) => dispatch(addToCart(item.product, currentQty.value))}>Modifică</Button>
+                                                <Button variant="danger" size="sm" onClick={ () => dispatch(addToCart(item.product, currentQty.value, item.textGift))}>Modifică</Button>
                                             </Col>
                                         </Row>
                                     </Media.Body>

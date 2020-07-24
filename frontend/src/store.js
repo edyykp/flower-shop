@@ -4,11 +4,12 @@ import Cookie from 'js-cookie';
 import { productListReducer, productDetailsReducer, productSaveReducer, productDeleteReducer } from './reducers/productReducers';
 import {cartReducer} from './reducers/cartReducers';
 import { userSigninReducer, userRegisterReducer } from './reducers/userReducers';
+import { orderCreateReducer, orderDetailsReducer, orderPayReducer, myOrderListReducer, orderListReducer, orderDeleteReducer } from './reducers/orderReducers';
 
 const cartItems = Cookie.getJSON('cartItems') || [];
 const userInfo = Cookie.getJSON('userInfo') || null;
 
-const initialState = { cart: { cartItems }, userSignin: {userInfo} };
+const initialState = { cart: { cartItems, shipping: {} }, userSignin: {userInfo} };
 const reducer = combineReducers({
     productList: productListReducer,
     productDetails: productDetailsReducer,
@@ -16,8 +17,15 @@ const reducer = combineReducers({
     userSignin: userSigninReducer,
     userRegister: userRegisterReducer,
     productSave: productSaveReducer,
-    productDelete: productDeleteReducer
+    productDelete: productDeleteReducer,
+    orderCreate: orderCreateReducer,
+    orderDetails: orderDetailsReducer,
+    orderPay: orderPayReducer,
+    myOrderList: myOrderListReducer,
+    orderList: orderListReducer,
+    orderDelete: orderDeleteReducer,
 })
+const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(reducer, initialState, compose(applyMiddleware(thunk)));
+const store = createStore(reducer, initialState, composeEnhancer(applyMiddleware(thunk)));
 export default store;

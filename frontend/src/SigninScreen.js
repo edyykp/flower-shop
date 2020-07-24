@@ -28,7 +28,7 @@ const Styles = styled.div`
         margin-right: auto;
         margin-bottom: auto;
         font-family: Arial;
-        z-index: 3;
+        z-index: 2;
         overflow: hidden;
     }
 
@@ -51,11 +51,11 @@ export const SigninScreen = props => {
     const {loading, userInfo, error } = userSignin;
 
     const dispatch = useDispatch();
+    const redirect = props.location.search ? props.location.search.split("=")[1] : '/';
 
     useEffect(() => {
         if(userInfo) {
-            console.log("Cf");
-            props.history.push("/");
+            props.history.push(redirect);
         }
         return () => {
 
@@ -72,12 +72,12 @@ export const SigninScreen = props => {
             <Styles>
                 <Card>
                     <Card.Header>
-                        <Nav variant="tabs" defaultActiveKey="/signin">
+                        <Nav variant="tabs" defaultActiveKey={redirect === "/" ? "/signin" : "/signin?redirect=" + redirect}>
                             <Nav.Item>
-                                <Nav.Link href="/signin" className="nav-link">Autentificare</Nav.Link>
+                                <Nav.Link href={redirect === "/" ? "/signin" : "/signin?redirect=" + redirect} className="nav-link">Autentificare</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link href="/signup" className="nav-link">Înregistrare</Nav.Link>
+                                <Nav.Link href={redirect === "/" ? "/signup" : "/signup?redirect=" + redirect} className="nav-link">Înregistrare</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </Card.Header>
@@ -85,7 +85,6 @@ export const SigninScreen = props => {
                         <Card.Title >
                             <PersonCircle size={100} color="lightgrey" style={{display:"block", marginLeft:"auto", marginRight:"auto"}}/>
                         </Card.Title>
-                        <Card.Text>
                             {loading && <div>Loading..</div>}
                             {error && <div>{error}</div>}
                         <Form onSubmit={submitHandler} noValidate validated={validated}>
@@ -103,12 +102,11 @@ export const SigninScreen = props => {
                             </Form.Group>
                                 
                                 <input type="checkbox" name="remember" onChange={(e) => setRemember(e.target.checked)}/>
-                                <label for="remember" style={{paddingLeft:"5px"}}>Remember me</label>
+                                <label htmlFor="remember" style={{paddingLeft:"5px"}}>Remember me</label>
                             <Button type="submit" style={{width: "100%", height:"50px", backgroundColor:"purple", color:"lightgrey", borderColor:"purple", fontSize:"20px"}}>
                                 <strong>Autentifică-te</strong>
                             </Button>
                         </Form>
-                        </Card.Text>
                         <Button variant="link">
                             Ați uitat parola?
                         </Button>

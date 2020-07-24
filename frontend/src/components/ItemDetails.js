@@ -44,7 +44,8 @@ const ItemDetails = () => {
                                 </div>
                                 :
                                 cartItems.map(item => 
-                                    <Item item={item} />)
+                                        <Item item={item} key={item.product}/>)
+                                    
                             }
                                 
                                 </Container>

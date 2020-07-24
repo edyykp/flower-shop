@@ -21,13 +21,14 @@ import {Plante} from './Plante';
 import {TrandafiriCriogenati} from './TrandafiriCriogenati';
 import {CumCumpar} from './CumCumpar';
 import { ProductDetails } from './components/ProductDetails';
-import { AccountBar } from './components/AccountBar';
+import  AccountBar  from './components/AccountBar';
 import {SigninScreen} from './SigninScreen';
 import {SignupScreen} from './SignupScreen';
 import {ProductsScreen} from './ProductsScreen';
 import { ProductsTable } from './ProductsTable';
+import {ShippingScreen} from './ShippingScreen';
 
-const App = ({ match }) => {
+const App = () => {
     loadReCaptcha();
     
     return (
@@ -60,6 +61,7 @@ const App = ({ match }) => {
               <Route path="/signup" component={SignupScreen} />
               <Route path="/products" component={ProductsScreen} />
               <Route path="/productstable" component={ProductsTable} />
+              <Route path="/shipping" component={ShippingScreen}/>
               <Route component={NoMatch} />
             </Switch>
             

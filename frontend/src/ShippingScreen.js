@@ -1,0 +1,514 @@
+import React, { useState, useEffect } from 'react';
+import { Layout } from './components/Layout';
+import { Form, Button, Card, Col, ProgressBar, Image, Table, Row, Container} from 'react-bootstrap';
+import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import {saveShipping} from './actions/cartActions';
+import {CountryDropdown, RegionDropdown} from 'react-country-region-selector';
+import {ChevronLeft, ChevronRight} from 'react-bootstrap-icons';
+import { createOrder } from './actions/orderActions';
+
+const Styles = styled.div`
+    
+
+    .card {
+        width: 40%;
+        margin-top: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: auto;
+        font-family: Arial;
+        z-index: 2;
+    }
+
+    .card-body {
+        width: 100%;
+        display: inline;
+        justify-content: center;
+        align-items: center;
+    }
+}
+`;
+export const ShippingScreen = props => {
+    const userSignin = useSelector(state=> state.userSignin);
+    const {loading, userInfo, error } = userSignin;
+
+    const [email, setEmail] = useState("");
+    const [address, setAddress] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [ phone, setPhone] = useState("");
+    if(userInfo) {
+        setEmail(userInfo.email);
+        setAddress(userInfo.address);
+        setFirstName(userInfo.firstName);
+        setLastName(userInfo.lastName);
+        setPhone(userInfo.phone);
+    }
+    
+    const [country, setCountry] = useState('Romania'); 
+    const [facturare, setFacturare] = useState('persoanafizica');
+    const [progression, setProgression] = useState(20);
+    const [destinationName, setDestinationName] = useState();
+    const [destinationPhone, setDestinationPhone] = useState();
+    const [destinationAddress, setDestinationAddress] = useState();
+    const [destinationRegion, setRegion] = useState("Buzau");
+    const [date, setDate] = useState("");
+    const [hour, setHour] = useState("");
+    const [anonym, setAnonym] = useState("");
+    const [methoddelivery, setMethodDelivery] = useState("");
+    const [payment, setPayment] = useState("");
+    const [comments, setComments] = useState("");
+
+    const cart = useSelector(state => state.cart);
+    const {cartItems} = cart;
+
+
+    const datee = new Date();
+    let month;
+    let day;
+    if(datee.getMonth() + 1 < 10) month = "0" + (datee.getMonth()+1).toString();
+    else month = (datee.getMonth()+1).toString();
+    if(datee.getDate() < 10) day = "0" + datee.getDate().toString();
+    else day = datee.getDate().toString();
+    const today =  datee.getFullYear().toString() + "-" + month + "-" + day ;
+
+
+    const itemsPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
+    let totalPrice;
+    useEffect(() => {
+        if(methoddelivery === "livrareafara")
+            totalPrice = itemsPrice + 20;
+        else totalPrice = itemsPrice;
+        return() => {
+
+        }
+    }, [methoddelivery])
+
+    
+    const [firstCard, setFirstCard] = useState(true);
+    const [secondCard, setSecondCard] = useState(false);
+    const [thirdCard, setThirdCard] = useState(false);
+    const [forthCard, setForthCard] = useState(false);
+    const [fifthCard, setFifthCard] = useState(false);
+
+    const dispatch = useDispatch();
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        dispatch(createOrder({firstName, lastName, email, phone, address, 
+            facturare, country, destinationRegion, destinationPhone, destinationName, 
+            destinationAddress, date, hour, anonym, methoddelivery, payment, comments}));
+        props.history.push("/");
+    }
+    return (
+        <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"45px", paddingBottom:"190px"}}>
+            
+                
+            
+            <Styles>
+                <ProgressBar animated now={progression} />
+
+            <Form onSubmit={submitHandler} >
+                {
+                    firstCard ? 
+                    <Card>
+                                <Card.Header>
+                                <h4>Informații personale</h4>
+                                </Card.Header>
+                                <Card.Title style={{paddingTop:"10px"}}>
+                                    {!userInfo && 
+                                    <Container>
+                                        <Button variant="link" href="/signin?redirect=shipping">
+                                        Autentificare
+                                    </Button> 
+                                    <span style={{color:"grey", fontSize:"20px"}}>|</span>
+                                    <Button variant="link" href="/signup?redirect=shipping">
+                                        Înregistrare
+                                    </Button>
+                                    <span style={{color:"grey", fontSize:"17px", float:"right", paddingRight:"20px", paddingTop:"10px"}}>sau finalizează comanda fără cont</span>
+                                    </Container>
+                                    }
+                                    <hr/>
+                                    
+                                </Card.Title>
+                                
+                                <Card.Body >
+                                    
+                                        <Form.Row >
+                                            <Col>
+                                                <Form.Group >
+                                                    <Form.Label>Nume*</Form.Label>
+                                                    <Form.Control type="text" onChange={(e) => setLastName(e.target.value)} value={lastName}/>
+                                                </Form.Group>
+                                            </Col>
+                                            <Col>
+                                                <Form.Group >
+                                                    <Form.Label>Prenume*</Form.Label>
+                                                    <Form.Control type="text" onChange={(e) => setFirstName(e.target.value)} value={firstName}/>
+                                                </Form.Group>
+                                            </Col>
+                                        </Form.Row>
+                                        <Form.Row>
+                                            <Col>
+                                                <Form.Group >
+                                                    <Form.Label>Adresă de email*</Form.Label>
+                                                    <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} value={email}/>
+                                                    <Form.Text className="text-muted">
+                                                    We'll never share your email with anyone else.
+                                                    </Form.Text>
+                                                </Form.Group>
+                                                <Form.Group >
+                                                    <Form.Label>Număr de telefon</Form.Label>
+                                                    <Form.Control type="text" onChange={(e) => setPhone(e.target.value)} value={phone}/>
+                                                </Form.Group>
+                                                <Form.Group   >
+                                                    <Form.Label >Facturează ca:*</Form.Label>
+                                                    <Container>
+                                                    <Form.Check type="radio" label="Persoană fizică" inline value="persoanafizica" name="facturare" defaultChecked onClick={() => setFacturare("persoanafizica")}/>
+                                                    <Form.Check type="radio" label="Firmă" inline value="firma" name="facturare" onClick={() => setFacturare("firma")}/>
+                                                    </Container>
+                                                    
+                                                    
+                                                </Form.Group>
+                                                <Form.Group   >
+                                                    <Form.Label>Adresă*</Form.Label>
+                                                    <Form.Control as="textarea" rows={3} style={{resize:"none"}} onChange={(e) => setAddress(e.target.value)} value={address}/>
+                                                </Form.Group>
+                                                <Form.Group   >
+                                                    <Form.Label>Țară*</Form.Label>
+                                                    <Container>
+                                                        <CountryDropdown onChange={(e) => setCountry(e)} value={country} />
+                                                    </Container>
+                                                </Form.Group>
+                                            </Col>
+                                            
+                                        </Form.Row>
+                                        
+                                        <Container style={{color:"grey", marginBottom:"15px"}}>* - câmp obligatoriu</Container>
+                                        <Button variant="danger" onClick={() => props.history.goBack()} style={{float:"left"}}>
+                                        <ChevronLeft size={21} color="white"/> <span>Înapoi</span>
+                                        </Button>
+                                        <Button onClick={() => {
+                                            setFirstCard(false);
+                                            setSecondCard(true);
+                                            setProgression(40);
+                                        }} variant="success" style={{float:"right"}}>  
+                                            <span>Treci la pasul următor</span>
+                                            <ChevronRight size={21} color="white"/>
+                                            </Button>
+                                       
+                                </Card.Body>
+                            </Card>
+                            :
+                            null
+                }
+                {
+                    secondCard ? 
+                    <Card>
+                                <Card.Header>
+                                <h4>Livrare</h4>
+                                </Card.Header>
+                                <Card.Title style={{paddingTop:"10px"}}>
+                                    Detalii despre livrare
+                                    <hr/>
+                                    
+                                </Card.Title>  
+                                
+                                <Card.Body >
+                                                <Form.Group >
+                                                    <Form.Label>Nume și prenume destinatar</Form.Label>
+                                                    <Form.Control type="text" onChange={(e) => setDestinationName(e.target.value)} value={destinationName}/>
+                                                </Form.Group>
+                                                <Form.Group >
+                                                    <Form.Label>Număr de telefon destinatar</Form.Label>
+                                                    <Form.Control type="text" onChange={(e) => setDestinationPhone(e.target.value)} value={destinationPhone}/>
+                                                </Form.Group>
+                                                <Form.Group   >
+                                                    <Form.Label>Adresă destinatar*</Form.Label>
+                                                    <Form.Control as="textarea" rows={3} style={{resize:"none"}} onChange={(e) => setDestinationAddress(e.target.value)} value={destinationAddress}/>
+                                                </Form.Group>
+                                                <Form.Group   >
+                                                    <Form.Label>Județ*</Form.Label>
+                                                    <Container>
+                                                        <RegionDropdown country="Romania" onChange={(e) => setRegion(e)} value={destinationRegion} />
+                                                    </Container>
+                                                </Form.Group>
+                                        
+                                                <Container style={{color:"grey", marginBottom:"15px"}}>* - câmp obligatoriu</Container>
+                                        <Button variant="danger" onClick={() => {
+                                            setSecondCard(false);
+                                            setFirstCard(true);
+                                            setProgression(20);
+                                        }} style={{float:"left"}}>
+                                        <ChevronLeft size={21} color="white"/> <span>Înapoi</span>
+                                        </Button>
+                                        <Button onClick={() => {
+                                            setSecondCard(false);
+                                            setThirdCard(true);
+                                            setProgression(60);
+                                        }} variant="success" style={{float:"right"}}>  
+                                            <span>Treci la pasul următor</span>
+                                            <ChevronRight size={21} color="white"/>
+                                            </Button>
+                                </Card.Body>
+                            </Card>
+                            :
+                            null
+                } 
+                {
+                    thirdCard ? 
+                    <Card>
+                                <Card.Header>
+                                <h4>Livrare</h4>
+                                </Card.Header>
+                                <Card.Title style={{paddingTop:"10px"}}>
+                                    Data/Ora livrare
+                                    <hr/>
+                                    
+                                </Card.Title>
+                                
+                                <Card.Body >
+                                        <Form.Group>
+                                            <label htmlFor="date">Data livrării:*</label>
+                                            <input
+                                                id="date"
+                                                label="Birthday"
+                                                type="date"
+                                                value={date}
+                                                onChange= { (e) => setDate(e.target.value)}
+                                                min={today}
+                                                max="2050-01-01"
+                                            />
+                                        </Form.Group>
+                                    
+                                    <Form.Group>
+                                        <Form.Label>Ora livrării:*</Form.Label>
+                                        <Form.Control as="select" onChange={e => setHour(e.target.value)} value={hour} >
+                                            <option>în cursul zilei</option>
+                                            <option>10:00 - 13:00</option>
+                                            <option>13:00 - 16:00</option>
+                                            <option>16:00 - 19:00</option>
+                                        </Form.Control>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.Label>Livrare anonimă?*</Form.Label>
+                                        <Form.Control as="select" onChange={e => setAnonym(e.target.value)} value={anonym} >
+                                            <option>Da</option>
+                                            <option>Nu</option>
+                                        </Form.Control>
+                                    </Form.Group>
+                                    <Container style={{color:"grey", marginBottom:"15px"}}>* - câmp obligatoriu</Container>
+                                        <Button variant="danger" onClick={() => {
+                                            setSecondCard(true);
+                                            setThirdCard(false);
+                                            setProgression(40);
+                                        }} style={{float:"left"}}>
+                                        <ChevronLeft size={21} color="white"/> <span>Înapoi</span>
+                                        </Button>
+                                        <Button onClick={() => {
+                                            setThirdCard(false);
+                                            setForthCard(true);
+                                            setProgression(80);
+                                        }} variant="success" style={{float:"right"}}>  
+                                            <span>Treci la pasul următor</span>
+                                            <ChevronRight size={21} color="white"/>
+                                            </Button>
+                                </Card.Body>
+                            </Card>
+                            :
+                            null
+                }
+                {
+                    forthCard ? 
+                    <Card>
+                                <Card.Header>
+                                <h4>Livrare</h4>
+                                </Card.Header>
+            
+                                
+                                <Card.Body >
+                                        <Form.Group>
+                                            <Form.Label>
+                                                <h3>Metodă de livrare</h3>
+                                            </Form.Label>
+                                            <span style={{display:"inline", float:"right"}}>
+                                                <Image src="/assets/mobilpay.png" alt="mobilpay"/>
+                                            </span>
+                                            <Form.Check type="radio" name="metodalivrare" value="livrarebuzau" label="Livrare gratuită în Buzău" onClick={e => setMethodDelivery(e.target.value)}/>
+                                            <Form.Check type="radio" name="metodalivrare" value="livrareafara" label="Livrare în afara orașului - 20 lei" onClick={e => setMethodDelivery(e.target.value)}/>
+                                            <Form.Check type="radio" name="metodalivrare" value="ridicarepersonala" label="Ridicare personală din florărie" onClick={e => setMethodDelivery(e.target.value)}/>
+                                        </Form.Group>
+                                        <Form.Group>
+                                            <Form.Label>
+                                                <h3>Metodă de plată</h3>
+                                            </Form.Label>
+                                            <Form.Check type="radio" name="metodaplata" value="platacard" label="Plată card" onClick={e => setPayment(e.target.value)}/>
+                                            
+                                            <Form.Check type="radio" name="metodaplata" value="plataramburs" label="Plată la livrare" onClick={e => setPayment(e.target.value)}/>
+                                        </Form.Group>
+                                    
+                                    
+                                        <Container style={{color:"grey", marginBottom:"15px"}}>* - câmp obligatoriu</Container>
+                                        <Button variant="danger" onClick={() => {
+                                            setForthCard(false);
+                                            setThirdCard(true);
+                                            setProgression(60);
+                                        }} style={{float:"left"}}>
+                                        <ChevronLeft size={21} color="white"/> <span>Înapoi</span>
+                                        </Button>
+                                        <Button onClick={() => {
+                                            setFifthCard(true);
+                                            setForthCard(false);
+                                            setProgression(100);
+                                        }} variant="success" style={{float:"right"}}>  
+                                            <span>Continuă</span>
+                                            <ChevronRight size={21} color="white"/>
+                                            </Button>
+                                </Card.Body>
+                            </Card>
+                            :
+                            null
+                } 
+                {
+                    fifthCard ?
+                    <Container>
+                    <Row>
+                        <Table striped bordered hover style={{backgroundColor:"white", marginTop:"20px"}}>
+                            <thead style={{backgroundColor:"lightgrey"}}>
+                                <tr>
+                                <th style={{textAlign:"center"}}></th>
+                                <th style={{textAlign:"center", fontSize:"18px"}}>Produs</th>
+                                <th style={{textAlign:"center", fontSize:"18px"}}>Text felicitare</th>
+                                <th style={{textAlign:"center", fontSize:"18px"}}>Preț</th>
+                                <th style={{textAlign:"center", fontSize:"18px"}}>Cantitate</th>
+                                <th style={{textAlign:"center", fontSize:"18px"}}>Total</th>
+                                </tr>
+                               
+                            </thead>
+                            <tbody>
+                                {cartItems.map((product) => (
+                                    <tr key={product.product} >
+                                    <td style={{width:"10%"}}>
+                                        <Image src={`/assets/${product.image}.png`} style={{width: "8vw", height:"6vw", objectFit:"cover"}}/></td>
+                                    <td style={{width:"15%", textAlign: "center", verticalAlign:"middle", fontSize:"18px"}}>{product.name}</td>
+                                    <td style={{width:"15%", textAlign: "center", verticalAlign:"middle", fontSize:"18px"}}>{product.textGift}</td>
+                                    <td style={{width:"15%", textAlign: "center", verticalAlign:"middle", fontSize:"18px"}}>{product.price} LEI</td>
+                                    <td style={{width:"15%", textAlign: "center", verticalAlign:"middle", fontSize:"18px"}}>{product.qty}</td>
+                                    <td style={{width:"15%", textAlign: "center", verticalAlign:"middle", fontSize:"18px"}}>{`${(product.qty * product.price).toFixed(2)} LEI`}</td>
+                                </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Table responsive style={{backgroundColor:"white", marginTop:"20px"}}>
+                                <thead style={{backgroundColor:"lightgrey"}}>
+                                    <tr>
+                                    <th style={{textAlign:"left", fontSize:"18px"}}>Informații personale</th>
+                                    <th style={{textAlign:"center", fontSize:"18px"}}></th>
+                                    </tr>
+                                  
+                                </thead>
+                                <tbody>
+                                    <tr style={{height:"40px"}}>
+                                        <td>Cumpărător</td>
+                                        <td>{firstName}{' '}{lastName}</td>
+                                    </tr>
+                                    <tr style={{height:"40px"}}>
+                                        <td>Telefon</td>
+                                        <td>{phone}</td>
+                                    </tr>
+                                    <tr style={{height:"40px"}}>
+                                        <td>Email</td>
+                                        <td>{email}</td>
+                                    </tr>
+                                    <tr style={{height:"40px"}}>
+                                        <td>Adresă de facturare</td>
+                                    <td>{address}{' '}{country}</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+                            <Table responsive style={{backgroundColor:"white", marginTop:"20px"}}>
+                                    <thead style={{backgroundColor:"lightgrey"}}>
+                                        <tr>
+                                        <th style={{textAlign:"left", fontSize:"18px"}}>Observații client / Text felicitare</th>
+
+                                        </tr>
+                                        
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <Form.Control as="textarea" rows={3} style={{resize:"none"}} placeholder="Dacă ai ceva de adăugat sau ai omis textul pentru felicitare, completează aici" value={comments} onChange={ e => setComments(e.target.value)} />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                            </Table>        
+                        </Col>
+                        <Col>
+                            <Table responsive style={{backgroundColor:"white", marginTop:"20px"}}>
+                                <thead style={{backgroundColor:"lightgrey"}}>
+                                    <tr>
+                                        <th style={{textAlign:"left", fontSize:"18px"}}>Livrare și plată</th>
+                                        <th style={{textAlign:"center", fontSize:"18px"}}></th>
+                                    </tr>
+                                    
+                                </thead>
+                                <tbody>
+                                    <tr style={{height:"40px"}}>
+                                        <td>{destinationName}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr style={{height:"40px"}}>
+                                        <td>{destinationPhone}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr style={{height:"40px"}}>
+                                        <td>{destinationAddress}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr style={{height:"40px"}}>
+                                        <td>{destinationRegion}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr style={{height:"40px"}}>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr style={{height:"40px"}}>
+                                        <td>Dată și oră livrare</td>
+                                        <td>{date}{' '}{hour}</td>
+                                    </tr>
+                                    <tr style={{height:"40px"}}>
+                                        <td>Metodă livrare</td>
+                                        <td>{methoddelivery}</td>
+                                    </tr>
+                                    <tr style={{height:"40px"}}>
+                                        <td >Metodă plată</td>
+                                        <td>{payment}</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+                        </Col>
+                    </Row>
+                    <Row style={{justifyContent:"space-between", paddingLeft:" 50px", paddingRight:"50px", paddingTop:"50px"}}>
+                    <Button variant="danger" size="lg" onClick={() => {
+                        setProgression(80);
+                        setFifthCard(false);
+                        setForthCard(true);
+                    }}>ÎNAPOI</Button>
+                    <Button variant="success" type="submit" size="lg">FINALIZEAZĂ COMANDA</Button>
+                    </Row>
+                    
+                    </Container>
+                    :
+                    null
+                }
+                       </Form>
+            </Styles>
+
+        </Layout>
+    )
+}

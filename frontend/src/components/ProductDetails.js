@@ -102,6 +102,7 @@ const popoverCadouri = (
 
 export function ProductDetails(props) {
         const [qty, setQty] = useState(1);
+        const [textGift, setTextGift] = useState("");
         const productId = props.match.params.id;
         const [show, setShow] = useState(false);
         const handleShow = () => setShow(true);
@@ -122,6 +123,10 @@ export function ProductDetails(props) {
             }
         }, [dispatch, props.match.params.id])
         
+        const cart = useSelector(state => state.cart);
+
+        const {cartItems} = cart;
+
         return (
             loading? <div>Loading...</div> :
             error? <div>{error}</div> :
@@ -141,7 +146,7 @@ export function ProductDetails(props) {
                                 </Col>
                                 <Col style={{justifyContent:"flex-end"}} md={3}>
                                     <input type="number" min={1} max={9} style={{textAlign: "center", width: "48px", height: "40px"}} defaultValue={qty} onChange={(e) => {setQty(e.target.value)}}/>
-                                    <Button variant="primary" onClick={() => {dispatch(addToCart(productId, qty));setTimeout(() => {  handleShow(); }, 200);}}
+                                    <Button variant="primary" onClick={() => {dispatch(addToCart(productId, qty, textGift));setTimeout(() => {  handleShow(); }, 200);}}
                                     >Adaugă în coș</Button>
                                 </Col>
                             </Row>
@@ -149,20 +154,20 @@ export function ProductDetails(props) {
                                 <Col style={{width:"100%"}}>
                                 <Form.Group controlId="exampleForm.ControlTextarea1">
                                     <Form.Label style={{font:"Helvetica", fontSize:"25px", color:"#808080"}}>Mesaj pentru felicitare cadou:</Form.Label>
-                                    <Form.Control as="textarea" rows={5} style={{resize: "none", width:"100%"}} placeholder="Text felicitare"/>
+                                    <Form.Control as="textarea" rows={5} style={{resize: "none", width:"100%"}} placeholder="Text felicitare" value={textGift} onChange={(e) => setTextGift(e.target.value)}/>
                                 </Form.Group>
                                 </Col>
                             </Row>
                         </Container>
                         <hr/>
                         <Container>
-                            <Row>
+                            <Row style={{display:"block"}}>
                                 <h4>Descriere {product.name}</h4>
                                 <br />
                                 <p style={{color: "grey"}}>{product.description}</p>
                                 <br />
                                 <h6>Alcătuit din:</h6>
-                                <p style={{color:"grey"}}>{product.composition}</p>
+                                <p style={{color:"grey"}}>{product.madeOf}</p>
                             </Row>
                             
                         </Container>
@@ -214,7 +219,7 @@ export function ProductDetails(props) {
                             <Row>
                                 <Styles>
                                     <ListGroup horizontal>
-                                        <OverlayTrigger trigger="hover" placement="bottom" overlay={popoverPlatiSecurizate}>
+                                        <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverPlatiSecurizate}>
                                                 <ListGroup.Item style={styles.item} className="list-group-item">
                                                         <ShieldCheck size={40} color="grey" style={{paddingBottom:"10px"}} className="icon"/>
                                                         <p style={{fontSize: "12px", paddingLeft: "25px", paddingRight: "25px"}} className="par">
@@ -222,25 +227,25 @@ export function ProductDetails(props) {
                                                         </p>
                                                 </ListGroup.Item>
                                         </OverlayTrigger>
-                                        <OverlayTrigger trigger="hover" placement="bottom" overlay={popoverLivrareInOre}>
+                                        <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverLivrareInOre}>
                                             <ListGroup.Item style={styles.item} className="list-group-item">
                                                 <Truck size={40} color="grey" style={{paddingBottom:"10px"}} className="icon"/>
                                                 <p style={{fontSize: "12px", paddingLeft: "25px", paddingRight: "25px"}} className="par">LIVRARE ÎN 4 ORE</p>
                                             </ListGroup.Item>
                                         </OverlayTrigger>
-                                        <OverlayTrigger trigger="hover" placement="bottom" overlay={popoverLivrareGratuita}>
+                                        <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverLivrareGratuita}>
                                             <ListGroup.Item style={styles.item} className="list-group-item">
                                                 <CashStack size={40} color="grey" style={{paddingBottom:"10px"}} className="icon"/>
                                                 <p style={{fontSize: "12px", paddingLeft: "25px", paddingRight: "25px"}} className="par">LIVRARE GRATUITĂ</p>
                                             </ListGroup.Item>
                                         </OverlayTrigger>
-                                        <OverlayTrigger trigger="hover" placement="bottom" overlay={popoverGarantie}>
+                                        <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverGarantie}>
                                             <ListGroup.Item style={styles.item} className="list-group-item">
                                                 <Check2Circle size={40} color="grey" style={{paddingBottom:"10px"}} className="icon"/>
                                                 <p style={{fontSize: "12px", paddingLeft: "25px", paddingRight: "25px"}} className="par">100% DISCREȚIE ȘI GARANȚIE</p>
                                             </ListGroup.Item>
                                         </OverlayTrigger>
-                                        <OverlayTrigger trigger="hover" placement="bottom" overlay={popoverCadouri}>
+                                        <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverCadouri}>
                                             <ListGroup.Item style={styles.item} className="list-group-item">
                                                 <Gift size={40} color="grey" style={{paddingBottom:"10px"}} className="icon"/>
                                                 <p style={{fontSize: "12px", paddingLeft: "25px", paddingRight: "25px"}} className="par">FELICITARE CADOU</p>
@@ -305,7 +310,7 @@ export function ProductDetails(props) {
             <Button variant="secondary" onClick={handleClose}>
                 CONTINUĂ CUMPĂRĂTURILE
             </Button>
-            <Button variant="primary">FINALIZEAZĂ COMANDA</Button>
+            <Button variant="primary" href="/shipping" disabled={cartItems.length === 0}>FINALIZEAZĂ COMANDA</Button>
         </Modal.Footer>
         </Modal>
             </Layout>

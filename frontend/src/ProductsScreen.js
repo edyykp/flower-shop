@@ -27,7 +27,7 @@ const Styles = styled.div`
         margin-right: auto;
         margin-bottom: auto;
         font-family: Arial;
-        z-index: 3;
+        z-index: 2;
         overflow: hidden;
     }
 
@@ -50,21 +50,24 @@ export const ProductsScreen = props => {
     const [madeOf, setMadeOf] = useState('');
     const [description, setDescription] = useState('');
     const productSave = useSelector(state=> state.productSave);
-    const {loading: loadingSave, error: errorSave } = productSave;
+    const {loading: loadingSave, success: successSave, error: errorSave } = productSave;
     
     const dispatch = useDispatch();
     
     useEffect(() => {
+        if(successSave) {
+            window.location.reload(false);
+        }
         return () => {
 
         };
-    }, []);
+    }, [successSave]);
 
     const submitHandler = (e) => {
-        e.preventDefault();
         setValidated(true);
-        dispatch(saveProduct({name, image, price, category, madeOf, description}));
-        
+        e.preventDefault();
+        if(e.target.checkValidity() === true)
+            dispatch(saveProduct({name, image, price, category, madeOf, description}));
     }
     return (
         <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"82px"}}>

@@ -28,7 +28,7 @@ const Styles = styled.div`
         margin-right: auto;
         margin-bottom: auto;
         font-family: Arial;
-        z-index: 3;
+        z-index: 2;
     }
 
     .card-body {
@@ -50,10 +50,9 @@ export const SignupScreen = props => {
     const {loading, userInfo, error } = userRegister;
 
     const dispatch = useDispatch();
-
+    const redirect = props.location.search ? props.location.search.split("=")[1] : '/';
     useEffect(() => {
         if(userInfo) {
-            console.log("Cf");
             props.history.push("/");
         }
         return () => {
@@ -64,7 +63,9 @@ export const SignupScreen = props => {
     const submitHandler = (e) => {
         e.preventDefault();
         setValidated(true);
-        dispatch(register(firstName, lastName, email, phone, password));
+        if(e.target.checkValidity() === true) {
+            dispatch(register(firstName, lastName, email, phone, password));
+        }
     }
     const [validated, setValidated] = useState(false);
     return (
@@ -72,12 +73,12 @@ export const SignupScreen = props => {
             <Styles>
                 <Card>
                     <Card.Header>
-                        <Nav variant="tabs" defaultActiveKey="/signup">
+                        <Nav variant="tabs" defaultActiveKey={redirect === "/" ? "/signup" : "/signup?redirect=" + redirect}>
                             <Nav.Item>
-                                <Nav.Link href="/signin" className="nav-link">Autentificare</Nav.Link>
+                                <Nav.Link href={redirect === "/" ? "/signin" : "/signin?redirect=" + redirect} className="nav-link">Autentificare</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link href="/signup" className="nav-link">Înregistrare</Nav.Link>
+                                <Nav.Link href={redirect === "/" ? "/signup" : "/signup?redirect=" + redirect} className="nav-link">Înregistrare</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </Card.Header>
@@ -85,7 +86,6 @@ export const SignupScreen = props => {
                         <Card.Title >
                             <PersonPlus size={100} color="lightgrey" style={{display:"block", marginLeft:"auto", marginRight:"auto"}}/>
                         </Card.Title>
-                        <Card.Text>
                             
                             
                         <Form onSubmit={submitHandler} noValidate validated={validated}>
@@ -106,7 +106,7 @@ export const SignupScreen = props => {
                             </Form.Group>
                             <Form.Group controlId="formBasicName">
                                 <Form.Label>Număr de telefon</Form.Label>
-                                <Form.Control type="text" onChange={(e) => setPhone(e.target.value)} required/>
+                                <Form.Control type="text" onChange={(e) => setPhone(e.target.value)}/>
                             </Form.Group>
                             <Form.Group controlId="formBasicPassword"  >
                                 <Form.Label>Parolă*</Form.Label>
@@ -134,7 +134,6 @@ export const SignupScreen = props => {
                                 <strong>Înregistrează-te</strong>
                             </Button>
                         </Form>
-                        </Card.Text>
                     </Card.Body>
                 </Card>
             </Styles>

@@ -2,7 +2,8 @@ import React from 'react';
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import styled from 'styled-components';
 import {PersonPlus, PersonCircle, BoxArrowLeft, Person, BagPlus, Eye } from 'react-bootstrap-icons';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import {logout} from '../actions/userActions';
 
 const Styles = styled.div`
     .navbar {
@@ -20,9 +21,16 @@ const Styles = styled.div`
 
 
 `;
-export const AccountBar = () => {
+function AccountBar()  {
     const userSignin = useSelector(state=>state.userSignin);
     const {userInfo} = userSignin;
+
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(logout());
+        window.location.reload(false);
+      }
 
     return (
         
@@ -49,8 +57,8 @@ export const AccountBar = () => {
                                     }
                                     
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item >
-                                        <BoxArrowLeft size={30} color="grey" style={{paddingRight: "5px"}}/>
+                                    <NavDropdown.Item onClick={handleLogout}>
+                                        <BoxArrowLeft size={30} color="grey" style={{paddingRight: "5px"}} />
                                         Log out
                                     </NavDropdown.Item>
                                 </NavDropdown>
@@ -77,3 +85,5 @@ export const AccountBar = () => {
         
     )
 }
+
+export default AccountBar;

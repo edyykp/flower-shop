@@ -76,11 +76,11 @@ const popoverCadouri = (
 export const Home = () => (
         <Styles>
             <Jumbotron/>
-            <Layout style={{width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
+            <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)",width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
                 <Row >
                     <Col style={{maxWidth:"100%", width: "100%", justifyContent:"center", paddingRight: "0", paddingLeft: "0"}}>
                         <ListGroup horizontal>
-                            <OverlayTrigger trigger="hover" placement="bottom" overlay={popoverPlatiSecurizate}>
+                            <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverPlatiSecurizate}>
                                     <ListGroup.Item style={styles.item} className="list-group-item">
                                             <ShieldCheck size={40} color="grey" style={{paddingBottom:"10px"}} className="icon"/>
                                             <p style={{fontSize: "16px"}} className="par">
@@ -88,25 +88,25 @@ export const Home = () => (
                                             </p>
                                     </ListGroup.Item>
                             </OverlayTrigger>
-                            <OverlayTrigger trigger="hover" placement="bottom" overlay={popoverLivrareInOre}>
+                            <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverLivrareInOre}>
                                 <ListGroup.Item style={styles.item} className="list-group-item">
                                     <Truck size={40} color="grey" style={{paddingBottom:"10px"}} className="icon"/>
                                     <p style={{fontSize: "16px"}} className="par">LIVRARE ÎN 4 ORE</p>
                                 </ListGroup.Item>
                             </OverlayTrigger>
-                            <OverlayTrigger trigger="hover" placement="bottom" overlay={popoverLivrareGratuita}>
+                            <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverLivrareGratuita}>
                                 <ListGroup.Item style={styles.item} className="list-group-item">
                                     <CashStack size={40} color="grey" style={{paddingBottom:"10px"}} className="icon"/>
                                     <p style={{fontSize: "16px"}} className="par">LIVRARE GRATUITĂ</p>
                                 </ListGroup.Item>
                             </OverlayTrigger>
-                            <OverlayTrigger trigger="hover" placement="bottom" overlay={popoverGarantie}>
+                            <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverGarantie}>
                                 <ListGroup.Item style={styles.item} className="list-group-item">
                                     <Check2Circle size={40} color="grey" style={{paddingBottom:"10px"}} className="icon"/>
                                     <p style={{fontSize: "16px"}} className="par">100% DISCREȚIE ȘI GARANȚIE</p>
                                 </ListGroup.Item>
                             </OverlayTrigger>
-                            <OverlayTrigger trigger="hover" placement="bottom" overlay={popoverCadouri}>
+                            <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverCadouri}>
                                 <ListGroup.Item style={styles.item} className="list-group-item">
                                     <Gift size={40} color="grey" style={{paddingBottom:"10px"}} className="icon"/>
                                     <p style={{fontSize: "16px"}} className="par">FELICITARE CADOU</p>
