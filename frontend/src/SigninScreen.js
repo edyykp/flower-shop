@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Layout } from './components/Layout';
-import { Form, Button, Card, Nav } from 'react-bootstrap';
+import { Form, Button, Card, Nav, Spinner } from 'react-bootstrap';
 import { PersonCircle } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -60,7 +60,7 @@ export const SigninScreen = props => {
         return () => {
 
         };
-    }, [userInfo]);
+    }, [userInfo, props, redirect]);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -68,7 +68,7 @@ export const SigninScreen = props => {
         dispatch(signin(email, password, remember));
     }
     return (
-        <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"90px"}}>
+        <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"110px"}}>
             <Styles>
                 <Card>
                     <Card.Header>
@@ -85,8 +85,10 @@ export const SigninScreen = props => {
                         <Card.Title >
                             <PersonCircle size={100} color="lightgrey" style={{display:"block", marginLeft:"auto", marginRight:"auto"}}/>
                         </Card.Title>
-                            {loading && <div>Loading..</div>}
-                            {error && <div>{error}</div>}
+                            {loading &&  <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
+                                                <Spinner animation="border" variant="secondary" style={{position:"absolute", top:"50%", left: "50%"}}/>
+                                        </Layout> }
+                            {error && <div style={{color:"black", fontWeight:"bold", textAlign:"center", border:"2px solid red", backgroundColor:"#DA7E7E"}}>Adresa de email sau parola sunt incorecte.</div>}
                         <Form onSubmit={submitHandler} noValidate validated={validated}>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Adresă de email</Form.Label>

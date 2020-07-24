@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Layout } from './components/Layout';
-import { Form, Button, Card } from 'react-bootstrap';
+import { Form, Button, Card, Spinner } from 'react-bootstrap';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveProduct } from './actions/productActions';
@@ -81,8 +81,11 @@ export const ProductsScreen = props => {
                             <h3>Adăugați produs nou</h3>
                         </Card.Title>
                         <Card.Text>
-                            {loadingSave && <div>Loading..</div>}
-                            {errorSave && <div>{errorSave}</div>}
+                            {loadingSave &&  <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
+                                                <Spinner animation="border" variant="secondary" style={{position:"absolute", top:"50%", left: "50%"}}/>
+                                        </Layout> }
+                            
+                                        {errorSave && <div style={{color:"black", fontWeight:"bold", textAlign:"center", border:"2px solid red", backgroundColor:"#DA7E7E"}}>Eroare neașteptată. Încearcă din nou.</div>}
                         <Form onSubmit={submitHandler} noValidate validated={validated}>
                             <Form.Group >
                                 <Form.Control type="text" placeholder="Denumire produs" onChange={(e) => setName(e.target.value)} required/>

@@ -25,26 +25,32 @@ router.post('/signin', async (req, res) => {
   });
 
   router.post('/register', async (req, res) => {
-    const user = new User({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      phone: req.body.phone,
-      email: req.body.email,
-      password: req.body.password,
-    });
-    const newUser = await user.save();
-    if (newUser) {
-      res.send({
-        _id: newUser.id,
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
-        email: newUser.email,
-        isAdmin: newUser.isAdmin,
-        token: getToken(newUser),
-      });
-    } else {
-      res.status(401).send({ message: 'Invalid User Data.' });
-    }
+        const user = new User({
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          phone: req.body.phone,
+          email: req.body.email,
+          password: req.body.password,
+        });
+        try {
+          const newUser = await user.save();
+          if (newUser) {
+            res.send({
+              _id: newUser.id,
+              firstName: newUser.firstName,
+              lastName: newUser.lastName,
+              email: newUser.email,
+              isAdmin: newUser.isAdmin,
+              token: getToken(newUser),
+            });
+          } else {
+            res.status(401).send({ message: 'Invalid User Data.' });
+          }
+        }
+        catch(error) {
+          res.status(500).send({message: "Această adresă de mail este deja utilizată."});
+        }
+       
   });
 
 router.get("/createadmin", async (req, res) => {

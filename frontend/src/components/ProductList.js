@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {ListGroup} from 'react-bootstrap';
+import {ListGroup, Spinner} from 'react-bootstrap';
 import { ProductCard } from './ProductCard';
 import { useSelector, useDispatch } from 'react-redux';
 import { listProducts } from '../actions/productActions';
@@ -21,8 +21,9 @@ export function ProductList(props) {
     }, [dispatch])
         
     return (
-        loading? <div>Loading...</div> :
-        error? <div>{error}</div> :
+        loading? <Spinner animation="border" variant="secondary" style={{position:"absolute", top:"50%", left: "50%"}}/>
+        :
+        error? <div style={{position:"absolute", top:"50%", left: "50%"}}>{error}</div> :
         <ListGroup horizontal style={{flexWrap:"wrap", justifyContent: "space-evenly"}}>
             {
                 products.map(product => 

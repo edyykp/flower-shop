@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Row, Col, Button, Container, Form, Card, Image, ListGroup, OverlayTrigger, Popover, Modal} from 'react-bootstrap';
+import {Row, Col, Button, Container, Form, Card, Image, ListGroup, OverlayTrigger, Popover, Modal, Spinner} from 'react-bootstrap';
 import { Layout } from './Layout';
 import styled from 'styled-components';
 import {Truck, ShieldCheck, CashStack, Check2Circle, Gift} from 'react-bootstrap-icons';
@@ -128,8 +128,9 @@ export function ProductDetails(props) {
         const {cartItems} = cart;
 
         return (
-            loading? <div>Loading...</div> :
-            error? <div>{error}</div> :
+            loading? <Spinner animation="border" variant="secondary" style={{position:"absolute", top:"50%", left: "50%"}}/>
+        :
+        error? <div style={{position:"absolute", top:"50%", left: "50%"}}>{error}</div> :
             <Layout style={{width: "100%", maxWidth: "100%", backgroundColor: "white", paddingTop:"40px", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
                 <Row style={{marginTop: "50px", marginLeft: "40px", width: "100%", maxWidth:"100%"}}>
                     <Col>

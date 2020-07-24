@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Layout } from './components/Layout';
-import { Form, Button, Card, Nav, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Form, Button, Card, Nav, Tooltip, OverlayTrigger, Spinner } from 'react-bootstrap';
 import {  PersonPlus,  InfoCircleFill } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -58,18 +58,36 @@ export const SignupScreen = props => {
         return () => {
 
         };
-    }, [userInfo]);
+    }, [userInfo, props]);
+    const [errorPas, setErrorPass] = useState("");
 
     const submitHandler = (e) => {
-        e.preventDefault();
-        setValidated(true);
-        if(e.target.checkValidity() === true) {
+        if(password !== rePassword || password.length < 8) {
+            setErrorPass("Parolă invalidă");
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        else
+        if(e.currentTarget.checkValidity() === false ) {
+            setErrorPass("Completează toate câmpurile cu atenție");
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        else
+        {
             dispatch(register(firstName, lastName, email, phone, password));
         }
+        setValidated(true);
     }
     const [validated, setValidated] = useState(false);
     return (
+        
+            loading ? <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
+                        <Spinner animation="border" variant="secondary" style={{position:"absolute", top:"50%", left: "50%"}}/>
+            </Layout> 
+        :
         <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"40px"}}>
+           
             <Styles>
                 <Card>
                     <Card.Header>
@@ -86,8 +104,8 @@ export const SignupScreen = props => {
                         <Card.Title >
                             <PersonPlus size={100} color="lightgrey" style={{display:"block", marginLeft:"auto", marginRight:"auto"}}/>
                         </Card.Title>
-                            
-                            
+                            {errorPas && <div style={{color:"black", fontWeight:"bold", textAlign:"center", border:"2px solid red", backgroundColor:"#DA7E7E"}}>{errorPas}</div>}
+                            {error && <div style={{color:"black", fontWeight:"bold", textAlign:"center", border:"2px solid red", backgroundColor:"#DA7E7E"}}>Adresa de email este deja utilizată.</div>}
                         <Form onSubmit={submitHandler} noValidate validated={validated}>
                             <Form.Group controlId="formBasicName">
                                 <Form.Label>Nume*</Form.Label>
@@ -137,7 +155,6 @@ export const SignupScreen = props => {
                     </Card.Body>
                 </Card>
             </Styles>
-
         </Layout>
     )
 }

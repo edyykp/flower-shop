@@ -10,7 +10,7 @@ const signin = (email, password, remember) => async (dispatch) => {
         // if( remember === true){
         // Cookie.set('userInfo', JSON.stringify(data));
         // }
-        Cookie.set('userInfo', JSON.stringify(data));
+        Cookie.set('userInfo', JSON.stringify(data), {sameSite: "Strict", secure: true});
     }
     catch (error) {
         dispatch({type: USER_SIGNIN_FAIL, payload: error.message});
@@ -28,7 +28,7 @@ const register = (firstName, lastName, email, phone, password) => async (dispatc
   }
 
   const logout = () => (dispatch) => {
-    Cookie.remove("userInfo");
+    Cookie.remove("userInfo", {sameSite: "Strict", secure: true});
     dispatch({ type: USER_LOGOUT })
   }
 

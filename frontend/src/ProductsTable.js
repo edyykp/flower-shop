@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { listProducts, saveProduct, deleteProduct } from './actions/productActions';
 import { Layout } from './components/Layout';
-import { Table, Button, Modal, Form } from 'react-bootstrap';
+import { Table, Button, Modal, Form, Spinner } from 'react-bootstrap';
 import styled from 'styled-components';
 
 const Styles = styled.div`
@@ -51,7 +51,7 @@ export const ProductsTable = () => {
         return () => {
 
         };
-    }, [successSave, successDelete]);
+    }, [successSave, successDelete, dispatch]);
 
     const deleteHandler = (product) => {
         dispatch(deleteProduct(product._id));
@@ -65,7 +65,13 @@ export const ProductsTable = () => {
     }
 
     return (
+        loading || loadingDelete || loadingSave? 
+        <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
+                <Spinner animation="border" variant="secondary" style={{position:"absolute", top:"50%", left: "50%"}}/>
+        </Layout> 
+        :
         <Layout style={{height:"100vh",background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"20px"}}>
+            {(error || errorSave || errorDelete ) && alert("A apărut o eroare neașteptată. Încearcă din nou.")}
             <Table striped bordered hover style={{backgroundColor:"white", marginTop:"20px"}}>
                 <thead>
                     <th>ID</th>

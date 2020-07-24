@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Layout } from './components/Layout';
-import { Form, Button, Card, Col, ProgressBar, Image, Table, Row, Container} from 'react-bootstrap';
+import { Form, Button, Card, Col, ProgressBar, Image, Table, Row, Container, Spinner} from 'react-bootstrap';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import {saveShipping} from './actions/cartActions';
 import {CountryDropdown, RegionDropdown} from 'react-country-region-selector';
 import {ChevronLeft, ChevronRight} from 'react-bootstrap-icons';
 import { createOrder } from './actions/orderActions';
@@ -31,20 +30,14 @@ const Styles = styled.div`
 `;
 export const ShippingScreen = props => {
     const userSignin = useSelector(state=> state.userSignin);
-    const {loading, userInfo, error } = userSignin;
+    const {loading: loadingUser, userInfo, error: errorUser } = userSignin;
 
     const [email, setEmail] = useState("");
     const [address, setAddress] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [ phone, setPhone] = useState("");
-    if(userInfo) {
-        setEmail(userInfo.email);
-        setAddress(userInfo.address);
-        setFirstName(userInfo.firstName);
-        setLastName(userInfo.lastName);
-        setPhone(userInfo.phone);
-    }
+    
     
     const [country, setCountry] = useState('Romania'); 
     const [facturare, setFacturare] = useState('persoanafizica');
@@ -63,6 +56,8 @@ export const ShippingScreen = props => {
     const cart = useSelector(state => state.cart);
     const {cartItems} = cart;
 
+    const orderCreate = useSelector(state => state.orderCreate);
+    const { loading: loadingOrder, success: successOrder, error: errorOrder } = orderCreate;
 
     const datee = new Date();
     let month;
@@ -75,16 +70,14 @@ export const ShippingScreen = props => {
 
 
     const itemsPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
-    let totalPrice;
+
     useEffect(() => {
-        if(methoddelivery === "livrareafara")
-            totalPrice = itemsPrice + 20;
-        else totalPrice = itemsPrice;
-        return() => {
-
+        if (successOrder) {
+          props.history.push("/");
         }
-    }, [methoddelivery])
-
+    
+      }, [successOrder, props]);
+    
     
     const [firstCard, setFirstCard] = useState(true);
     const [secondCard, setSecondCard] = useState(false);
@@ -96,16 +89,31 @@ export const ShippingScreen = props => {
 
     const submitHandler = (e) => {
         e.preventDefault();
+        let totalPrice = methoddelivery === "livrareafara" ? itemsPrice + 20 : itemsPrice;
         dispatch(createOrder({firstName, lastName, email, phone, address, 
             facturare, country, destinationRegion, destinationPhone, destinationName, 
-            destinationAddress, date, hour, anonym, methoddelivery, payment, comments}));
-        props.history.push("/");
+            destinationAddress, date, hour, anonym, methoddelivery, payment, comments, totalPrice}));
     }
     return (
+        loadingUser ? 
+        <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
+                <Spinner animation="border" variant="secondary" style={{position:"absolute", top:"50%", left: "50%"}}/>
+        </Layout> 
+        : errorUser ?
+        <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
+            <Container><h1>A apărut o eroare neașteptată.</h1></Container>
+        </Layout> 
+        : loadingOrder ? 
+        <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
+            <Spinner animation="border" variant="secondary" style={{verticalAlign:"middle"}}/>
+        </Layout>
+        : errorOrder ? 
+        <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
+            <Container><h1>A apărut o eroare neașteptată.</h1></Container>
+        </Layout>
+        :
         <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"45px", paddingBottom:"190px"}}>
-            
-                
-            
+          
             <Styles>
                 <ProgressBar animated now={progression} />
 
@@ -139,13 +147,13 @@ export const ShippingScreen = props => {
                                             <Col>
                                                 <Form.Group >
                                                     <Form.Label>Nume*</Form.Label>
-                                                    <Form.Control type="text" onChange={(e) => setLastName(e.target.value)} value={lastName}/>
+                                                    <Form.Control type="text" onChange={(e) => setLastName(e.target.value)} defaultValue={userInfo ? userInfo.lastName : lastName}/>
                                                 </Form.Group>
                                             </Col>
                                             <Col>
                                                 <Form.Group >
                                                     <Form.Label>Prenume*</Form.Label>
-                                                    <Form.Control type="text" onChange={(e) => setFirstName(e.target.value)} value={firstName}/>
+                                                    <Form.Control type="text" onChange={(e) => setFirstName(e.target.value)} defaultValue={userInfo ? userInfo.firstName : firstName}/>
                                                 </Form.Group>
                                             </Col>
                                         </Form.Row>
@@ -153,14 +161,14 @@ export const ShippingScreen = props => {
                                             <Col>
                                                 <Form.Group >
                                                     <Form.Label>Adresă de email*</Form.Label>
-                                                    <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} value={email}/>
+                                                    <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} defaultValue={userInfo ? userInfo.email : email}/>
                                                     <Form.Text className="text-muted">
                                                     We'll never share your email with anyone else.
                                                     </Form.Text>
                                                 </Form.Group>
                                                 <Form.Group >
                                                     <Form.Label>Număr de telefon</Form.Label>
-                                                    <Form.Control type="text" onChange={(e) => setPhone(e.target.value)} value={phone}/>
+                                                    <Form.Control type="text" onChange={(e) => setPhone(e.target.value)} defaultValue={userInfo ? userInfo.phone : phone}/>
                                                 </Form.Group>
                                                 <Form.Group   >
                                                     <Form.Label >Facturează ca:*</Form.Label>
@@ -173,7 +181,7 @@ export const ShippingScreen = props => {
                                                 </Form.Group>
                                                 <Form.Group   >
                                                     <Form.Label>Adresă*</Form.Label>
-                                                    <Form.Control as="textarea" rows={3} style={{resize:"none"}} onChange={(e) => setAddress(e.target.value)} value={address}/>
+                                                    <Form.Control as="textarea" rows={3} style={{resize:"none"}} onChange={(e) => setAddress(e.target.value)} defaultValue={userInfo ? userInfo.address : address}/>
                                                 </Form.Group>
                                                 <Form.Group   >
                                                     <Form.Label>Țară*</Form.Label>
@@ -483,11 +491,40 @@ export const ShippingScreen = props => {
                                     </tr>
                                     <tr style={{height:"40px"}}>
                                         <td>Metodă livrare</td>
-                                        <td>{methoddelivery}</td>
+                                        {
+                                            methoddelivery === "livrareafara" ? <td>Livrare în afara orașului - 20 lei</td>
+                                            : methoddelivery === "livrarebuzau" ? <td>Livrare gratuită în Buzău</td> :
+                                            <td>Ridicare personală din florărie</td>
+                                        }
                                     </tr>
                                     <tr style={{height:"40px"}}>
                                         <td >Metodă plată</td>
-                                        <td>{payment}</td>
+                                        {
+                                            payment === "platacard" ? <td>Plată card</td>
+                                            :  <td>Plată la livrare</td> 
+                                        }
+                                    </tr>
+                                </tbody>
+                            </Table>
+                            <Table responsive style={{backgroundColor:"white", marginTop:"20px"}}>
+                                <thead style={{backgroundColor:"lightgrey"}}>
+                                    <tr>
+                                        <th style={{textAlign:"left", fontSize:"18px"}}>Total</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Subtotal</td>
+                                        <td>{itemsPrice} LEI</td>
+                                    </tr>
+                                    <tr style={{color:"grey"}}>
+                                        <td>Preț livrare</td>
+                                        {methoddelivery === "livrareafara" ? <td>20 LEI</td> : <td>0 LEI</td>}
+                                    </tr>
+                                    <tr style={{fontWeight:"bold"}}>
+                                        <td>Total</td>
+                                        {methoddelivery === "livrareafara" ? <td>{itemsPrice+20} LEI</td> : <td>{itemsPrice} LEI</td>}
                                     </tr>
                                 </tbody>
                             </Table>
@@ -510,5 +547,7 @@ export const ShippingScreen = props => {
             </Styles>
 
         </Layout>
+    
+        
     )
 }

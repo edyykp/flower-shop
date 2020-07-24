@@ -7,13 +7,24 @@ const router = express.Router();
 router.post("/", async (req, res) => {
     const newOrder = new Order({
       orderItems: req.body.orderItems,
-      user: req.user._id,
-      shipping: req.body.shipping,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      phone: req.body.phone,
+      address: req.body.address,
+      country: req.body.country,
+      destinationName: req.body.destinationName,
+      destinationPhone: req.body.destinationPhone,
+      destinationAddress: req.body.destinationAddress,
+      destinationRegion: req.body.destinationRegion,
+      date: req.body.date,
+      hour: req.body.hour,
+      anonym: req.body.anonym,
+      facturare: req.body.facturare,
+      methoddelivery: req.body.methoddelivery,
       payment: req.body.payment,
-      itemsPrice: req.body.itemsPrice,
-      taxPrice: req.body.taxPrice,
-      shippingPrice: req.body.shippingPrice,
-      totalPrice: req.body.totalPrice,
+      comments: req.body.comments,
+      totalPrice: req.body.totalPrice
     });
     const newOrderCreated = await newOrder.save();
     res.status(201).send({ message: "New Order Created", data: newOrderCreated });
