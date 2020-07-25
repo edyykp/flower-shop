@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {CountryDropdown, RegionDropdown} from 'react-country-region-selector';
 import {ChevronLeft, ChevronRight} from 'react-bootstrap-icons';
 import { createOrder } from './actions/orderActions';
+import { notify } from 'react-notify-toast';
 
 const Styles = styled.div`
     
@@ -47,10 +48,10 @@ export const ShippingScreen = props => {
     const [destinationAddress, setDestinationAddress] = useState();
     const [destinationRegion, setRegion] = useState("Buzau");
     const [date, setDate] = useState("");
-    const [hour, setHour] = useState("");
-    const [anonym, setAnonym] = useState("");
-    const [methoddelivery, setMethodDelivery] = useState("");
-    const [payment, setPayment] = useState("");
+    const [hour, setHour] = useState("În cursul zilei");
+    const [anonym, setAnonym] = useState("Da");
+    const [methoddelivery, setMethodDelivery] = useState("livrarebuzau");
+    const [payment, setPayment] = useState("platacard");
     const [comments, setComments] = useState("");
 
     const cart = useSelector(state => state.cart);
@@ -75,10 +76,18 @@ export const ShippingScreen = props => {
         if (successOrder) {
           props.history.push("/");
         }
-    
       }, [successOrder, props]);
     
-    
+      useEffect(() => {
+        if(userInfo) {
+            setEmail(userInfo.email);
+            setPhone(userInfo.phone);
+            setAddress(userInfo.address);
+            setFirstName(userInfo.firstName);
+            setLastName(userInfo.lastName);
+        }
+      }, [userInfo]);
+
     const [firstCard, setFirstCard] = useState(true);
     const [secondCard, setSecondCard] = useState(false);
     const [thirdCard, setThirdCard] = useState(false);
@@ -89,10 +98,16 @@ export const ShippingScreen = props => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        let totalPrice = methoddelivery === "livrareafara" ? itemsPrice + 20 : itemsPrice;
-        dispatch(createOrder({firstName, lastName, email, phone, address, 
+        if(firstName !== "" && lastName !== "" && email!== "" && address !== "" && destinationAddress !== "" && date !== "" && hour !== "" && methoddelivery !== "" && payment !== "") {
+            let totalPrice = methoddelivery === "livrareafara" ? itemsPrice + 20 : itemsPrice;
+            dispatch(createOrder({firstName, lastName, email, phone, address, 
             facturare, country, destinationRegion, destinationPhone, destinationName, 
-            destinationAddress, date, hour, anonym, methoddelivery, payment, comments, totalPrice}));
+            destinationAddress, date, hour, anonym, methoddelivery, payment, comments, totalPrice, cartItems}));
+        }
+        else {
+            notify.show("Completează toate câmpurile obligatorii");
+        }
+        
     }
     return (
         loadingUser ? 
@@ -101,7 +116,7 @@ export const ShippingScreen = props => {
         </Layout> 
         : errorUser ?
         <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
-            <Container><h1>A apărut o eroare neașteptată.</h1></Container>
+            <h1 style={{position:"absolute", top:"50%", left: "50%"}}>A apărut o eroare neașteptată.</h1>
         </Layout> 
         : loadingOrder ? 
         <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
@@ -109,7 +124,7 @@ export const ShippingScreen = props => {
         </Layout>
         : errorOrder ? 
         <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
-            <Container><h1>A apărut o eroare neașteptată.</h1></Container>
+            <h1 style={{position:"absolute", top:"50%", left: "50%"}}>A apărut o eroare neașteptată.</h1>
         </Layout>
         :
         <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"45px", paddingBottom:"190px"}}>
@@ -147,13 +162,13 @@ export const ShippingScreen = props => {
                                             <Col>
                                                 <Form.Group >
                                                     <Form.Label>Nume*</Form.Label>
-                                                    <Form.Control type="text" onChange={(e) => setLastName(e.target.value)} defaultValue={userInfo ? userInfo.lastName : lastName}/>
+                                                    <Form.Control type="text" onChange={(e) => setLastName(e.target.value)} value={userInfo ? userInfo.lastName : lastName}/>
                                                 </Form.Group>
                                             </Col>
                                             <Col>
                                                 <Form.Group >
                                                     <Form.Label>Prenume*</Form.Label>
-                                                    <Form.Control type="text" onChange={(e) => setFirstName(e.target.value)} defaultValue={userInfo ? userInfo.firstName : firstName}/>
+                                                    <Form.Control type="text" onChange={(e) => setFirstName(e.target.value)} value={userInfo ? userInfo.firstName : firstName}/>
                                                 </Form.Group>
                                             </Col>
                                         </Form.Row>
@@ -161,14 +176,14 @@ export const ShippingScreen = props => {
                                             <Col>
                                                 <Form.Group >
                                                     <Form.Label>Adresă de email*</Form.Label>
-                                                    <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} defaultValue={userInfo ? userInfo.email : email}/>
+                                                    <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} value={userInfo ? userInfo.email : email}/>
                                                     <Form.Text className="text-muted">
                                                     We'll never share your email with anyone else.
                                                     </Form.Text>
                                                 </Form.Group>
                                                 <Form.Group >
                                                     <Form.Label>Număr de telefon</Form.Label>
-                                                    <Form.Control type="text" onChange={(e) => setPhone(e.target.value)} defaultValue={userInfo ? userInfo.phone : phone}/>
+                                                    <Form.Control type="text" onChange={(e) => setPhone(e.target.value)} value={userInfo ? userInfo.phone : phone}/>
                                                 </Form.Group>
                                                 <Form.Group   >
                                                     <Form.Label >Facturează ca:*</Form.Label>
@@ -181,7 +196,7 @@ export const ShippingScreen = props => {
                                                 </Form.Group>
                                                 <Form.Group   >
                                                     <Form.Label>Adresă*</Form.Label>
-                                                    <Form.Control as="textarea" rows={3} style={{resize:"none"}} onChange={(e) => setAddress(e.target.value)} defaultValue={userInfo ? userInfo.address : address}/>
+                                                    <Form.Control as="textarea" rows={3} style={{resize:"none"}} onChange={(e) => setAddress(e.target.value)} value={userInfo ? userInfo.address : address}/>
                                                 </Form.Group>
                                                 <Form.Group   >
                                                     <Form.Label>Țară*</Form.Label>
@@ -343,7 +358,7 @@ export const ShippingScreen = props => {
                                             <span style={{display:"inline", float:"right"}}>
                                                 <Image src="/assets/mobilpay.png" alt="mobilpay"/>
                                             </span>
-                                            <Form.Check type="radio" name="metodalivrare" value="livrarebuzau" label="Livrare gratuită în Buzău" onClick={e => setMethodDelivery(e.target.value)}/>
+                                            <Form.Check type="radio" name="metodalivrare" value="livrarebuzau" defaultChecked label="Livrare gratuită în Buzău" onClick={e => setMethodDelivery(e.target.value)}/>
                                             <Form.Check type="radio" name="metodalivrare" value="livrareafara" label="Livrare în afara orașului - 20 lei" onClick={e => setMethodDelivery(e.target.value)}/>
                                             <Form.Check type="radio" name="metodalivrare" value="ridicarepersonala" label="Ridicare personală din florărie" onClick={e => setMethodDelivery(e.target.value)}/>
                                         </Form.Group>
@@ -351,7 +366,7 @@ export const ShippingScreen = props => {
                                             <Form.Label>
                                                 <h3>Metodă de plată</h3>
                                             </Form.Label>
-                                            <Form.Check type="radio" name="metodaplata" value="platacard" label="Plată card" onClick={e => setPayment(e.target.value)}/>
+                                            <Form.Check type="radio" name="metodaplata" value="platacard" defaultChecked label="Plată card" onClick={e => setPayment(e.target.value)}/>
                                             
                                             <Form.Check type="radio" name="metodaplata" value="plataramburs" label="Plată la livrare" onClick={e => setPayment(e.target.value)}/>
                                         </Form.Group>
@@ -434,7 +449,11 @@ export const ShippingScreen = props => {
                                     </tr>
                                     <tr style={{height:"40px"}}>
                                         <td>Adresă de facturare</td>
-                                    <td>{address}{' '}{country}</td>
+                                        <td>{address}{' '}{country}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tip facturare</td>
+                                {facturare === "persoanafizica" ? <td>Persoană fizică</td> : <td>Firmă</td>}
                                     </tr>
                                 </tbody>
                             </Table>
@@ -519,7 +538,7 @@ export const ShippingScreen = props => {
                                         <td>{itemsPrice} LEI</td>
                                     </tr>
                                     <tr style={{color:"grey"}}>
-                                        <td>Preț livrare</td>
+                                        <td>Taxă de livrare</td>
                                         {methoddelivery === "livrareafara" ? <td>20 LEI</td> : <td>0 LEI</td>}
                                     </tr>
                                     <tr style={{fontWeight:"bold"}}>

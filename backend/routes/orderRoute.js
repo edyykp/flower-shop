@@ -4,9 +4,14 @@ import { isAuth, isAdmin } from '../util';
 
 const router = express.Router();
 
+router.get("/", isAuth, isAdmin, async (req, res) => {
+  const orders = await Order.find({}).populate('user');
+  res.send(orders);
+});
+
 router.post("/", async (req, res) => {
     const newOrder = new Order({
-      orderItems: req.body.orderItems,
+      cartItems: req.body.cartItems,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
@@ -48,6 +53,17 @@ router.put("/:id/pay", async (req, res) => {
     res.send({ message: 'Order Paid.', order: updatedOrder });
   } else {
     res.status(404).send({ message: 'Order not found.' })
+  }
+});
+
+
+router.delete("/:id", isAuth, isAdmin, async (req, res) => {
+  const order = await Order.findOne({ _id: req.params.id });
+  if (order) {
+    const deletedOrder = await order.remove();
+    res.send(deletedOrder);
+  } else {
+    res.status(404).send("Order Not Found.")
   }
 });
 

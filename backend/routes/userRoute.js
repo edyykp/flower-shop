@@ -3,6 +3,7 @@ import User from '../models/userModel';
 import { getToken } from '../util';
 import msgs from '../email.msgs';
 import sendEmail from '../email.send';
+import templates from '../email.templates';
 
 const router = express.Router();
 
@@ -12,15 +13,21 @@ router.post('/signin', async (req, res) => {
       password: req.body.password,
     });
     if (signinUser) {
-      res.send({
-        _id: signinUser.id,
-        firstName: signinUser.firstName,
-        lastName: signinUser.lastName,
-        phone: signinUser.phone,
-        email: signinUser.email,
-        isAdmin: signinUser.isAdmin,
-        token: getToken(signinUser),
-      });
+      if(signinUser.confirmedEmail === true) {
+        res.send({
+          _id: signinUser.id,
+          firstName: signinUser.firstName,
+          lastName: signinUser.lastName,
+          phone: signinUser.phone,
+          email: signinUser.email,
+          isAdmin: signinUser.isAdmin,
+          token: getToken(signinUser),
+        });
+      }
+      else {
+        res.status(401).send({message: "Adresa de email nu a fost confirmată"});
+      }
+      
     } else {
       res.status(401).send({ message: 'Invalid Email or Password.' });
     }
@@ -45,7 +52,12 @@ router.post('/signin', async (req, res) => {
               isAdmin: newUser.isAdmin,
               token: getToken(newUser),
             });
-            sendEmail(newUser.email, templates.confirm(newUser._id));
+            try {
+              sendEmail(newUser.email, templates.confirm(newUser._id));
+            }
+            catch(error) {
+              console.log(error.message);
+            }            
           }else {
             res.status(401).send({ message: 'Invalid User Data.' });
           }
@@ -56,12 +68,11 @@ router.post('/signin', async (req, res) => {
        
   });
 
-  router.put('/confirmemail', async (req, res) => {
-    const { id } = req.params;
-  
+  router.put('/confirmemail/:id', async (req, res) => {
+    const  id  = req.params.id;
     const user = await User.findById(id);
       if (!user) {
-        res.json({ msg: msgs.couldNotFind })
+        res.send({ msg: msgs.couldNotFind })
       }
       else if (user && !user.confirmedEmail) {
           user.confirmedEmail = true;
@@ -79,8 +90,9 @@ router.get("/createadmin", async (req, res) => {
             firstName: "Eduard",
             lastName: "Stoica",
             email: "eduard.c.stoica10@gmail.com",
-            password: "1234",
-            isAdmin: true
+            password: "12345678",
+            isAdmin: true,
+            confirmedEmail: true
         });
     
         const newUser = await user.save();

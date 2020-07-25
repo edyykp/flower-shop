@@ -67,11 +67,6 @@ export const SigninScreen = props => {
     const submitHandler = (e) => {
         e.preventDefault();
         setValidated(true);
-        if(remember && email !== "" && password !== "") {
-            localStorage.remember = true;
-            localStorage.email = email;
-            localStorage.password = password;
-        }
         dispatch(signin(email, password, remember));
     }
     return (

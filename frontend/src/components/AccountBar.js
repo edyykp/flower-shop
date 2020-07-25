@@ -1,7 +1,7 @@
 import React from 'react';
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import styled from 'styled-components';
-import {PersonPlus, PersonCircle, BoxArrowLeft, Person, BagPlus, Eye } from 'react-bootstrap-icons';
+import {PersonPlus, PersonCircle, BoxArrowLeft, Person, BagPlus, Eye, EyeFill } from 'react-bootstrap-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import {logout} from '../actions/userActions';
 
@@ -47,6 +47,10 @@ function AccountBar()  {
                                             <NavDropdown.Item href="/productstable">
                                                 <Eye size={30} color="grey" style={{paddingRight: "5px"}}/>
                                                 Vezi produse curente
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item href="/orderstable">
+                                                <EyeFill size={30} color="grey" style={{paddingRight: "5px"}} />
+                                                Vezi comenzi
                                             </NavDropdown.Item>
                                         </div>
                                     :

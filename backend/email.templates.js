@@ -1,4 +1,4 @@
-const { CLIENT_URL } = require('../config')
+import config from './config';
 
 // This file is exporting an Object with a single key/value pair.
 // However, because this is not a part of the logic of the application
@@ -8,13 +8,14 @@ const { CLIENT_URL } = require('../config')
 module.exports = {
 
   confirm: id => ({
-    subject: 'React Confirm Email',
+    subject: 'Email de confirmare florariamedeea.ro',
     html: `
-      <a href='${CLIENT_URL}/confirm/${id}'>
-        click to confirm email
+    <p>Apasă pe acest link pentru a îți confirma adresa de email.</p>
+      <a href='${config.CLIENT_URL}/confirmemail/${id}'>
+        ${config.CLIENT_URL}/confirmemail/${id}
       </a>
     `,      
-    text: `Copy and paste this link: ${CLIENT_URL}/confirm/${id}`
+    text: `Copy and paste this link: ${config.CLIENT_URL}/confirmemail/${id}`
   })
   
 }

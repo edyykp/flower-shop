@@ -28,6 +28,8 @@ import {ProductsScreen} from './ProductsScreen';
 import { ProductsTable } from './ProductsTable';
 import {ShippingScreen} from './ShippingScreen';
 import Notifications from 'react-notify-toast';
+import {Confirm} from './Confirm';
+import { OrdersTable } from './OrdersTable';
 const App = () => {
     loadReCaptcha();
     
@@ -62,6 +64,8 @@ const App = () => {
               <Route path="/products" component={ProductsScreen} />
               <Route path="/productstable" component={ProductsTable} />
               <Route path="/shipping" component={ShippingScreen}/>
+              <Route path="/confirmemail/:id" component={Confirm} />
+              <Route path="/orderstable" component={OrdersTable} />
               <Route component={NoMatch} />
             </Switch>
             

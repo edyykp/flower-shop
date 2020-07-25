@@ -8,5 +8,6 @@ export default {
     PORT: process.env.PORT,
     MAIL_USER: process.env.MAIL_USER,
     MAIL_PASS: process.env.MAIL_PASS,
-    CLIENT_URL: process.env.CLIENT_URL
+    CLIENT_URL: process.env.CLIENT_URL,
+    API_URL: process.env.API_URL
 }
