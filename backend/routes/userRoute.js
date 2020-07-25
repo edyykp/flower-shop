@@ -1,6 +1,8 @@
 import express from 'express';
 import User from '../models/userModel';
 import { getToken } from '../util';
+import msgs from '../email.msgs';
+import sendEmail from '../email.send';
 
 const router = express.Router();
 
@@ -43,7 +45,8 @@ router.post('/signin', async (req, res) => {
               isAdmin: newUser.isAdmin,
               token: getToken(newUser),
             });
-          } else {
+            sendEmail(newUser.email, templates.confirm(newUser._id));
+          }else {
             res.status(401).send({ message: 'Invalid User Data.' });
           }
         }
@@ -51,6 +54,23 @@ router.post('/signin', async (req, res) => {
           res.status(500).send({message: "Această adresă de mail este deja utilizată."});
         }
        
+  });
+
+  router.put('/confirmemail', async (req, res) => {
+    const { id } = req.params;
+  
+    const user = await User.findById(id);
+      if (!user) {
+        res.json({ msg: msgs.couldNotFind })
+      }
+      else if (user && !user.confirmedEmail) {
+          user.confirmedEmail = true;
+          const updatedUser = await user.save();
+          res.send({ msg: msgs.confirmed });
+        }
+        else  {
+          res.send({ msg: msgs.alreadyConfirmed });
+        }
   });
 
 router.get("/createadmin", async (req, res) => {

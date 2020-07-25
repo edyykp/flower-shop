@@ -5,6 +5,7 @@ import {  PersonPlus,  InfoCircleFill } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import {register} from './actions/userActions';
+import {notify} from 'react-notify-toast';
 
 const Styles = styled.div`
     .nav-item {
@@ -46,6 +47,8 @@ export const SignupScreen = props => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [ phone, setPhone] = useState('');
+    const [sendingEmail, setSendingEmail] = useState(false);
+
     const userRegister = useSelector(state=> state.userRegister);
     const {loading, userInfo, error } = userRegister;
 
@@ -53,12 +56,13 @@ export const SignupScreen = props => {
     const redirect = props.location.search ? props.location.search.split("=")[1] : '/';
     useEffect(() => {
         if(userInfo) {
-            props.history.push("/");
+            setSendingEmail(false);
+            notify.show("Un mail de confirmare a fost trimis");
         }
         return () => {
 
         };
-    }, [userInfo, props]);
+    }, [userInfo]);
     const [errorPas, setErrorPass] = useState("");
 
     const submitHandler = (e) => {
@@ -66,18 +70,22 @@ export const SignupScreen = props => {
             setErrorPass("Parolă invalidă");
             e.preventDefault();
             e.stopPropagation();
+            setValidated(true);
         }
         else
         if(e.currentTarget.checkValidity() === false ) {
             setErrorPass("Completează toate câmpurile cu atenție");
             e.preventDefault();
             e.stopPropagation();
+            setValidated(true);
         }
         else
         {
+            setSendingEmail(true);
             dispatch(register(firstName, lastName, email, phone, password));
+            setValidated(false);
         }
-        setValidated(true);
+        
     }
     const [validated, setValidated] = useState(false);
     return (
@@ -149,7 +157,11 @@ export const SignupScreen = props => {
                             </Form.Group>
                             <p style={{color:"grey"}}>* - câmp obligatoriu</p>
                             <Button type="submit" style={{width: "100%", height:"50px", backgroundColor:"purple", color:"lightgrey", borderColor:"purple", fontSize:"20px"}}>
-                                <strong>Înregistrează-te</strong>
+                                
+                                {sendingEmail && !error
+                                        ? <Spinner size='lg' spinning='spinning' /> 
+                                        : <strong>Înregistrează-te</strong>
+                                        }
                             </Button>
                         </Form>
                     </Card.Body>

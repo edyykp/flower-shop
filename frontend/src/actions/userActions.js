@@ -7,9 +7,10 @@ const signin = (email, password, remember) => async (dispatch) => {
     try {
         const {data} = await Axios.post("/api/users/signin", {email, password});
         dispatch({type: USER_SIGNIN_SUCCESS, payload: data});
-        // if( remember === true){
-        // Cookie.set('userInfo', JSON.stringify(data));
-        // }
+         if( remember === true){
+         Cookie.set('userInfo', JSON.stringify(data), {sameSite: "Strict", secure: true, expires: 3000});
+        }
+        else
         Cookie.set('userInfo', JSON.stringify(data), {sameSite: "Strict", secure: true});
     }
     catch (error) {

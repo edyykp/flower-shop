@@ -27,13 +27,13 @@ import {SignupScreen} from './SignupScreen';
 import {ProductsScreen} from './ProductsScreen';
 import { ProductsTable } from './ProductsTable';
 import {ShippingScreen} from './ShippingScreen';
-
+import Notifications from 'react-notify-toast';
 const App = () => {
     loadReCaptcha();
     
     return (
       <React.Fragment>
-        
+          <Notifications />
           <Router className="router" >
             <div style={{zIndex:"3", position:"fixed",width:"100%"}}>
             <AccountBar />

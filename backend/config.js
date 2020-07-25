@@ -3,7 +3,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export default {
-    MONGODB_URL: process.env.MONGODB_URL || 'mongodb://admin:admin@localhost/',
-    JWT_SECRET: process.env.JWT_SECRET || 'somethingsecret',
-    PORT: process.env.PORT || 5000,
+    MONGODB_URL: process.env.MONGODB_URL,
+    JWT_SECRET: process.env.JWT_SECRET,
+    PORT: process.env.PORT,
+    MAIL_USER: process.env.MAIL_USER,
+    MAIL_PASS: process.env.MAIL_PASS,
+    CLIENT_URL: process.env.CLIENT_URL
 }

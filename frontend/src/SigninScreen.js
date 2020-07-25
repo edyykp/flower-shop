@@ -53,6 +53,8 @@ export const SigninScreen = props => {
     const dispatch = useDispatch();
     const redirect = props.location.search ? props.location.search.split("=")[1] : '/';
 
+    
+    
     useEffect(() => {
         if(userInfo) {
             props.history.push(redirect);
@@ -65,6 +67,11 @@ export const SigninScreen = props => {
     const submitHandler = (e) => {
         e.preventDefault();
         setValidated(true);
+        if(remember && email !== "" && password !== "") {
+            localStorage.remember = true;
+            localStorage.email = email;
+            localStorage.password = password;
+        }
         dispatch(signin(email, password, remember));
     }
     return (
