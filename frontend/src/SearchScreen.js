@@ -4,23 +4,24 @@ import {Col, Row, Container, Form, Button} from 'react-bootstrap';
 import {Sidebar} from './components/Sidebar';
 import {ProductList} from './components/ProductList';
 import { Search } from 'react-bootstrap-icons';
+import { useLocation } from 'react-router';
 
-export const TrandafiriCriogenati = props => {
-    const [minPrice ,setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(9999);
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+  }
+
+export const SearchScreen = props => {
+    const [sortOrder, setSortOrder] = useState("Recomandate");
 
     const sortHandler = (e) => {
+        setSortOrder(e.target.value);
         let currentUrlParams = new URLSearchParams(window.location.search);
-        currentUrlParams.set('sortOrder', e.target.value);
+        currentUrlParams.set('sortOrder', sortOrder)
+        props.history.push('/search?sortOrder='+sortOrder);
         props.history.push(window.location.pathname + "?" + currentUrlParams.toString());
       };
 
-      const priceHandler = () => {
-        let currentUrlParams = new URLSearchParams(window.location.search);
-        currentUrlParams.set('minPrice', minPrice);
-        currentUrlParams.set('maxPrice', maxPrice);
-        props.history.push(window.location.pathname + "?" + currentUrlParams.toString());
-      }
+    let query = useQuery();
     return (
       <Layout style={{width: "100%", maxWidth: "100%",paddingTop:"40px", backgroundColor: "white", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
           <Row >
@@ -31,25 +32,25 @@ export const TrandafiriCriogenati = props => {
                 <Container style={{marginTop: "50px", marginLeft: "40px", width: "100%", maxWidth:"100%"}}>
                 <Row>
                           <Col style={{justifyContent: "left"}}>
-                              <strong><h2>Trandafiri criogenați</h2></strong>
+                              <strong><h2>{query.get("category")}</h2></strong>
                           </Col>
                           <Col style={{justifyContent: "right"}}>
                               <Form inline>
                                   Preț de la:   
-                                  <Form.Control type="text" style={{width:"80px"}} onChange={(e) => setMinPrice(e.target.value)}/>
+                                  <Form.Control type="text" style={{width:"80px"}}/>
                                   lei până la:  
-                                  <Form.Control type="text" style={{width:"80px"}} onChange={(e) => setMaxPrice(e.target.value)}/>
+                                  <Form.Control type="text" style={{width:"80px"}}/>
                                   lei
-                                  <Button variant="success" style={{marginLeft:"10px"}} onClick={priceHandler}>
+                                  <Button variant="success" style={{marginLeft:"10px"}}>
                                       <Search color="white" size={18} />
                                   </Button>
                                   <Form.Control as="select" style={{marginLeft: "5px"}} defaultValue="Recomandate" onChange={sortHandler}>
-                                  <option value="default">Recomandate</option>
-                                      <option value="highest">Preț crescător</option>
-                                      <option value="lowest">Preț descrescător</option>
-                                      <option value="mostsold">Cele mai vândute</option>
-                                      <option value="az">Ordine alfabetică(A-Z)</option>
-                                      <option value="za">Ordine alfabetica(Z-A)</option>
+                                      <option>Preț crescător</option>
+                                      <option>Preț descrescător</option>
+                                      <option>Recomandate</option>
+                                      <option>Cele mai vândute</option>
+                                      <option>Ordine alfabetică(A-Z)</option>
+                                      <option>Ordine alfabetica(Z-A)</option>
                                   </Form.Control>
                               </Form>
                           </Col>

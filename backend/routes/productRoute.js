@@ -1,11 +1,45 @@
-import express from 'express';
+import express, { query } from 'express';
 import Product from '../models/productModel';
 import { isAuth, isAdmin } from '../util';
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-    const products = await Product.find({});
+  const category = req.query.category ? 
+                  req.query.category === "botez" ?
+                    {category: ["aranjamentecristelnita", "lumanari" ]} 
+                  :
+                  req.query.category === "nunta" ?
+                    {category: ["buchetedemireasa" ,"lumanaridecununie" , "aranjamentefloralesala" , "buchetenasa"]}   
+                  : 
+                  req.query.category === "search" ?
+                    {} 
+                  :
+                  { category: req.query.category}: {};
+
+  const searchKeyword = req.query.searchKeyWord !== "null"
+  ? {
+      name: {
+        $regex: req.query.searchKeyWord,
+        $options: 'i',
+      },
+    }
+  : {};
+    const sortOrder = req.query.sortOrder
+    ? req.query.sortOrder === 'highest'
+      ?  { price: 1 } : 
+      req.query.sortOrder ==="lowest" ?
+      { price: -1 } 
+      : req.query.sortOrder === "az" ?
+      {name: 1} :
+      req.query.sortOrder === "za" ?
+      {name: -1} : { _id: -1 }: { _id: -1};
+
+    const minPrice = req.query.minPrice !== "null" ? {price: {$gte: req.query.minPrice}} : {};
+    const maxPrice = req.query.maxPrice !== "null" ? {price: {$lte: req.query.maxPrice}} : {};
+    console.log(minPrice);
+    console.log(maxPrice);
+    const products = await Product.find({...searchKeyword, ...category, ...minPrice, ...maxPrice}).sort(sortOrder);
     res.send(products);
 });
 

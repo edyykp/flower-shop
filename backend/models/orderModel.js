@@ -31,7 +31,8 @@ const orderSchema = new mongoose.Schema({
     methoddelivery: {type: String, required: true},
     payment: {type: String, required: true},
     comments: {type: String},
-    totalPrice: {type: String, required: true}
+    totalPrice: {type: String, required: true},
+    state: {type: Number, default: 0}
 });
 
 const orderModel = mongoose.model('Order', orderSchema);

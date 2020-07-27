@@ -61,6 +61,8 @@ export const NavigationBar = () => {
 
         const {cartItems} = cart;
 
+        const [category, setCategory] = useState("");
+
         const [show, setShow] = useState(false);
         const handleShow = () => setShow(true);
         const handleClose = () => setShow(false);
@@ -109,8 +111,8 @@ export const NavigationBar = () => {
                             +40 (784) 284 243
                             </a></p>
                         <Form inline>
-                            <FormControl type="text" placeholder="Caută produse" className="search-box mr-sm-2"/>
-                            <Button variant="secondary" id="search-button">Caută</Button>
+                            <FormControl type="text" placeholder="Caută produse" className="search-box mr-sm-2" onChange={(e) => setCategory(e.target.value)}/>
+                            <Button variant="secondary" id="search-button" href={`/search?category=${category}`} disabled={category === ""}>Caută</Button>
                         </Form>
                         <OverlayTrigger placement="left" overlay={tooltip}>
                                 <Cart4 color="purple" size={50} style={{paddingLeft:"15px"}} onClick={handleShow}/>

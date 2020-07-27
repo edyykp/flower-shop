@@ -13,10 +13,10 @@ import {
      PRODUCT_DELETE_SUCCESS,
      PRODUCT_DELETE_FAIL} from "../constants/productConstants";
 
-const listProducts = () => async (dispatch) => {
+const listProducts = ( category = '', sortOrder = '', searchKeyWord='', minPrice=0, maxPrice=9999) => async (dispatch) => {
     try {
         dispatch({type: PRODUCT_LIST_REQUEST});
-        const {data} = await Axios.get("/api/products");
+        const {data} = await Axios.get('/api/products?category=' + category + '&sortOrder=' + sortOrder + '&searchKeyWord=' + searchKeyWord + '&minPrice=' + minPrice + '&maxPrice=' + maxPrice);
         dispatch({type: PRODUCT_LIST_SUCCESS, payload: data})
     }
     catch(error){

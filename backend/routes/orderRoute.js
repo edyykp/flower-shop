@@ -67,4 +67,16 @@ router.delete("/:id", isAuth, isAdmin, async (req, res) => {
   }
 });
 
+router.put('/:id', isAuth, isAdmin, async (req, res) => {
+  const  id  = req.body.id;
+  const order = await Order.findById(id);
+    if (!order) {
+      res.status(401).send({ message: "Comandă inexistentă" })
+    }
+    else {
+        order.state = req.body.stateOrder;
+        const updatedOrder = await order.save();
+        res.send({ msg:  "Comandă actualizată", data: order });
+    }
+});
   export default router;

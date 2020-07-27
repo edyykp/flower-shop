@@ -37,7 +37,6 @@ const register = (firstName, lastName, email, phone, password) => async (dispatc
     dispatch({type: USER_CONFIRM_REQUEST, payload: id});
     try {
       const {data} = await Axios.put("/api/users/confirmemail/" + id, {id});
-      console.log(data);
       dispatch({type: USER_CONFIRM_SUCCESS, payload: data});
     }
     catch(error) {

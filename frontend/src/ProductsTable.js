@@ -74,13 +74,16 @@ export const ProductsTable = () => {
             {(error || errorSave || errorDelete ) && alert("A apărut o eroare neașteptată. Încearcă din nou.")}
             <Table striped bordered hover style={{backgroundColor:"white", marginTop:"20px"}}>
                 <thead>
-                    <th>ID</th>
-                    <th>Nume produs</th>
-                    <th>Preț</th>
-                    <th>Categorie</th>
-                    <th>Alcătuire</th>
-                    <th>Imagine</th>
-                    <th>Descriere</th>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nume produs</th>
+                        <th>Preț</th>
+                        <th>Categorie</th>
+                        <th>Alcătuire</th>
+                        <th>Imagine</th>
+                        <th>Descriere</th>
+                    </tr>
+                   
                 </thead>
                 <tbody>
                     {products.map((product) => (

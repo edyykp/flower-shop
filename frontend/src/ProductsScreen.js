@@ -46,7 +46,7 @@ export const ProductsScreen = props => {
     const [name, setName] = useState('');
     const [image, setImage] = useState('');
     const [price, setPrice] = useState('');
-    const [category, setCategory] = useState('Buchete de flori');
+    const [category, setCategory] = useState('bucheteflori');
     const [madeOf, setMadeOf] = useState('');
     const [description, setDescription] = useState('');
     const productSave = useSelector(state=> state.productSave);
@@ -80,7 +80,6 @@ export const ProductsScreen = props => {
                         <Card.Title >
                             <h3>Adăugați produs nou</h3>
                         </Card.Title>
-                        <Card.Text>
                             {loadingSave &&  <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
                                                 <Spinner animation="border" variant="secondary" style={{position:"absolute", top:"50%", left: "50%"}}/>
                                         </Layout> }
@@ -118,16 +117,16 @@ export const ProductsScreen = props => {
                             <Form.Group >
                                 <Form.Label>Categorie</Form.Label>
                                 <Form.Control as="select" onChange={(e) => setCategory(e.target.value)} defaultValue="Alege..." required>
-                                    <option>Buchete de flori</option>
-                                    <option>Aranjamente florale</option>
-                                    <option>Trandafiri criogenați</option>
-                                    <option>Plante</option>
-                                    <option>Buchete de mireasă</option>
-                                    <option>Lumânări de cununie</option>
-                                    <option>Aranjamente florale de sală</option>
-                                    <option>Buchete pentru nașă</option>
-                                    <option>Aranjamente cristelniță</option>
-                                    <option>Lumânări</option>
+                                    <option value="bucheteflori">Buchete de flori</option>
+                                    <option value="aranjamenteflori">Aranjamente florale</option>
+                                    <option value="trandafiricriogenati">Trandafiri criogenați</option>
+                                    <option value="plante">Plante</option>
+                                    <option value="buchetedemireasa">Buchete de mireasă</option>
+                                    <option value="lumanaridecununie">Lumânări de cununie</option>
+                                    <option value="aranjamentefloralesala">Aranjamente florale de sală</option>
+                                    <option value="buchetenasa">Buchete pentru nașă</option>
+                                    <option value="aranjamentecristelnita">Aranjamente cristelniță</option>
+                                    <option value="lumanari">Lumânări</option>
                                 </Form.Control>
                                 <Form.Text className="text-muted">
                                     Categoria în care va fi afișat produsul.
@@ -137,7 +136,6 @@ export const ProductsScreen = props => {
                                 <strong>Adaugă produs</strong>
                             </Button>
                         </Form>
-                        </Card.Text>
                     </Card.Body>
                 </Card>
             </Styles>
