@@ -42,7 +42,7 @@ export const AranjamenteCristelnita = props => {
                                   lei până la:  
                                   <Form.Control type="text" style={{width:"80px"}} onChange={(e) => setMaxPrice(e.target.value)}/>
                                   lei
-                                  <Button variant="success" style={{marginLeft:"10px"}} onChange={sortHandler}>
+                                  <Button variant="success" style={{marginLeft:"10px"}} onClick={priceHandler}>
                                       <Search color="white" size={18} />
                                   </Button>
                                   <Form.Control as="select" style={{marginLeft: "5px"}} defaultValue="Recomandate" onChange={sortHandler}>
