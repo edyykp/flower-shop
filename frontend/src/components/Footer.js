@@ -21,7 +21,7 @@ export const Footer = () => {
         </MDBRow>
       </MDBContainer>
         <MDBContainer fluid style={{backgroundColor:"#928D94"}} className="footer-copyright text-center py-3">
-          &copy; {new Date().getFullYear()} Copyright: <a href="https://www.florariebuzau.ro/" style={{color: "blue"}}> florariebuzau.ro </a>
+          &copy; {new Date().getFullYear()} Copyright: <a href="https://www.florariemedeea.ro/" style={{color: "blue"}}> florariemedeea.ro </a>
         </MDBContainer>
     </MDBFooter>
   );

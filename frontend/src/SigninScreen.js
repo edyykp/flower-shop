@@ -111,7 +111,7 @@ export const SigninScreen = props => {
                                 <strong>Autentifică-te</strong>
                             </Button>
                         </Form>
-                        <Button variant="link">
+                        <Button variant="link" href="/forgotten">
                             Ați uitat parola?
                         </Button>
                     </Card.Body>

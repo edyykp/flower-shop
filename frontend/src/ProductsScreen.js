@@ -4,6 +4,7 @@ import { Form, Button, Card, Spinner } from 'react-bootstrap';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveProduct } from './actions/productActions';
+import Axios from 'axios';
 
 const Styles = styled.div`
     .nav-item {
@@ -49,6 +50,7 @@ export const ProductsScreen = props => {
     const [category, setCategory] = useState('bucheteflori');
     const [madeOf, setMadeOf] = useState('');
     const [description, setDescription] = useState('');
+    const [uploading, setUploading] = useState(false);
     const productSave = useSelector(state=> state.productSave);
     const {loading: loadingSave, success: successSave, error: errorSave } = productSave;
     
@@ -69,6 +71,27 @@ export const ProductsScreen = props => {
         if(e.target.checkValidity() === true)
             dispatch(saveProduct({name, image, price, category, madeOf, description}));
     }
+
+    const uploadFileHandler = (e) => {
+        const file = e.target.files[0];
+        const bodyFormData = new FormData();
+        bodyFormData.append('image', file);
+        setUploading(true);
+        Axios
+          .post('/api/uploads', bodyFormData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then((response) => {
+            setImage(response.data);
+            setUploading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setUploading(false);
+          });
+    }
     return (
         <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"82px"}}>
             <Styles>
@@ -80,7 +103,7 @@ export const ProductsScreen = props => {
                         <Card.Title >
                             <h3>Adăugați produs nou</h3>
                         </Card.Title>
-                            {loadingSave &&  <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
+                            {(loadingSave || uploading) &&  <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
                                                 <Spinner animation="border" variant="secondary" style={{position:"absolute", top:"50%", left: "50%"}}/>
                                         </Layout> }
                             
@@ -93,7 +116,7 @@ export const ProductsScreen = props => {
                                 </Form.Text>
                             </Form.Group>
                             <Form.Group>
-                                <Form.File label="Selectează imagine" required onChange={(e) => setImage(e.target.value)}/>
+                                <Form.File label="Selectează imagine" required onChange={uploadFileHandler}/>
                             </Form.Group>
 
                             <Form.Group >

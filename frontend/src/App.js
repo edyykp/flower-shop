@@ -31,9 +31,17 @@ import Notifications from 'react-notify-toast';
 import {Confirm} from './Confirm';
 import { OrdersTable } from './OrdersTable';
 import { SearchScreen } from './SearchScreen';
+import { useSelector } from 'react-redux';
+import { ProfileScreen } from './ProfileScreen';
+import { MyOrdersScreen } from './MyOrdersScreen';
+import { ForgotScreen } from './ForgotScreen';
+import { ResetScreen } from './ResetScreen';
 const App = () => {
     loadReCaptcha();
-    
+
+    const userSignin = useSelector((state) => state.userSignin);
+    const { userInfo } = userSignin;
+
     return (
       <React.Fragment>
           <Notifications />
@@ -62,18 +70,23 @@ const App = () => {
               <Route path="/productdetails/:id" component={ProductDetails} />
               <Route path="/signin" component={SigninScreen} />
               <Route path="/signup" component={SignupScreen} />
-              <Route path="/products" component={ProductsScreen} />
-              <Route path="/productstable" component={ProductsTable} />
+              {userInfo && userInfo.isAdmin && <Route path="/products" component={ProductsScreen} />}
+              {userInfo && userInfo.isAdmin && <Route path="/productstable" component={ProductsTable} />}
               <Route path="/shipping" component={ShippingScreen}/>
               <Route path="/confirmemail/:id" component={Confirm} />
-              <Route path="/orderstable" component={OrdersTable} />
+              {userInfo && userInfo.isAdmin && <Route path="/orderstable" component={OrdersTable} />}
               <Route path="/search" component={SearchScreen} />
+              {userInfo && !userInfo.isAdmin && <Route path="/accountprofile" component={ProfileScreen} />}
+              {userInfo && !userInfo.isAdmin && <Route path="/orders" component={MyOrdersScreen} />}
+              <Route path="/forgotten" component={ForgotScreen}/>
+              <Route path="/reset" component={ResetScreen} />
               <Route component={NoMatch} />
             </Switch>
             
             </div>
+              <Footer />
+         
             
-            <Footer />
           </Router>
        
           

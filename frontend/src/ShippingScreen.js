@@ -33,6 +33,7 @@ export const ShippingScreen = props => {
     const userSignin = useSelector(state=> state.userSignin);
     const {loading: loadingUser, userInfo, error: errorUser } = userSignin;
 
+    const [userID, setUserID] = useState("");
     const [email, setEmail] = useState("");
     const [address, setAddress] = useState("");
     const [firstName, setFirstName] = useState("");
@@ -43,9 +44,9 @@ export const ShippingScreen = props => {
     const [country, setCountry] = useState('Romania'); 
     const [facturare, setFacturare] = useState('persoanafizica');
     const [progression, setProgression] = useState(20);
-    const [destinationName, setDestinationName] = useState();
-    const [destinationPhone, setDestinationPhone] = useState();
-    const [destinationAddress, setDestinationAddress] = useState();
+    const [destinationName, setDestinationName] = useState("");
+    const [destinationPhone, setDestinationPhone] = useState("");
+    const [destinationAddress, setDestinationAddress] = useState("");
     const [destinationRegion, setRegion] = useState("Buzau");
     const [date, setDate] = useState("");
     const [hour, setHour] = useState("În cursul zilei");
@@ -53,10 +54,11 @@ export const ShippingScreen = props => {
     const [methoddelivery, setMethodDelivery] = useState("livrarebuzau");
     const [payment, setPayment] = useState("platacard");
     const [comments, setComments] = useState("");
+    const [companyName, setCompanyName] = useState("");
+    const [cui, setCUI] = useState("");
 
     const cart = useSelector(state => state.cart);
     const {cartItems} = cart;
-
     const orderCreate = useSelector(state => state.orderCreate);
     const { loading: loadingOrder, success: successOrder, error: errorOrder } = orderCreate;
 
@@ -85,6 +87,7 @@ export const ShippingScreen = props => {
             setAddress(userInfo.address);
             setFirstName(userInfo.firstName);
             setLastName(userInfo.lastName);
+            setUserID(userInfo._id);
         }
       }, [userInfo]);
 
@@ -99,10 +102,19 @@ export const ShippingScreen = props => {
     const submitHandler = (e) => {
         e.preventDefault();
         if(firstName !== "" && lastName !== "" && email!== "" && address !== "" && destinationAddress !== "" && date !== "" && hour !== "" && methoddelivery !== "" && payment !== "") {
-            let totalPrice = methoddelivery === "livrareafara" ? itemsPrice + 20 : itemsPrice;
-            dispatch(createOrder({firstName, lastName, email, phone, address, 
-            facturare, country, destinationRegion, destinationPhone, destinationName, 
-            destinationAddress, date, hour, anonym, methoddelivery, payment, comments, totalPrice, cartItems}));
+            if(facturare === "persoanafizica") {
+                let totalPrice = methoddelivery === "livrareafara" ? itemsPrice + 20 : itemsPrice;
+                dispatch(createOrder({userID, firstName, lastName, email, phone, address, 
+                facturare, country, destinationRegion, destinationPhone, destinationName, 
+                destinationAddress, date, hour, anonym, methoddelivery, payment, comments, totalPrice, cartItems, companyName, cui}));
+            }
+            else if(companyName !== "" && cui !== "") {
+                let totalPrice = methoddelivery === "livrareafara" ? itemsPrice + 20 : itemsPrice;
+                dispatch(createOrder({userID, firstName, lastName, email, phone, address, 
+                facturare, country, destinationRegion, destinationPhone, destinationName, 
+                destinationAddress, date, hour, anonym, methoddelivery, payment, comments, totalPrice, cartItems, companyName, cui}));
+            }  
+            
         }
         else {
             notify.show("Completează toate câmpurile obligatorii");
@@ -162,13 +174,13 @@ export const ShippingScreen = props => {
                                             <Col>
                                                 <Form.Group >
                                                     <Form.Label>Nume*</Form.Label>
-                                                    <Form.Control type="text" onChange={(e) => setLastName(e.target.value)} value={userInfo ? userInfo.lastName : lastName}/>
+                                                    <Form.Control type="text" onChange={(e) => setLastName(e.target.value)} defaultValue={userInfo ? userInfo.lastName : lastName}/>
                                                 </Form.Group>
                                             </Col>
                                             <Col>
                                                 <Form.Group >
                                                     <Form.Label>Prenume*</Form.Label>
-                                                    <Form.Control type="text" onChange={(e) => setFirstName(e.target.value)} value={userInfo ? userInfo.firstName : firstName}/>
+                                                    <Form.Control type="text" onChange={(e) => setFirstName(e.target.value)} defaultValue={userInfo ? userInfo.firstName : firstName}/>
                                                 </Form.Group>
                                             </Col>
                                         </Form.Row>
@@ -176,14 +188,14 @@ export const ShippingScreen = props => {
                                             <Col>
                                                 <Form.Group >
                                                     <Form.Label>Adresă de email*</Form.Label>
-                                                    <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} value={userInfo ? userInfo.email : email}/>
+                                                    <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} defaultValue={userInfo ? userInfo.email : email}/>
                                                     <Form.Text className="text-muted">
                                                     We'll never share your email with anyone else.
                                                     </Form.Text>
                                                 </Form.Group>
                                                 <Form.Group >
                                                     <Form.Label>Număr de telefon</Form.Label>
-                                                    <Form.Control type="text" onChange={(e) => setPhone(e.target.value)} value={userInfo ? userInfo.phone : phone}/>
+                                                    <Form.Control type="text" onChange={(e) => setPhone(e.target.value)} defaultValue={userInfo ? userInfo.phone : phone}/>
                                                 </Form.Group>
                                                 <Form.Group   >
                                                     <Form.Label >Facturează ca:*</Form.Label>
@@ -191,12 +203,27 @@ export const ShippingScreen = props => {
                                                     <Form.Check type="radio" label="Persoană fizică" inline value="persoanafizica" name="facturare" defaultChecked onClick={() => setFacturare("persoanafizica")}/>
                                                     <Form.Check type="radio" label="Firmă" inline value="firma" name="facturare" onClick={() => setFacturare("firma")}/>
                                                     </Container>
-                                                    
+                                                    <Container>
+                                                        {
+                                                            facturare === "firma" && 
+                                                            <Form.Row>
+                                                                <Form.Group as={Col}>
+                                                                    <Form.Label>Denumire firmă</Form.Label>
+                                                                    <Form.Control type="text" onChange={(e) =>setCompanyName(e.target.value)} defaultValue={userInfo? userInfo.companyName : companyName}/>
+                                                                </Form.Group>
+                                                                <Form.Group as={Col}>
+                                                                    <Form.Label>Număr înregistrare firmă</Form.Label>
+                                                                    <Form.Control type="text" onChange={(e) => setCUI(e.target.value)} defaultValue={userInfo? userInfo.companyName : companyName}/>
+                                                                </Form.Group>
+                                                            </Form.Row>
+                                                                
+                                                        }
+                                                    </Container>
                                                     
                                                 </Form.Group>
                                                 <Form.Group   >
                                                     <Form.Label>Adresă*</Form.Label>
-                                                    <Form.Control as="textarea" rows={3} style={{resize:"none"}} onChange={(e) => setAddress(e.target.value)} value={userInfo ? userInfo.address : address}/>
+                                                    <Form.Control as="textarea" rows={3} style={{resize:"none"}} onChange={(e) => setAddress(e.target.value)} defaultValue={userInfo ? userInfo.address : address}/>
                                                 </Form.Group>
                                                 <Form.Group   >
                                                     <Form.Label>Țară*</Form.Label>
@@ -455,6 +482,13 @@ export const ShippingScreen = props => {
                                         <td>Tip facturare</td>
                                 {facturare === "persoanafizica" ? <td>Persoană fizică</td> : <td>Firmă</td>}
                                     </tr>
+                                    {
+                                        facturare === "firma" && 
+                                            <tr>
+                                                <td>Denumire firmă și Cod Unic de înregistrare</td>
+                                                <td>{companyName}{', '}{cui}</td>
+                                            </tr>
+                                    }
                                 </tbody>
                             </Table>
                             <Table responsive style={{backgroundColor:"white", marginTop:"20px"}}>

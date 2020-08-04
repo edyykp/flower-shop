@@ -26,7 +26,7 @@ const listMyOrders = () => async (dispatch, getState) => {
   try {
     dispatch({ type: MY_ORDER_LIST_REQUEST });
     const { userSignin: { userInfo } } = getState();
-    const { data } = await Axios.get("/api/orders/mine", {
+    const { data } = await Axios.get("/api/orders/" + userInfo._id, {
       headers:
         { Authorization: 'Bearer ' + userInfo.token }
     });
@@ -69,6 +69,7 @@ const deleteOrder = (orderId) => async (dispatch, getState) => {
   try {
     dispatch({ type: ORDER_DELETE_REQUEST, payload: orderId });
     const { userSignin: { userInfo } } = getState();
+    console.log(orderId);
     const { data } = await Axios.delete("/api/orders/" + orderId, {
       headers:
         { Authorization: 'Bearer ' + userInfo.token }

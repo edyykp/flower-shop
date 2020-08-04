@@ -26,7 +26,7 @@ export const OrdersTable = () => {
                 <Spinner animation="border" variant="secondary" style={{position:"absolute", top:"50%", left: "50%"}}/>
         </Layout> 
         :
-        <Layout style={{height:"100vh",background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"20px"}}>
+        <Layout style={{height:"100vh",background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "130%", maxWidth: "130%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"20px"}}>
             {error  && alert("A apărut o eroare neașteptată. Încearcă din nou.")}
             <Table striped bordered hover style={{backgroundColor:"white", marginTop:"20px"}}>
                 <thead>
@@ -36,6 +36,7 @@ export const OrdersTable = () => {
                     <th>Email și telefon client</th>
                     <th>Adresă client</th>
                     <th>Facturare</th>
+                    <th>Firmă și C.U.I</th>
                     <th>Adresă de livrare</th>
                     <th>Contact destinatar</th>
                     <th>Data și ora livrării</th>

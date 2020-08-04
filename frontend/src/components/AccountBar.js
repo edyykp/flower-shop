@@ -1,9 +1,10 @@
 import React from 'react';
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import styled from 'styled-components';
-import {PersonPlus, PersonCircle, BoxArrowLeft, Person, BagPlus, Eye, EyeFill } from 'react-bootstrap-icons';
+import {PersonPlus, PersonCircle, BoxArrowLeft, Person, BagPlus, Eye, EyeFill, ClockHistory } from 'react-bootstrap-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import {logout} from '../actions/userActions';
+import { useHistory } from 'react-router';
 
 const Styles = styled.div`
     .navbar {
@@ -21,15 +22,15 @@ const Styles = styled.div`
 
 
 `;
-function AccountBar()  {
+export const AccountBar = () => {
     const userSignin = useSelector(state=>state.userSignin);
     const {userInfo} = userSignin;
-
+    const history = useHistory();
     const dispatch = useDispatch();
 
     const handleLogout = () => {
         dispatch(logout());
-        window.location.reload(false);
+        history.push('/');
       }
 
     return (
@@ -54,10 +55,17 @@ function AccountBar()  {
                                             </NavDropdown.Item>
                                         </div>
                                     :
+                                    <div>
                                         <NavDropdown.Item href="/accountprofile">
-                                            <Person size={30} color="grey" style={{paddingRight: "5px"}}/>
-                                                Profilul meu
+                                                <Person size={30} color="grey" style={{paddingRight: "5px"}}/>
+                                                    Profilul meu
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item href="/orders">
+                                            <ClockHistory size={30} color="grey" style={{paddingRight: "5px"}}/>
+                                                Comenzile mele
                                         </NavDropdown.Item>
+                                    </div>
+                                        
                                     }
                                     
                                     <NavDropdown.Divider />

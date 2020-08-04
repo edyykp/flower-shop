@@ -18,7 +18,6 @@ export const OrderInTable = ({order}, key) => {
     useEffect(() => {
         if(successChange) {
             setStateOrder(newOrder.data.state);
-            console.log(newOrder);
         }
         return () => {
           //
@@ -32,8 +31,8 @@ export const OrderInTable = ({order}, key) => {
           //
         };
       }, [successDelete]);
-
-      const deleteHandler = (order) => {
+      
+      const deleteHandler = () => {
         dispatch(deleteOrder(order._id));
       }
       const changeStateHandler = (id) => {
@@ -41,26 +40,25 @@ export const OrderInTable = ({order}, key) => {
       }
 
     return (
-        loadingDelete ? 
-                <Spinner animation="border" variant="secondary" style={{position:"absolute", top:"50%", left: "50%"}}/>
-        :
+        loadingDelete ? <tr><td>LOADING</td></tr> :
         <tr key={order._id}>
             {(errorDelete || errorChange)  && alert("A apărut o eroare neașteptată. Încearcă din nou.")}
                         <td>{
                             order.cartItems.map((product) => 
-                                <div key={product._id}>
+                                <span key={product._id}>
                                     <span>{product.name}</span>,
                                     <span>{product.qty}</span>,
                                     <span>{product.price}{' '}</span> LEI,
                                     <span>{product.textGift}</span>
                                     <hr/>
-                                </div>
+                                </span>
                             )}
                         </td>
                         <td>{order.firstName}{' '}{order.lastName}</td>
                         <td>{order.email}{' '}{order.phone}</td>
                         <td>{order.address}{', '}{order.country}</td>
                         {order.facturare === "persoanafizica" ? <td>Persoană fizică</td> : <td>Firmă</td>}
+                        <td>{order.companyName}{', '}{order.cui}</td>   
                         <td>{order.destinationAddress}{', '}{order.destinationRegion}</td>
                         <td>{order.destinationName}{' '}{order.destinationPhone}</td>
                         <td>{order.date}{', '}{order.hour}</td>
@@ -77,15 +75,12 @@ export const OrderInTable = ({order}, key) => {
                         <td>{order.comments}</td>
                         <td>{order.totalPrice} LEI</td>
                         <td>
-                            <div>
                                 <ToggleButtonGroup type="radio" name="options" defaultValue={order.state}>
                                     <ToggleButton value={0} style={{border:"1px solid black"}} onClick={() => setStateOrder(0)}>Nelivrat</ToggleButton>
                                     <ToggleButton value={1} style={{border:"1px solid black"}} onClick={() => setStateOrder(1)}>În curs</ToggleButton>
                                     <ToggleButton value={2} style={{border:"1px solid black"}} onClick={() => setStateOrder(2)}>Livrat</ToggleButton>
                                 </ToggleButtonGroup>
-                            </div>
-                            <div style={{marginTop:"10px"}}>
-                                <Button variant="info" onClick={() => changeStateHandler(order)}>
+                                <Button variant="info" onClick={() => changeStateHandler(order)} style={{marginTop:'5px'}}>
                                     { loadingChange ? <Spinner animation="border" variant="secondary" /> :
                                 <span>Modifică</span>
                                 }
@@ -93,10 +88,10 @@ export const OrderInTable = ({order}, key) => {
                                 <Button
                                     variant="danger"
                                     onClick={() => deleteHandler(key)}
+                                    style={{marginTop:'5px'}}
                                 >
                                     Delete
                                 </Button>
-                            </div>
                         
                         </td>
                     </tr>
