@@ -10,6 +10,7 @@ import {notify} from 'react-notify-toast';
 const Styles = styled.div`
     .nav-item {
         width:50%;
+        
     }
 
     .nav-link:not(.active) {
@@ -23,7 +24,6 @@ const Styles = styled.div`
     }
 
     .card {
-        width: 40%;
         margin-top: 50px;
         margin-left: auto;
         margin-right: auto;
@@ -88,6 +88,17 @@ export const SignupScreen = props => {
         
     }
     const [validated, setValidated] = useState(false);
+
+    const [width, setWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        function handleResize() {
+            setWidth(window.innerWidth);
+        }
+      
+        window.addEventListener('resize', handleResize)
+    });
+
     return (
         
             loading ? <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
@@ -96,8 +107,10 @@ export const SignupScreen = props => {
         :
         <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"40px"}}>
            
-            <Styles>
-                <Card>
+           {
+               width > 800 ? 
+               <Styles>
+                <Card style={{width:"40%"}}>
                     <Card.Header>
                         <Nav variant="tabs" defaultActiveKey={redirect === "/" ? "/signup" : "/signup?redirect=" + redirect}>
                             <Nav.Item>
@@ -117,22 +130,22 @@ export const SignupScreen = props => {
                         <Form onSubmit={submitHandler} noValidate validated={validated}>
                             <Form.Group controlId="formBasicName">
                                 <Form.Label>Nume*</Form.Label>
-                                <Form.Control type="text" onChange={(e) => setLastName(e.target.value)} required/>
+                                <Form.Control type="text" onChange={(e) => setLastName(e.target.value)} required maxLength={20}/>
                             </Form.Group>
                             <Form.Group controlId="formBasicName">
                                 <Form.Label>Prenume*</Form.Label>
-                                <Form.Control type="text" onChange={(e) => setFirstName(e.target.value)} required/>
+                                <Form.Control type="text" onChange={(e) => setFirstName(e.target.value)} required maxLength={20}/>
                             </Form.Group>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Adresă de email*</Form.Label>
-                                <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} required/>
+                                <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} required maxLength={50}/>
                                 <Form.Text className="text-muted">
                                 We'll never share your email with anyone else.
                                 </Form.Text>
                             </Form.Group>
                             <Form.Group controlId="formBasicName">
                                 <Form.Label>Număr de telefon</Form.Label>
-                                <Form.Control type="text" onChange={(e) => setPhone(e.target.value)}/>
+                                <Form.Control type="text" onChange={(e) => setPhone(e.target.value)} maxLength={15}/>
                             </Form.Group>
                             <Form.Group controlId="formBasicPassword"  >
                                 <Form.Label>Parolă*</Form.Label>
@@ -149,13 +162,17 @@ export const SignupScreen = props => {
                                     <InfoCircleFill size={25}  color="grey" style={{paddingLeft:"10px"}}/>
                                 </OverlayTrigger>
 
-                                <Form.Control type="password" placeholder="Parolă" required onChange={(e) => setPassword(e.target.value)}/>
+                                <Form.Control type="password" placeholder="Parolă" required onChange={(e) => setPassword(e.target.value)} maxLength={30}/>
                             </Form.Group>
                             <Form.Group controlId="formBasicPassword" >
                                 <Form.Label>Confirmare parolă*</Form.Label>
-                                <Form.Control type="password" required onChange={(e) => setRePassword(e.target.value)}/>
+                                <Form.Control type="password" required onChange={(e) => setRePassword(e.target.value)} maxLength={30}/>
                             </Form.Group>
                             <p style={{color:"grey"}}>* - câmp obligatoriu</p>
+                            <Form.Group controlId="formBasicCheckbox">
+                                 <Form.Check type="checkbox" label="Acceptă termenii și condițiile" required feedback="Acceptă termenii și condițiile"/>
+                            </Form.Group>
+                            
                             <Button type="submit" style={{width: "100%", height:"50px", backgroundColor:"purple", color:"lightgrey", borderColor:"purple", fontSize:"20px"}}>
                                 
                                 {sendingEmail && !error
@@ -167,6 +184,84 @@ export const SignupScreen = props => {
                     </Card.Body>
                 </Card>
             </Styles>
+            :
+            <Styles>
+                <Card style={{width:"90%"}}>
+                    <Card.Header>
+                        <Nav variant="tabs" defaultActiveKey={redirect === "/" ? "/signup" : "/signup?redirect=" + redirect}>
+                            <Nav.Item>
+                                <Nav.Link href={redirect === "/" ? "/signin" : "/signin?redirect=" + redirect} className="nav-link">Autentificare</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link href={redirect === "/" ? "/signup" : "/signup?redirect=" + redirect} className="nav-link">Înregistrare</Nav.Link>
+                            </Nav.Item>
+                        </Nav>
+                    </Card.Header>
+                    <Card.Body>
+                        <Card.Title >
+                            <PersonPlus size={100} color="lightgrey" style={{display:"block", marginLeft:"auto", marginRight:"auto"}}/>
+                        </Card.Title>
+                            {errorPas && <div style={{color:"black", fontWeight:"bold", textAlign:"center", border:"2px solid red", backgroundColor:"#DA7E7E"}}>{errorPas}</div>}
+                            {error && <div style={{color:"black", fontWeight:"bold", textAlign:"center", border:"2px solid red", backgroundColor:"#DA7E7E"}}>Adresa de email este deja utilizată.</div>}
+                        <Form onSubmit={submitHandler} noValidate validated={validated}>
+                            <Form.Group controlId="formBasicName">
+                                <Form.Label>Nume*</Form.Label>
+                                <Form.Control type="text" onChange={(e) => setLastName(e.target.value)} required maxLength={20}/>
+                            </Form.Group>
+                            <Form.Group controlId="formBasicName">
+                                <Form.Label>Prenume*</Form.Label>
+                                <Form.Control type="text" onChange={(e) => setFirstName(e.target.value)} required maxLength={20}/>
+                            </Form.Group>
+                            <Form.Group controlId="formBasicEmail">
+                                <Form.Label>Adresă de email*</Form.Label>
+                                <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} required maxLength={50}/>
+                                <Form.Text className="text-muted">
+                                We'll never share your email with anyone else.
+                                </Form.Text>
+                            </Form.Group>
+                            <Form.Group controlId="formBasicName">
+                                <Form.Label>Număr de telefon</Form.Label>
+                                <Form.Control type="text" onChange={(e) => setPhone(e.target.value)} maxLength={15}/>
+                            </Form.Group>
+                            <Form.Group controlId="formBasicPassword"  >
+                                <Form.Label>Parolă*</Form.Label>
+                                
+                                <OverlayTrigger
+                                    key="right"
+                                    placement="right"
+                                    overlay={
+                                        <Tooltip id="tooltip-right">
+                                            Parola trebuie să conțină puțin 8 caractere.
+                                        </Tooltip>
+                                    }
+                                    >
+                                    <InfoCircleFill size={25}  color="grey" style={{paddingLeft:"10px"}}/>
+                                </OverlayTrigger>
+
+                                <Form.Control type="password" placeholder="Parolă" required onChange={(e) => setPassword(e.target.value)} maxLength={30}/>
+                            </Form.Group>
+                            <Form.Group controlId="formBasicPassword" >
+                                <Form.Label>Confirmare parolă*</Form.Label>
+                                <Form.Control type="password" required onChange={(e) => setRePassword(e.target.value)} maxLength={30}/>
+                            </Form.Group>
+                            <p style={{color:"grey"}}>* - câmp obligatoriu</p>
+                            <Form.Group controlId="formBasicCheckbox">
+                                 <Form.Check type="checkbox" label="Acceptă termenii și condițiile" required feedback="Acceptă termenii și condițiile"/>
+                            </Form.Group>
+                            
+                            <Button type="submit" style={{width: "100%", height:"50px", backgroundColor:"purple", color:"lightgrey", borderColor:"purple", fontSize:"20px"}}>
+                                
+                                {sendingEmail && !error
+                                        ? <Spinner size='lg' spinning='spinning' /> 
+                                        : <strong>Înregistrează-te</strong>
+                                        }
+                            </Button>
+                        </Form>
+                    </Card.Body>
+                </Card>
+            </Styles>
+           }
+            
         </Layout>
     )
 }

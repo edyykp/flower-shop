@@ -25,7 +25,7 @@ const wSidebar = props => {
     const {location} = props;
     return (
         <Styles >
-                <strong >Categorii</strong>
+                <strong style={{marginLeft:"5px"}}>Categorii</strong>
                 <hr />
                 <Nav className="flex-column" activeKey={location.pathname} variant="pills" >
                     <Nav.Link href="/">Acasă</Nav.Link>
@@ -41,11 +41,13 @@ const wSidebar = props => {
                     <Nav.Link href="/lumanari">Lumânări</Nav.Link>
                 </Nav>
                 <br />
-                <strong>Informații</strong>
+                <strong style={{marginLeft:"5px"}}>Informații</strong>
                 <hr />
                 <Nav className="flex-column">
                     <Nav.Link href="/cumcumpar">Cum cumpăr?</Nav.Link>
                     <Nav.Link href="/contact">Contact</Nav.Link>
+                    <Nav.Link href="/terms">Termeni și condiții</Nav.Link>
+                    <Nav.Link href="/privacy">Politica de confidențialitate</Nav.Link>
                 </Nav>
         </Styles>
     )

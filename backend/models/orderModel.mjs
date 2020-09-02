@@ -35,7 +35,9 @@ const orderSchema = new mongoose.Schema({
     totalPrice: {type: String, required: true},
     companyName:{type:String, default: ""},
     cui:{type:String, default: ""},
-    state: {type: Number, default: 0}
+    state: {type: Number, default: 0},
+    paymentStatus: {type: String, default: ""},
+    paymentErrorMessage: {type: Object, default: ""}
 }, {
   timestamps: true
 });

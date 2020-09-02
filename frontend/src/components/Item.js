@@ -16,7 +16,7 @@ const Item = ({item}) => {
                                         height={100}
                                         className="mr-3"
                                         alt="thumbnail"
-                                        src={`/assets/${item.image}.png`}/>
+                                        src={item.image}/>
                                     <Media.Body>
                                         <p>{item.name}</p>
                                         <Row>

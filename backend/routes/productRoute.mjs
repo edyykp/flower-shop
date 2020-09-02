@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   const category = req.query.category ? 
                   req.query.category === "botez" ?
-                    {category: ["aranamentecristelnita", "lumanari" ]} 
+                    {category: ["aranjamentecristelnita", "lumanari" ]} 
                   :
                   req.query.category === "nunta" ?
                     {category: ["buchetedemireasa" ,"lumanaridecununie" , "aranjamentefloralesala" , "buchetenasa"]}   
@@ -16,7 +16,6 @@ router.get("/", async (req, res) => {
                     {} 
                   :
                   { category: req.query.category}: {};
-
   const searchKeyword = req.query.searchKeyWord !== "null"
   ? {
       name: {
@@ -33,20 +32,26 @@ router.get("/", async (req, res) => {
       : req.query.sortOrder === "az" ?
       {name: 1} :
       req.query.sortOrder === "za" ?
-      {name: -1} : { _id: -1 }: { _id: -1};
+      {name: -1} : req.query.sortOrder == "mostsold" ? { soldNo: -1 } : { _id: -1} : {_id: -1};
 
     const minPrice = req.query.minPrice !== "null" ? {price: {$gte: req.query.minPrice}} : {};
     const maxPrice = req.query.maxPrice !== "null" ? {price: {$lte: req.query.maxPrice}} : {};
     const products = await Product.find({...searchKeyword, ...category, ...minPrice, ...maxPrice}).sort(sortOrder);
-    res.send(products);
+    try {
+      res.send(products);
+    }
+    catch(error) {
+      console.log(error);
+    }
 });
 
 router.get('/:id', async (req, res) => {
-  const product = await Product.findOne({ _id: req.params.id });
-  if (product) {
-    res.send(product);
-  } else {
-    res.status(404).send({ message: 'Product Not Found.' });
+  try {
+    const product = await Product.findOne({ _id: req.params.id });
+    res.send(product)
+  }
+  catch(error) {
+    res.status(404).send("Product not found");
   }
 });
 
@@ -72,7 +77,6 @@ router.put('/:id', isAuth, isAdmin, async (req, res) => {
     if (product) {
       product.name = req.body.name;
       product.price = req.body.price;
-      product.image = req.body.image;
       product.madeOf = req.body.madeOf;
       product.category = req.body.category;
       product.description = req.body.description;

@@ -7,19 +7,6 @@ import { resetEmail } from './actions/userActions';
 import { useHistory } from 'react-router';
 
 const Styles = styled.div`
-    .nav-item {
-        width:50%;
-    }
-
-    .nav-link:not(.active) {
-        color: purple !important;
-    }
-
-    .nav-link {
-        display: flex;
-        justify-content: center;
-        color: black ;
-    }
 
     .card {
         width: 40%;
@@ -96,11 +83,11 @@ export const ResetScreen = props => {
                         <Form onSubmit={submitHandler} >
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Parolă nouă</Form.Label>
-                                <Form.Control type="password"  onChange={(e) => setPass(e.target.value)} required/>
+                                <Form.Control type="password"  onChange={(e) => setPass(e.target.value)} required maxLength={30}/>
                             </Form.Group>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Confirmă parolă nouă</Form.Label>
-                                <Form.Control type="password"  onChange={(e) => setRePass(e.target.value)} required/>
+                                <Form.Control type="password"  onChange={(e) => setRePass(e.target.value)} required maxLength={30}/>
                             </Form.Group>
                             <Button type="submit" style={{width: "100%", height:"50px", backgroundColor:"purple", color:"lightgrey", borderColor:"purple", fontSize:"20px"}}>
                                 <strong>Schimbă parola</strong>

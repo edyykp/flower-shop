@@ -74,6 +74,33 @@ export const OrderInTable = ({order}, key) => {
                         }
                         <td>{order.comments}</td>
                         <td>{order.totalPrice} LEI</td>
+                        { order.paymentStatus === "0" ? <td>Plătit</td> :
+                          order.paymentStatus === "16" ? <td>Card cu risc (posibil furat)</td> :
+                          order.paymentStatus === "17" ? <td>număr de card incorect</td> :
+                          order.paymentStatus === "18" ? <td>card înghețat</td> :
+                          order.paymentStatus === "19" ? <td>card expirat</td> :
+                          order.paymentStatus === "20" ? <td>fonduri insuficiente</td> :
+                          order.paymentStatus === "21" ? <td>cVV2 incorect</td> :
+                          order.paymentStatus === "22" ? <td>Issuer unavailable</td> :
+                          order.paymentStatus === "32" ? <td>Sumă incorectă</td> :
+                          order.paymentStatus === "33" ? <td>Valută incorectă</td> :
+                          order.paymentStatus === "34" ? <td>tranzacție nepermisă pentru cardholder</td> :
+                          order.paymentStatus === "35" ? <td>tranzacție refuzată</td> :
+                          order.paymentStatus === "36" ? <td>tranzacție refuzată de filtre antifraudă</td> :
+                          order.paymentStatus === "37" ? <td>tranzacție refuzată (breaking the law)</td> :
+                          order.paymentStatus === "38" ? <td>tranzacție refuzată</td> :
+                          order.paymentStatus === "48" ? <td>invalid request</td> :
+                          order.paymentStatus === "49" ? <td>duplicate PREAUTH</td> :
+                          order.paymentStatus === "50" ? <td>duplicate AUTH</td> :
+                          order.paymentStatus === "51" ? <td>you can only CANCEL a preauth order</td> :
+                          order.paymentStatus === "52" ? <td>you can only CONFIRM a preauth order</td> :
+                          order.paymentStatus === "53" ? <td>you can only CREDIT a confirmed order</td> :
+                          order.paymentStatus === "54" ? <td>Credit amount is higher than auth amount</td> :
+                          order.paymentStatus === "55" ? <td>Capture amount is higher than preauth amount</td> :
+                          order.paymentStatus === "56" ? <td>Duplicate request</td> :
+                          order.paymentStatus === "99" ? <td>Eroare generică</td> :
+                          null
+                        }
                         <td>
                                 <ToggleButtonGroup type="radio" name="options" defaultValue={order.state}>
                                     <ToggleButton value={0} style={{border:"1px solid black"}} onClick={() => setStateOrder(0)}>Nelivrat</ToggleButton>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import styled from 'styled-components';
 import {PersonPlus, PersonCircle, BoxArrowLeft, Person, BagPlus, Eye, EyeFill, ClockHistory } from 'react-bootstrap-icons';
@@ -14,7 +14,7 @@ const Styles = styled.div`
 
     .navbar .nav-link {
         color: lightgrey;
-        font-size: 14px;
+        font-size: 11px;
         &: hover{
             color: purple;
         }
@@ -33,21 +33,43 @@ export const AccountBar = () => {
         history.push('/');
       }
 
+      const [width, setWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        function handleResize() {
+            setWidth(window.innerWidth);
+        }
+      
+        window.addEventListener('resize', handleResize)
+    });
+
     return (
         
             userInfo ? <Styles>
-                            <Navbar className="navbar justify-content-end">
+                            <Navbar className="navbar justify-content-between">
+                                <Nav >
+                                        <Nav.Item>
+                                            <Nav.Link href="/terms" className="nav-link">
+                                                <strong>Termeni și condiții</strong>
+                                            </Nav.Link>
+                                        </Nav.Item>
+                                        <Nav.Item>
+                                            <Nav.Link href="/privacy" className="nav-link">
+                                                <strong>Politica de confidențialitate</strong>
+                                            </Nav.Link>
+                                        </Nav.Item>
+                                </Nav>
                                 <NavDropdown title={`Bine ai venit, ${userInfo.firstName}`}  style={{paddingRight: "50px"}} >
                                     {
                                         userInfo.isAdmin ? 
                                         <div>
                                             <NavDropdown.Item href="/products" >
                                                 <BagPlus size={30} color="grey" style={{paddingRight: "5px"}}/>
-                                                    Adaugă produs nou
+                                                    Adaugă produs
                                             </NavDropdown.Item>
                                             <NavDropdown.Item href="/productstable">
                                                 <Eye size={30} color="grey" style={{paddingRight: "5px"}}/>
-                                                Vezi produse curente
+                                                Vezi produse
                                             </NavDropdown.Item>
                                             <NavDropdown.Item href="/orderstable">
                                                 <EyeFill size={30} color="grey" style={{paddingRight: "5px"}} />
@@ -77,22 +99,87 @@ export const AccountBar = () => {
                             </Navbar>
                         </Styles> 
                         :
-                        <Styles>
-                            <Navbar className="navbar justify-content-end">
-                                <Nav>
+                        
+                            width > 600 ? 
+
+                        
+                            <Styles>
+                            <Navbar className="navbar justify-content-between">
+                                <Nav >
+                                    <Nav.Item>
+                                        <Nav.Link href="/terms" className="nav-link">
+                                            <strong>Termeni și condiții</strong>
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item>
+                                        <Nav.Link href="/privacy" className="nav-link">
+                                            <strong>Politica de confidențialitate</strong>
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                                <Nav >
                                     <Nav.Item style={{ justifyContent:"space-between", paddingRight:"10px"}}>
                                         <Nav.Link href="/signin"  className="nav-link"><strong style={{paddingRight:"5px"}}>Autentifică-te</strong>
-                                        <PersonCircle size={20} color="lightgrey"/>
+                                        <PersonCircle size={18} color="lightgrey"/>
                                         </Nav.Link>
                                     </Nav.Item>
                                     <Nav.Item style={{paddingRight: "30px", justifyContent:"space-between"}}>
-                                        <Nav.Link href="/signup" className="nav-link"><strong style={{paddingRight:"5px"}}>înregistrează-te</strong>
-                                        <PersonPlus size={20} color="lightgrey"/>
+                                        <Nav.Link href="/signup" className="nav-link"><strong style={{paddingRight:"5px"}}>Înregistrează-te</strong>
+                                        <PersonPlus size={18} color="lightgrey"/>
                                         </Nav.Link>
                                     </Nav.Item>
                                 </Nav>
                             </Navbar>
-                        </Styles>
+                        </Styles> 
+                        :
+                        width > 390 ?
+
+                        <Styles>
+                            <Navbar className="navbar justify-content-start">
+                                <Nav >
+                                    <Nav.Item>
+                                        <Nav.Link href="/terms" className="nav-link">
+                                            <strong>Termeni și condiții</strong>
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item>
+                                        <Nav.Link href="/privacy" className="nav-link">
+                                            <strong>Politica de confidențialitate</strong>
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                                <Nav >
+                                    <Nav.Item style={{ justifyContent:"space-between", paddingRight:"10px"}}>
+                                        <Nav.Link href="/signin"  className="nav-link"><strong style={{paddingRight:"5px"}}>Autentifică-te</strong>
+                                        <PersonCircle size={18} color="lightgrey"/>
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item style={{paddingRight: "30px", justifyContent:"space-between"}}>
+                                        <Nav.Link href="/signup" className="nav-link"><strong style={{paddingRight:"5px"}}>Înregistrează-te</strong>
+                                        <PersonPlus size={18} color="lightgrey"/>
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </Navbar>
+                        </Styles> 
+                        :
+                        <Styles>
+                        <Navbar className="navbar justify-content-between">
+                            <Nav >
+                                <Nav.Item style={{ justifyContent:"space-between", paddingRight:"10px"}}>
+                                    <Nav.Link href="/signin"  className="nav-link"><strong style={{paddingRight:"5px"}}>Autentifică-te</strong>
+                                    <PersonCircle size={18} color="lightgrey"/>
+                                    </Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item style={{ justifyContent:"space-between"}}>
+                                    <Nav.Link href="/signup" className="nav-link"><strong style={{paddingRight:"5px"}}>Înregistrează-te</strong>
+                                    <PersonPlus size={18} color="lightgrey"/>
+                                    </Nav.Link>
+                                </Nav.Item>
+                            </Nav>
+                        </Navbar>
+                    </Styles> 
+                        
         
         
     )

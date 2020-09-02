@@ -81,7 +81,7 @@ export const ForgotScreen = props => {
                         <Form onSubmit={submitHandler} noValidate validated={validated}>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Adresă de email</Form.Label>
-                                <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} required/>
+                                <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} required maxLength={50}/>
                             </Form.Group>
                             <Button type="submit" style={{width: "100%", height:"50px", backgroundColor:"purple", color:"lightgrey", borderColor:"purple", fontSize:"20px"}}>
                                 <strong>Trimite mail</strong>

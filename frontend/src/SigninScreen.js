@@ -22,7 +22,6 @@ const Styles = styled.div`
     }
 
     .card {
-        width: 40%;
         margin-top: 50px;
         margin-left: auto;
         margin-right: auto;
@@ -69,53 +68,109 @@ export const SigninScreen = props => {
         setValidated(true);
         dispatch(signin(email, password, remember));
     }
+
+    const [width, setWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        function handleResize() {
+            setWidth(window.innerWidth);
+        }
+      
+        window.addEventListener('resize', handleResize)
+    });
+
     return (
         <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"110px"}}>
             <Styles>
-                <Card>
-                    <Card.Header>
-                        <Nav variant="tabs" defaultActiveKey={redirect === "/" ? "/signin" : "/signin?redirect=" + redirect}>
-                            <Nav.Item>
-                                <Nav.Link href={redirect === "/" ? "/signin" : "/signin?redirect=" + redirect} className="nav-link">Autentificare</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link href={redirect === "/" ? "/signup" : "/signup?redirect=" + redirect} className="nav-link">Înregistrare</Nav.Link>
-                            </Nav.Item>
-                        </Nav>
-                    </Card.Header>
-                    <Card.Body>
-                        <Card.Title >
-                            <PersonCircle size={100} color="lightgrey" style={{display:"block", marginLeft:"auto", marginRight:"auto"}}/>
-                        </Card.Title>
-                            {loading &&  <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
-                                                <Spinner animation="border" variant="secondary" style={{position:"absolute", top:"50%", left: "50%"}}/>
-                                        </Layout> }
-                            {error && <div style={{color:"black", fontWeight:"bold", textAlign:"center", border:"2px solid red", backgroundColor:"#DA7E7E"}}>Adresa de email sau parola sunt incorecte.</div>}
-                        <Form onSubmit={submitHandler} noValidate validated={validated}>
-                            <Form.Group controlId="formBasicEmail">
-                                <Form.Label>Adresă de email</Form.Label>
-                                <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} required/>
-                                <Form.Text className="text-muted">
-                                We'll never share your email with anyone else.
-                                </Form.Text>
-                            </Form.Group>
+                { width > 500 ?
+                 <Card style={{width:"40%"}}>
+                 <Card.Header>
+                     <Nav variant="tabs" defaultActiveKey={redirect === "/" ? "/signin" : "/signin?redirect=" + redirect}>
+                         <Nav.Item>
+                             <Nav.Link href={redirect === "/" ? "/signin" : "/signin?redirect=" + redirect} className="nav-link">Autentificare</Nav.Link>
+                         </Nav.Item>
+                         <Nav.Item>
+                             <Nav.Link href={redirect === "/" ? "/signup" : "/signup?redirect=" + redirect} className="nav-link">Înregistrare</Nav.Link>
+                         </Nav.Item>
+                     </Nav>
+                 </Card.Header>
+                 <Card.Body>
+                     <Card.Title >
+                         <PersonCircle size={100} color="lightgrey" style={{display:"block", marginLeft:"auto", marginRight:"auto"}}/>
+                     </Card.Title>
+                         {loading &&  <Spinner animation="border" variant="secondary" style={{position:"absolute", top:"50%", left: "50%"}}/>}
+                         {error && <div style={{color:"black", fontWeight:"bold", textAlign:"center", border:"2px solid red", backgroundColor:"#DA7E7E"}}>Adresa de email sau parola sunt incorecte.</div>}
+                     <Form onSubmit={submitHandler} noValidate validated={validated}>
+                         <Form.Group controlId="formBasicEmail">
+                             <Form.Label>Adresă de email</Form.Label>
+                             <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} required maxLength={50}/>
+                             <Form.Text className="text-muted">
+                             We'll never share your email with anyone else.
+                             </Form.Text>
+                         </Form.Group>
 
-                            <Form.Group controlId="formBasicPassword">
-                                <Form.Label>Parolă</Form.Label>
-                                <Form.Control type="password" placeholder="Parolă" onChange={(e) => setPassword(e.target.value)} required/>
-                            </Form.Group>
-                                
-                                <input type="checkbox" name="remember" onChange={(e) => setRemember(e.target.checked)}/>
-                                <label htmlFor="remember" style={{paddingLeft:"5px"}}>Remember me</label>
-                            <Button type="submit" style={{width: "100%", height:"50px", backgroundColor:"purple", color:"lightgrey", borderColor:"purple", fontSize:"20px"}}>
-                                <strong>Autentifică-te</strong>
-                            </Button>
-                        </Form>
-                        <Button variant="link" href="/forgotten">
-                            Ați uitat parola?
-                        </Button>
-                    </Card.Body>
-                </Card>
+                         <Form.Group controlId="formBasicPassword">
+                             <Form.Label>Parolă</Form.Label>
+                             <Form.Control type="password" placeholder="Parolă" onChange={(e) => setPassword(e.target.value)} required maxLength={30}/>
+                         </Form.Group>
+                             
+                             <input type="checkbox" name="remember" onChange={(e) => setRemember(e.target.checked)}/>
+                             <label htmlFor="remember" style={{paddingLeft:"5px"}}>Remember me</label>
+                         <Button type="submit" style={{width: "100%", height:"50px", backgroundColor:"purple", color:"lightgrey", borderColor:"purple", fontSize:"20px"}}>
+                             <strong>Autentifică-te</strong>
+                         </Button>
+                     </Form>
+                     <Button variant="link" href="/forgotten">
+                         Ați uitat parola?
+                     </Button>
+                 </Card.Body>
+             </Card> :
+              <Card style={{width:"90%"}}>
+              <Card.Header>
+                  <Nav variant="tabs" defaultActiveKey={redirect === "/" ? "/signin" : "/signin?redirect=" + redirect}>
+                      <Nav.Item>
+                          <Nav.Link href={redirect === "/" ? "/signin" : "/signin?redirect=" + redirect} className="nav-link">Autentificare</Nav.Link>
+                      </Nav.Item>
+                      <Nav.Item>
+                          <Nav.Link href={redirect === "/" ? "/signup" : "/signup?redirect=" + redirect} className="nav-link">Înregistrare</Nav.Link>
+                      </Nav.Item>
+                  </Nav>
+              </Card.Header>
+              <Card.Body>
+                  <Card.Title >
+                      <PersonCircle size={100} color="lightgrey" style={{display:"block", marginLeft:"auto", marginRight:"auto"}}/>
+                  </Card.Title>
+                      {loading &&  <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
+                                          <Spinner animation="border" variant="secondary" style={{position:"absolute", top:"50%", left: "50%"}}/>
+                                  </Layout> }
+                      {error && <div style={{color:"black", fontWeight:"bold", textAlign:"center", border:"2px solid red", backgroundColor:"#DA7E7E"}}>Adresa de email sau parola sunt incorecte.</div>}
+                  <Form onSubmit={submitHandler} noValidate validated={validated}>
+                      <Form.Group controlId="formBasicEmail">
+                          <Form.Label>Adresă de email</Form.Label>
+                          <Form.Control type="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} required maxLength={50}/>
+                          <Form.Text className="text-muted">
+                          We'll never share your email with anyone else.
+                          </Form.Text>
+                      </Form.Group>
+
+                      <Form.Group controlId="formBasicPassword">
+                          <Form.Label>Parolă</Form.Label>
+                          <Form.Control type="password" placeholder="Parolă" onChange={(e) => setPassword(e.target.value)} required maxLength={30}/>
+                      </Form.Group>
+                          
+                          <input type="checkbox" name="remember" onChange={(e) => setRemember(e.target.checked)}/>
+                          <label htmlFor="remember" style={{paddingLeft:"5px"}}>Remember me</label>
+                      <Button type="submit" style={{width: "100%", height:"50px", backgroundColor:"purple", color:"lightgrey", borderColor:"purple", fontSize:"20px"}}>
+                          <strong>Autentifică-te</strong>
+                      </Button>
+                  </Form>
+                  <Button variant="link" href="/forgotten">
+                      Ați uitat parola?
+                  </Button>
+              </Card.Body>
+          </Card>
+            }
+               
             </Styles>
 
         </Layout>

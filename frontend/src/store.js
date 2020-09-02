@@ -4,7 +4,7 @@ import Cookie from 'js-cookie';
 import { productListReducer, productDetailsReducer, productSaveReducer, productDeleteReducer } from './reducers/productReducers';
 import {cartReducer} from './reducers/cartReducers';
 import { userSigninReducer, userRegisterReducer, userConfirmReducer, userUpdateReducer, passUpdateReducer, userContactReducer, userForgotReducer, userResetReducer } from './reducers/userReducers';
-import { orderCreateReducer, orderPayReducer, myOrderListReducer, orderListReducer, orderDeleteReducer, orderChangeStateReducer } from './reducers/orderReducers';
+import { orderCreateReducer, myOrderListReducer, orderListReducer, orderDeleteReducer, orderChangeStateReducer, orderDetailsReducer } from './reducers/orderReducers';
 
 const cartItems = Cookie.getJSON('cartItems', {sameSite: "Strict", secure: true}) || [];
 const userInfo = Cookie.getJSON('userInfo', {sameSite: "Strict", secure: true}) || null;
@@ -21,7 +21,6 @@ const reducer = combineReducers({
     productSave: productSaveReducer,
     productDelete: productDeleteReducer,
     orderCreate: orderCreateReducer,
-    orderPay: orderPayReducer,
     myOrderList: myOrderListReducer,
     orderList: orderListReducer,
     orderDelete: orderDeleteReducer,
@@ -31,7 +30,8 @@ const reducer = combineReducers({
     userUpdate: userUpdateReducer,
     passwordUpdate: passUpdateReducer,
     userForgot: userForgotReducer,
-    userReset: userResetReducer
+    userReset: userResetReducer,
+    orderDetails: orderDetailsReducer
 })
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

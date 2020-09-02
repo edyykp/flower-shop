@@ -20,23 +20,8 @@ const Styles = styled.div`
         color: black ;
     }
 
-    .card {
-        width: 100%;
-        margin-top: 50px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: auto;
-        font-family: Arial;
-        z-index: 2;
-        overflow: hidden;
-    }
 
-    .card-body {
-        width: 100%;
-        display: ;
-        justify-content: center;
-        align-items: center;
-    }
+    
 }
 `;
 export const ProfileScreen = props => {
@@ -109,6 +94,15 @@ export const ProfileScreen = props => {
         }
       }, [userInfo]);
 
+      const [width, setWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        function handleResize() {
+            setWidth(window.innerWidth);
+        }
+      
+        window.addEventListener('resize', handleResize)
+    });
 
     return (
         (loadingUserUpdate || loadingPassUpdate) ?
@@ -119,8 +113,8 @@ export const ProfileScreen = props => {
             <Styles>
                 <Button variant="link" style={{color:"white", marginTop:"50px", textDecoration:"none"}} size="lg" href="/accountprofile">Contul meu</Button>
                 <Button variant="link" style={{color:"lightgrey", marginTop:"50px", textDecoration:"none"}} size="lg" href="/orders">Comenzile mele</Button>
-                <Card>
-                    <Card.Body>
+                <Card style={{width: "100%", marginTop: "50px", marginLeft: "auto", marginRight: "auto", marginBottom: "50px", fontFamily: "Arial", zIndex: 2, overflow: "hidden"}}>
+                    <Card.Body style={{width: "100%", justifyContent: "center", alignItems: "center"}}>
                         
                         <Row>
                             <Col>
@@ -130,32 +124,32 @@ export const ProfileScreen = props => {
                                     {errorSubmit && <div style={{color:"black", fontWeight:"bold", textAlign:"center", border:"2px solid red", backgroundColor:"#DA7E7E"}}>{errorSubmit}</div>}
                                     <Form.Group >
                                         <Form.Label>Prenume*</Form.Label>
-                                        <Form.Control type="text" defaultValue={userInfo.firstName} required onChange={(e) => setFirstName(e.target.value)}/>
+                                        <Form.Control type="text" defaultValue={userInfo.firstName} required onChange={(e) => setFirstName(e.target.value)} maxLength={20}/>
                                     </Form.Group>
                                     <Form.Group >
                                         <Form.Label>Nume*</Form.Label>
-                                        <Form.Control type="text" defaultValue={userInfo.lastName} required onChange={(e) => setLastName(e.target.value)}/>
+                                        <Form.Control type="text" defaultValue={userInfo.lastName} required onChange={(e) => setLastName(e.target.value)} maxLength={20}/>
                                     </Form.Group>
                                     <Form.Group >
                                         <Form.Label>Email*</Form.Label>
-                                        <Form.Control type="email" defaultValue={userInfo.email} required onChange={(e) => setEmail(e.target.value)}/>
+                                        <Form.Control type="email" defaultValue={userInfo.email} required onChange={(e) => setEmail(e.target.value)} maxLength={50}/>
                                     </Form.Group>
                                     <Form.Group >
                                         <Form.Label>Telefon</Form.Label>
-                                        <Form.Control type="text" defaultValue={userInfo.phone} onChange={(e) => setPhone(e.target.value)}/>
+                                        <Form.Control type="text" defaultValue={userInfo.phone} onChange={(e) => setPhone(e.target.value)} maxLength={15}/>
                                     </Form.Group>
                                     <Form.Group >
                                         <Form.Label>Adresă</Form.Label>
-                                        <Form.Control as="textarea" rows={5} style={{resize:"none"}} defaultValue={userInfo.address} onChange={(e) => setAddress(e.target.value)}/>
+                                        <Form.Control as="textarea" rows={5} style={{resize:"none"}} defaultValue={userInfo.address} onChange={(e) => setAddress(e.target.value)} maxLength={400}/>
                                     </Form.Group>
                                     <Card.Title><h4>Detalii firmă</h4></Card.Title>
                                     <Form.Group >
                                         <Form.Label>Denumire firmă</Form.Label>
-                                        <Form.Control type="text" defaultValue={userInfo.companyName} onChange={(e) => setCompanyName(e.target.value)}/>
+                                        <Form.Control type="text" defaultValue={userInfo.companyName} onChange={(e) => setCompanyName(e.target.value)} maxLength={200}/>
                                     </Form.Group>
                                     <Form.Group >
                                         <Form.Label>Cod Unic de Înregistrare</Form.Label>
-                                        <Form.Control type="text" defaultValue={userInfo.cui} onChange={(e) => setCui(e.target.value)}/>
+                                        <Form.Control type="text" defaultValue={userInfo.cui} onChange={(e) => setCui(e.target.value)} maxLength={100}/>
                                     </Form.Group>
                                     <Button variant="primary" type="submit">Editează profilul</Button>
                                 </Form>
@@ -167,15 +161,15 @@ export const ProfileScreen = props => {
                                     <Form.Group >
     {                                   errorPass && <div style={{color:"black", fontWeight:"bold", textAlign:"center", border:"2px solid red", backgroundColor:"#DA7E7E"}}>{errorPass}</div> }
                                         <Form.Label>Parolă veche</Form.Label>
-                                        <Form.Control type="password" onChange={(e) => setOldPassword(e.target.value)}/>
+                                        <Form.Control type="password" onChange={(e) => setOldPassword(e.target.value)} maxLength={30}/>
                                     </Form.Group>
                                     <Form.Group >
                                         <Form.Label>Parolă nouă</Form.Label>
-                                        <Form.Control type="password" onChange={(e) => setNewPassword(e.target.value)}/>
+                                        <Form.Control type="password" onChange={(e) => setNewPassword(e.target.value)} maxLength={30}/>
                                     </Form.Group>
                                     <Form.Group >
                                         <Form.Label>Confirmă parola nouă</Form.Label>
-                                        <Form.Control type="password" onChange={(e) => setReNewPassword(e.target.value)}/>
+                                        <Form.Control type="password" onChange={(e) => setReNewPassword(e.target.value)} maxLength={30}/>
                                     </Form.Group>
                                     <Button variant="danger" type="submit">Schimbă parola</Button>
                                 </Form>
@@ -186,6 +180,7 @@ export const ProfileScreen = props => {
                         
                     </Card.Body>
                 </Card>
+                { width > 800 ?
                 <Row style={{marginBottom: "0", height: "100%", maxHeight: "100%"}}>
                     <Col>
                         <Card style={{ width: '100%' }}>
@@ -222,7 +217,46 @@ export const ProfileScreen = props => {
                         </Card.Body>
                         </Card>
                     </Col>
-                </Row>
+                </Row> :
+                <Col>
+                    <Row style={{marginBottom:"10px"}}>
+                    <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>Livrări aranjamente de flori</Card.Title>
+                            <Card.Text>
+                            Serviciul de livrat flori la domiciliu al Florăriei Medeea este gratuit în 
+                            orașul Buzău și zonele limitrofe acestuia, fără taxe sau comisioane. Pentru o comandă în afara
+                            orașului, costul de livrare diferă în funcție de distanță. Beneficiem de curieri proprii, livrând florile
+                            în apă pentru a 
+                            </Card.Text>
+                        </Card.Body>
+                        </Card>
+                    </Row>
+                    <Row style={{marginBottom:"10px"}}>
+                    <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>De ce Florăria Medeea?</Card.Title>
+                            <Card.Text>
+                            Some quick example text to build on the card title and make up the bulk of
+                            the card's content.
+                            </Card.Text>
+                        </Card.Body>
+                        </Card>
+                    </Row>
+                    <Row>
+                    <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>Unde ne puteți găsi?</Card.Title>
+                            <Card.Text>
+                            Some quick example text to build on the card title and make up the bulk of
+                            the card's content.
+                            </Card.Text>
+                        </Card.Body>
+                        </Card>
+                    </Row>
+                </Col>
+                
+}
             </Styles>
         </Layout>
     )

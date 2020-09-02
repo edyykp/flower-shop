@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { listProducts, saveProduct, deleteProduct } from './actions/productActions';
 import { Layout } from './components/Layout';
-import { Table, Button, Modal, Form, Spinner } from 'react-bootstrap';
+import { Table, Button, Modal, Form, Spinner, Image } from 'react-bootstrap';
 import styled from 'styled-components';
 
 const Styles = styled.div`
@@ -16,7 +16,6 @@ export const ProductsTable = () => {
     const [validated, setValidated] = useState(false);
     
     const [name, setName] = useState('');
-    const [image, setImage] = useState('');
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState('Buchete de flori');
     const [madeOf, setMadeOf] = useState('');
@@ -38,7 +37,6 @@ export const ProductsTable = () => {
         setName(product.name);
         setPrice(product.price);
         setDescription(product.description);
-        setImage(product.image);
         setMadeOf(product.madeOf);
         setCategory(product.category);
       };
@@ -60,9 +58,10 @@ export const ProductsTable = () => {
     const submitHandler = (e) => {
         e.preventDefault();
         setValidated(true);
-        dispatch(saveProduct({_id: id, name, image, price, category, madeOf, description}));
+        dispatch(saveProduct({_id: id, name, price, category, madeOf, description}));
         setModalVisible(false);
     }
+
 
     return (
         loading || loadingDelete || loadingSave? 
@@ -72,7 +71,7 @@ export const ProductsTable = () => {
         :
         <Layout style={{height:"100vh",background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"20px"}}>
             {(error || errorSave || errorDelete ) && alert("A apărut o eroare neașteptată. Încearcă din nou.")}
-            <Table striped bordered hover style={{backgroundColor:"white", marginTop:"20px"}}>
+            <Table striped bordered hover style={{backgroundColor:"white", marginTop:"20px", zIndex:"3000"}} responsive>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -93,7 +92,11 @@ export const ProductsTable = () => {
                         <td>{product.price}</td>
                         <td>{product.category}</td>
                         <td>{product.madeOf}</td>
-                        <td>{product.image}</td>
+                        <td><Image width={100}
+                                        height={100}
+                                        className="mr-3"
+                                        alt="thumbnail"
+                                        src={product.image}/></td>
                         <td>{product.description}</td>
                         <td>
                         <Button variant="info" onClick={() => openModal(product)}>
@@ -125,32 +128,26 @@ export const ProductsTable = () => {
                     <Modal.Body>
                     <Form  onSubmit={submitHandler} noValidate validated={validated}>
                             <Form.Group >
-                                <Form.Control type="text" placeholder="Denumire produs" onChange={(e) => setName(e.target.value)} value={name}required/>
+                                <Form.Control type="text" placeholder="Denumire produs" onChange={(e) => setName(e.target.value)} value={name}required maxLength={100}/>
                                 <Form.Text className="text-muted">
                                     Titlul buchetului/aranjamentului.
                                 </Form.Text>
                             </Form.Group>
-                            <Form.Group>
-                                <Form.Control type="text" value={image} required onChange={(e) => setImage(e.target.value)} />
-                                <Form.Text className="text-muted">
-                                    Imaginea produsului
-                                </Form.Text>
-                            </Form.Group>
 
                             <Form.Group >
-                                <Form.Control type="text" placeholder="Preț" onChange={(e) => setPrice(e.target.value)} required value={price}/>
+                                <Form.Control type="text" placeholder="Preț" onChange={(e) => setPrice(e.target.value)} required value={price} maxLength={10}/>
                                 <Form.Text className="text-muted">
                                     Prețul buchetului, doar în cifre. (exemple: 110,   99.99,     24.9)
                                 </Form.Text>
                             </Form.Group>
                             <Form.Group >
-                                <Form.Control type="text" placeholder="Alcătuit din" onChange={(e) => setMadeOf(e.target.value)} required value={madeOf}/>
+                                <Form.Control type="text" placeholder="Alcătuit din" onChange={(e) => setMadeOf(e.target.value)} required value={madeOf} maxLength={400}/>
                                 <Form.Text className="text-muted">
                                     Din ce este alcătuit buchetul. (exemplu: 23 lalele, 4 trandafiri, 8 hortensii)
                                 </Form.Text>
                             </Form.Group>
                             <Form.Group >
-                                <Form.Control as="textarea"  style={{resize: "none"}} value={description} placeholder="Desriere" onChange={(e) => setDescription(e.target.value)} rows={10} required/>
+                                <Form.Control as="textarea"  style={{resize: "none"}} value={description} placeholder="Desriere" onChange={(e) => setDescription(e.target.value)} rows={10} required maxLength={400}/>
                                 <Form.Text className="text-muted">
                                     O scurtă descriere a buchetului care să atragă atenția utilizatorului.
                                 </Form.Text>
@@ -158,16 +155,16 @@ export const ProductsTable = () => {
                             <Form.Group >
                                 <Form.Label>Categorie</Form.Label>
                                 <Form.Control as="select" onChange={(e) => setCategory(e.target.value)} value={category} required>
-                                    <option>Buchete de flori</option>
-                                    <option>Aranjamente florale</option>
-                                    <option>Trandafiri criogenați</option>
-                                    <option>Plante</option>
-                                    <option>Buchete de mireasă</option>
-                                    <option>Lumânări de cununie</option>
-                                    <option>Aranjamente florale de sală</option>
-                                    <option>Buchete pentru nașă</option>
-                                    <option>Aranjamente cristelniță</option>
-                                    <option>Lumânări</option>
+                                    <option value="bucheteflori">Buchete de flori</option>
+                                    <option value="aranjamenteflori">Aranjamente florale</option>
+                                    <option value="trandafiricriogenati">Trandafiri criogenați</option>
+                                    <option value="plante">Plante</option>
+                                    <option value="buchetedemireasa">Buchete de mireasă</option>
+                                    <option value="lumanaridecununie">Lumânări de cununie</option>
+                                    <option value="aranjamentefloralesala">Aranjamente florale de sală</option>
+                                    <option value="buchetenasa">Buchete pentru nașă</option>
+                                    <option value="aranjamentecristelnita">Aranjamente cristelniță</option>
+                                    <option value="lumanari">Lumânări</option>
                                 </Form.Control>
                                 <Form.Text className="text-muted">
                                     Categoria în care va fi afișat produsul.

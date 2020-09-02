@@ -36,6 +36,10 @@ import { ProfileScreen } from './ProfileScreen';
 import { MyOrdersScreen } from './MyOrdersScreen';
 import { ForgotScreen } from './ForgotScreen';
 import { ResetScreen } from './ResetScreen';
+import { FinishedOrder } from './FinishedOrder';
+import { PrivacyScreen } from './PrivacyScreen';
+import { TermsScreen } from './TermsScreen';
+import { Redirect } from './Redirect';
 const App = () => {
     loadReCaptcha();
 
@@ -46,11 +50,8 @@ const App = () => {
       <React.Fragment>
           <Notifications />
           <Router className="router" >
-            <div style={{zIndex:"3", position:"fixed",width:"100%"}}>
             <AccountBar />
             <NavigationBar/>
-            </div>
-             <div style={{paddingTop: "126px", flex:"1"}}>
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/bucheteflori" component={BucheteFlori} />
@@ -80,11 +81,14 @@ const App = () => {
               {userInfo && !userInfo.isAdmin && <Route path="/orders" component={MyOrdersScreen} />}
               <Route path="/forgotten" component={ForgotScreen}/>
               <Route path="/reset" component={ResetScreen} />
+              <Route path="/finishedorder/:id" component={FinishedOrder} />
+              <Route path="/privacy" component={PrivacyScreen}/>
+              <Route path="/terms" component={TermsScreen} />
+              <Route path="/redirect/:id" component={Redirect}/>
               <Route component={NoMatch} />
             </Switch>
-            
-            </div>
-              <Footer />
+    {!(window.location.pathname === "/orderstable" || window.location.pathname === "/productstable") && <Footer /> }
+              
          
             
           </Router>

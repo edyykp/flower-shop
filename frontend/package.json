@@ -1,6 +1,6 @@
 {
   "name": "my-app",
-  "proxy": "https://careful-form-285214.oa.r.appspot.com/",
+  "proxy": "http://localhost:54006",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

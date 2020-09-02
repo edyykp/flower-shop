@@ -48,7 +48,7 @@ const ItemDetails = () => {
                                     
                             }
                                 
-                                </Container>
+                        </Container>
                     </Collapse>
                 </div>
             </Styles>

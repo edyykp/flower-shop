@@ -3,7 +3,7 @@ import config from './config.mjs';
 
 // The credentials for the email account you want to send mail from. 
 const credentials = {
-  host: 'smtp.gmail.com',
+  host: 'mail.webrahost.ro',
   port: 465,
   secure: true,
   auth: {

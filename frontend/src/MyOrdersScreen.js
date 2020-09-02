@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout } from './components/Layout';
 import {  Button, Card, Spinner, Row, Col, Table } from 'react-bootstrap';
 import styled from 'styled-components';
@@ -18,23 +18,6 @@ const Styles = styled.div`
         display: flex;
         justify-content: center;
         color: black ;
-    }
-
-    .card {
-        width: 100%;
-        margin-top: 50px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: auto;
-        font-family: Arial;
-        overflow: hidden;
-    }
-
-    .card-body {
-        width: 100%;
-        display: ;
-        justify-content: center;
-        align-items: center;
     }
 }
 `;
@@ -56,6 +39,16 @@ export const MyOrdersScreen = () => {
     
         };
       }, [userInfo, dispatch])
+
+      const [width, setWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        function handleResize() {
+            setWidth(window.innerWidth);
+        }
+      
+        window.addEventListener('resize', handleResize)
+    });
     return (
         loadingOrders ?
         <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
@@ -65,10 +58,10 @@ export const MyOrdersScreen = () => {
             <Styles>
                 <Button variant="link" style={{color:"lightgrey", marginTop:"50px", textDecoration:"none"}} size="lg" href="/accountprofile">Contul meu</Button>
                 <Button variant="link" style={{color:"white", marginTop:"50px", textDecoration:"none"}} size="lg" href="/orders">Comenzile mele</Button>
-                <Card>
-                    <Card.Body>
+                <Card style={{width: "100%", marginTop: "50px", marginLeft: "auto", marginRight: "auto", marginBottom: "50px", fontFamily: "Arial", zIndex: 2, overflow: "hidden"}}>
+                    <Card.Body style={{width: "100%", justifyContent: "center", alignItems: "center"}}>
                         {errorOrders && <div style={{color:"black", fontWeight:"bold", textAlign:"center", border:"2px solid red", backgroundColor:"#DA7E7E"}}>A apărut o eroare neașteptată. Încearcă din nou mai târziu.</div>}
-                        <Table>
+                        <Table responsive>
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -95,7 +88,8 @@ export const MyOrdersScreen = () => {
                         
                     </Card.Body>
                 </Card>
-                <Row style={{marginBottom: "0", height: "100%", maxHeight: "100%", marginTop:"100px"}}>
+                { width > 800 ?
+                <Row style={{marginBottom: "0", height: "100%", maxHeight: "100%"}}>
                     <Col>
                         <Card style={{ width: '100%' }}>
                         <Card.Body>
@@ -131,7 +125,45 @@ export const MyOrdersScreen = () => {
                         </Card.Body>
                         </Card>
                     </Col>
-                </Row>
+                </Row> :
+                <Col>
+                    <Row style={{marginBottom:"10px"}}>
+                    <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>Livrări aranjamente de flori</Card.Title>
+                            <Card.Text>
+                            Serviciul de livrat flori la domiciliu al Florăriei Medeea este gratuit în 
+                            orașul Buzău și zonele limitrofe acestuia, fără taxe sau comisioane. Pentru o comandă în afara
+                            orașului, costul de livrare diferă în funcție de distanță. Beneficiem de curieri proprii, livrând florile
+                            în apă pentru a 
+                            </Card.Text>
+                        </Card.Body>
+                        </Card>
+                    </Row>
+                    <Row style={{marginBottom:"10px"}}>
+                    <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>De ce Florăria Medeea?</Card.Title>
+                            <Card.Text>
+                            Some quick example text to build on the card title and make up the bulk of
+                            the card's content.
+                            </Card.Text>
+                        </Card.Body>
+                        </Card>
+                    </Row>
+                    <Row>
+                    <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>Unde ne puteți găsi?</Card.Title>
+                            <Card.Text>
+                            Some quick example text to build on the card title and make up the bulk of
+                            the card's content.
+                            </Card.Text>
+                        </Card.Body>
+                        </Card>
+                    </Row>
+                </Col>               
+}
             </Styles>
         </Layout>
     )

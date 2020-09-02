@@ -1,43 +1,32 @@
+import Cloud from '@google-cloud/storage';
+import path, {dirname} from 'path';
+import { fileURLToPath } from 'url';
+import util from 'util';
 
-import express from 'express';
-import multer from 'multer';
-import multerS3 from 'multer-s3';
-import aws from 'aws-sdk';
-import config from '../config.mjs';
+const { format } = util;
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename(req, file, cb) {
-    cb(null, `${Date.now()}.jpg`);
-  },
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const serviceKey = path.join(__dirname, '../floraria-medeea-cf3fa3fe4be8.json')
+const { Storage }= Cloud
+const storage = new Storage({
+  keyFilename: serviceKey,
+  projectId: "floraria-medeea"
 });
 
-const upload = multer({ storage });
-
-const router = express.Router();
-
-router.post('/', upload.single('image'), (req, res) => {
-  res.send(`/${req.file.path}`);
-});
-
-aws.config.update({
-  accessKeyId: config.accessKeyId,
-  secretAccessKey: config.secretAccessKey,
-});
-const s3 = new aws.S3();
-const storageS3 = multerS3({
-  s3,
-  bucket: 'medeea-bucket',
-  acl: 'public-read',
-  contentType: multerS3.AUTO_CONTENT_TYPE,
-  key(req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-const uploadS3 = multer({ storage: storageS3 });
-router.post('/s3', uploadS3.single('image'), (req, res) => {
-  res.send(req.file.location);
-});
-export default router;
+export const uploadImage = (file) => new Promise((resolve, reject) => {
+  const { originalname, buffer } = file
+  const blob = storage.bucket("medeea-bucket").file(originalname.replace(/ /g, "_"))
+  const blobStream = blob.createWriteStream({
+    resumable: false
+  })
+  blobStream.on('finish', () => {
+    const publicUrl = format(
+      `https://storage.googleapis.com/medeea-bucket/${blob.name}`
+    )
+    resolve(publicUrl)
+  })
+  .on('error', () => {
+    reject(`Unable to upload image, something went wrong`)
+  })
+  .end(buffer)
+})

@@ -32,6 +32,7 @@ const Styles = styled.div`
     #search-button {
         background-color: purple;
         border-color: purple;
+        margin-top: 5px;
 
         &:hover {
             background-color: #9A2FA2;
@@ -75,7 +76,7 @@ export const NavigationBar = () => {
         
         return (
             <Styles>
-                <Navbar >
+                <Navbar expand="xl" collapseOnSelect variant="dark">
                     <Navbar.Brand href="/">
                         <Image src={"/assets/logo.png"} fluid width="200"/>
                     </Navbar.Brand>
@@ -103,15 +104,18 @@ export const NavigationBar = () => {
                             </NavDropdown>
                             <Nav.Item><Nav.Link href="/contact">Contact</Nav.Link></Nav.Item>
                         </Nav>
+                        
+                        
+                        <p style={{color:"#bbb", textAlign:"center", justifyContent:"center", paddingTop:"15px", paddingLeft:"10px", paddingRight:"20px"}}>
                         <SocialIcon url="https://www.facebook.com/buzauflori" style={{ height: 35, width: 35, paddingRight: "50px" }} target="_blank"/>
                         <SocialIcon url="https://www.instagram.com/florariamedeea/?hl=en" style={{ height: 35, width: 35, paddingRight: "50px" }} target="_blank"/>
                         <TelephoneForward color="purple" size={30} /> 
-                        <p style={{color:"#bbb", textAlign:"center", justifyContent:"center", paddingTop:"15px", paddingLeft:"10px", paddingRight:"20px"}}>
                         <a href="tel:+40 (784) 284 243">
                             +40 (784) 284 243
-                            </a></p>
+                            </a>
+                        </p>
                         <Form inline>
-                            <FormControl type="text" placeholder="Caută produse" className="search-box mr-sm-2" onChange={(e) => setCategory(e.target.value)}/>
+                            <FormControl type="text" placeholder="Caută produse" className="search-box mr-sm-2" onChange={(e) => setCategory(e.target.value)} maxLength={50}/>
                             <Button variant="secondary" id="search-button" href={`/search?category=${category}`} disabled={category === ""}>Caută</Button>
                         </Form>
                         <OverlayTrigger placement="left" overlay={tooltip}>

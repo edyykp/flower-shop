@@ -1,26 +1,22 @@
 {
   "files": {
-    "main.css": "/flower-shop/frontend/build/static/css/main.5f361e03.chunk.css",
-    "main.js": "/flower-shop/frontend/build/static/js/main.c497caaf.chunk.js",
-    "main.js.map": "/flower-shop/frontend/build/static/js/main.c497caaf.chunk.js.map",
-    "runtime-main.js": "/flower-shop/frontend/build/static/js/runtime-main.380bef7a.js",
-    "runtime-main.js.map": "/flower-shop/frontend/build/static/js/runtime-main.380bef7a.js.map",
-    "static/js/2.e54ab96b.chunk.js": "/flower-shop/frontend/build/static/js/2.e54ab96b.chunk.js",
-    "static/js/2.e54ab96b.chunk.js.map": "/flower-shop/frontend/build/static/js/2.e54ab96b.chunk.js.map",
-    "index.html": "/flower-shop/frontend/build/index.html",
-    "precache-manifest.10d0be0bd50a87e2f4ba59f59ee732c5.js": "/flower-shop/frontend/build/precache-manifest.10d0be0bd50a87e2f4ba59f59ee732c5.js",
-    "service-worker.js": "/flower-shop/frontend/build/service-worker.js",
-    "static/css/main.5f361e03.chunk.css.map": "/flower-shop/frontend/build/static/css/main.5f361e03.chunk.css.map",
-    "static/js/2.e54ab96b.chunk.js.LICENSE.txt": "/flower-shop/frontend/build/static/js/2.e54ab96b.chunk.js.LICENSE.txt",
-    "static/media/florarie.png": "/flower-shop/frontend/build/static/media/florarie.e470d514.png",
-    "static/media/florarie2-copy-2.png": "/flower-shop/frontend/build/static/media/florarie2-copy-2.91424f9e.png",
-    "static/media/logo2.png": "/flower-shop/frontend/build/static/media/logo2.c8662070.png",
-    "static/media/mino-copy.png": "/flower-shop/frontend/build/static/media/mino-copy.2b79fa58.png"
+    "main.css": "/static/css/main.8348d2f8.chunk.css",
+    "main.js": "/static/js/main.da3acf14.chunk.js",
+    "main.js.map": "/static/js/main.da3acf14.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.f8c5b4be.js",
+    "runtime-main.js.map": "/static/js/runtime-main.f8c5b4be.js.map",
+    "static/js/2.e38b5ea8.chunk.js": "/static/js/2.e38b5ea8.chunk.js",
+    "static/js/2.e38b5ea8.chunk.js.map": "/static/js/2.e38b5ea8.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.af063ccba1dd24c5595d42e23f9422ce.js": "/precache-manifest.af063ccba1dd24c5595d42e23f9422ce.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.8348d2f8.chunk.css.map": "/static/css/main.8348d2f8.chunk.css.map",
+    "static/js/2.e38b5ea8.chunk.js.LICENSE.txt": "/static/js/2.e38b5ea8.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "./static/js/runtime-main.380bef7a.js",
-    "./static/js/2.e54ab96b.chunk.js",
-    "./static/css/main.5f361e03.chunk.css",
-    "./static/js/main.c497caaf.chunk.js"
+    "static/js/runtime-main.f8c5b4be.js",
+    "static/js/2.e38b5ea8.chunk.js",
+    "static/css/main.8348d2f8.chunk.css",
+    "static/js/main.da3acf14.chunk.js"
   ]
 }

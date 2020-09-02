@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {ListGroup, Row, Col, OverlayTrigger, Popover, Card} from 'react-bootstrap';
 import styled from 'styled-components';
 import {Truck, ShieldCheck, Check2Circle, Gift, CashStack} from 'react-bootstrap-icons'; 
@@ -19,6 +19,10 @@ const Styles = styled.div`
                 color: red;
             }
         }
+    }
+
+    .card {
+        min-width: 200px;
     }
 `;
 var styles = {
@@ -73,11 +77,22 @@ const popoverCadouri = (
       </Popover.Content>
     </Popover>
   );
-export const Home = () => (
+export const Home = () => {
+    const [width, setWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        function handleResize() {
+            setWidth(window.innerWidth);
+        }
+      
+        window.addEventListener('resize', handleResize)
+    });
+
+    return (
         <Styles>
             <Jumbotron/>
-            <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)",width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
-                <Row >
+            {width > 700 ?             <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)",width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingLeft: "100px", paddingRight:"100px", paddingBottom: "50px", marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
+            <Row >
                     <Col style={{maxWidth:"100%", width: "100%", justifyContent:"center", paddingRight: "0", paddingLeft: "0"}}>
                         <ListGroup horizontal>
                             <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverPlatiSecurizate}>
@@ -118,6 +133,7 @@ export const Home = () => (
                 </Row>
                 <br/>
                 <br/>
+                { width > 800 ?
                 <Row style={{marginBottom: "0", height: "100%", maxHeight: "100%"}}>
                     <Col>
                         <Card style={{ width: '100%' }}>
@@ -154,7 +170,170 @@ export const Home = () => (
                         </Card.Body>
                         </Card>
                     </Col>
-                </Row>
+                </Row> :
+                <Col>
+                    <Row style={{marginBottom:"10px"}}>
+                    <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>Livrări aranjamente de flori</Card.Title>
+                            <Card.Text>
+                            Serviciul de livrat flori la domiciliu al Florăriei Medeea este gratuit în 
+                            orașul Buzău și zonele limitrofe acestuia, fără taxe sau comisioane. Pentru o comandă în afara
+                            orașului, costul de livrare diferă în funcție de distanță. Beneficiem de curieri proprii, livrând florile
+                            în apă pentru a 
+                            </Card.Text>
+                        </Card.Body>
+                        </Card>
+                    </Row>
+                    <Row style={{marginBottom:"10px"}}>
+                    <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>De ce Florăria Medeea?</Card.Title>
+                            <Card.Text>
+                            Some quick example text to build on the card title and make up the bulk of
+                            the card's content.
+                            </Card.Text>
+                        </Card.Body>
+                        </Card>
+                    </Row>
+                    <Row>
+                    <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>Unde ne puteți găsi?</Card.Title>
+                            <Card.Text>
+                            Some quick example text to build on the card title and make up the bulk of
+                            the card's content.
+                            </Card.Text>
+                        </Card.Body>
+                        </Card>
+                    </Row>
+                </Col>
+                
+}
             </Layout>
+ :             
+ <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)",width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", paddingBottom: "50px", paddingLeft:"20px", paddingRight:"20px",marginBottom: "0px", height: "100%", maxHeight: "100%"}}>
+
+ <Row >
+                    <Col style={{maxWidth:"100%", width: "100%", justifyContent:"center", paddingRight: "0", paddingLeft: "0"}}>
+                        <ListGroup horizontal>
+                            <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverPlatiSecurizate}>
+                                    <ListGroup.Item style={styles.item} className="list-group-item">
+                                            <ShieldCheck size={30} color="grey" style={{paddingBottom:"10px"}} className="icon"/>
+                                            <p style={{fontSize: "12px"}} className="par">
+                                                PLĂȚI SECURIZATE
+                                            </p>
+                                    </ListGroup.Item>
+                            </OverlayTrigger>
+                            <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverLivrareInOre}>
+                                <ListGroup.Item style={styles.item} className="list-group-item">
+                                    <Truck size={30} color="grey" style={{paddingBottom:"10px"}} className="icon"/>
+                                    <p style={{fontSize: "12px"}} className="par">LIVRARE ÎN 4 ORE</p>
+                                </ListGroup.Item>
+                            </OverlayTrigger>
+                            <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverLivrareGratuita}>
+                                <ListGroup.Item style={styles.item} className="list-group-item">
+                                    <CashStack size={30} color="grey" style={{paddingBottom:"10px"}} className="icon"/>
+                                    <p style={{fontSize: "12px"}} className="par">LIVRARE GRATUITĂ</p>
+                                </ListGroup.Item>
+                            </OverlayTrigger>
+                            <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverGarantie}>
+                                <ListGroup.Item style={styles.item} className="list-group-item">
+                                    <Check2Circle size={30} color="grey" style={{paddingBottom:"10px"}} className="icon"/>
+                                    <p style={{fontSize: "12px"}} className="par">100% DISCREȚIE ȘI GARANȚIE</p>
+                                </ListGroup.Item>
+                            </OverlayTrigger>
+                            <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverCadouri}>
+                                <ListGroup.Item style={styles.item} className="list-group-item">
+                                    <Gift size={30} color="grey" style={{paddingBottom:"10px"}} className="icon"/>
+                                    <p style={{fontSize: "12px"}} className="par">FELICITARE CADOU</p>
+                                </ListGroup.Item> 
+                            </OverlayTrigger>
+                        </ListGroup>
+                    </Col>
+                    
+                </Row>
+                <br/>
+                <br/>
+                { width > 800 ?
+                <Row style={{marginBottom: "0", height: "100%", maxHeight: "100%"}}>
+                    <Col>
+                        <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>Livrări aranjamente de flori</Card.Title>
+                            <Card.Text>
+                            Serviciul de livrat flori la domiciliu al Florăriei Medeea este gratuit în 
+                            orașul Buzău și zonele limitrofe acestuia, fără taxe sau comisioane. Pentru o comandă în afara
+                            orașului, costul de livrare diferă în funcție de distanță. Beneficiem de curieri proprii, livrând florile
+                            în apă pentru a 
+                            </Card.Text>
+                        </Card.Body>
+                        </Card>
+                    </Col>
+                    <Col>
+                        <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>De ce Florăria Medeea?</Card.Title>
+                            <Card.Text>
+                            Some quick example text to build on the card title and make up the bulk of
+                            the card's content.
+                            </Card.Text>
+                        </Card.Body>
+                        </Card>
+                    </Col>
+                    <Col>
+                        <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>Unde ne puteți găsi?</Card.Title>
+                            <Card.Text>
+                            Some quick example text to build on the card title and make up the bulk of
+                            the card's content.
+                            </Card.Text>
+                        </Card.Body>
+                        </Card>
+                    </Col>
+                </Row> :
+                <Col>
+                    <Row style={{marginBottom:"10px"}}>
+                    <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>Livrări aranjamente de flori</Card.Title>
+                            <Card.Text>
+                            Serviciul de livrat flori la domiciliu al Florăriei Medeea este gratuit în 
+                            orașul Buzău și zonele limitrofe acestuia, fără taxe sau comisioane. Pentru o comandă în afara
+                            orașului, costul de livrare diferă în funcție de distanță. Beneficiem de curieri proprii, livrând florile
+                            în apă pentru a 
+                            </Card.Text>
+                        </Card.Body>
+                        </Card>
+                    </Row>
+                    <Row style={{marginBottom:"10px"}}>
+                    <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>De ce Florăria Medeea?</Card.Title>
+                            <Card.Text>
+                            Some quick example text to build on the card title and make up the bulk of
+                            the card's content.
+                            </Card.Text>
+                        </Card.Body>
+                        </Card>
+                    </Row>
+                    <Row>
+                    <Card style={{ width: '100%' }}>
+                        <Card.Body>
+                            <Card.Title>Unde ne puteți găsi?</Card.Title>
+                            <Card.Text>
+                            Some quick example text to build on the card title and make up the bulk of
+                            the card's content.
+                            </Card.Text>
+                        </Card.Body>
+                        </Card>
+                    </Row>
+                </Col>
+                
+}
+            </Layout>}
+               
         </Styles>
-)
+    )
+}

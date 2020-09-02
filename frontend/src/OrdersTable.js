@@ -22,13 +22,13 @@ export const OrdersTable = () => {
       
     return (
         loading ? 
-        <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center"}}>
+        <Layout style={{background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "100%", maxWidth: "100%", backgroundColor: "#A071A9", height:"100vh",justifyContent:"center", zIndex:"20"}}>
                 <Spinner animation="border" variant="secondary" style={{position:"absolute", top:"50%", left: "50%"}}/>
         </Layout> 
         :
-        <Layout style={{height:"100vh",background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "130%", maxWidth: "130%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"20px"}}>
+        <Layout style={{height:"100vh",background: "linear-gradient(rgba(50,0,0,0.5),transparent)", width: "130%", maxWidth: "130%", backgroundColor: "#A071A9", paddingTop:"40px", paddingBottom:"20px", zIndex:"20"}}>
             {error  && alert("A apărut o eroare neașteptată. Încearcă din nou.")}
-            <Table striped bordered hover style={{backgroundColor:"white", marginTop:"20px"}}>
+            <Table striped bordered hover style={{backgroundColor:"white", marginTop:"20px", zIndex:"3000"}} responsive>
                 <thead>
                     <tr>
                     <th>Produs,Qty,Preț,Text felicitare</th>
@@ -45,6 +45,7 @@ export const OrdersTable = () => {
                     <th>Metodă de plată</th>
                     <th>Comentarii</th>
                     <th>Preț total</th>
+                    <th>Status plată</th>
                     </tr>
                     
                 </thead>

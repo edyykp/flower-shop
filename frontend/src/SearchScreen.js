@@ -37,9 +37,9 @@ export const SearchScreen = props => {
                           <Col style={{justifyContent: "right"}}>
                               <Form inline>
                                   Preț de la:   
-                                  <Form.Control type="text" style={{width:"80px"}}/>
+                                  <Form.Control type="text" style={{width:"80px"}} maxLength={4}/>
                                   lei până la:  
-                                  <Form.Control type="text" style={{width:"80px"}}/>
+                                  <Form.Control type="text" style={{width:"80px"}} maxLength={4}/>
                                   lei
                                   <Button variant="success" style={{marginLeft:"10px"}}>
                                       <Search color="white" size={18} />
